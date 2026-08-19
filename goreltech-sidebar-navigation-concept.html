@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - простая боковая панель</title>
+  <style>
+    :root {
+      --yellow: #f2cf00;
+      --yellow-soft: #fff4b8;
+      --ink: #24262a;
+      --muted: #727985;
+      --line: #e5e8ed;
+      --page: #f6f7f8;
+      --card: #ffffff;
+      --dark: #2e3035;
+      --blue: #326da8;
+      --green: #197a5f;
+      --radius: 8px;
+      --shadow: 0 16px 36px rgba(31, 34, 38, .07);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      letter-spacing: 0;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: #fff;
+      border-right: 1px solid #202226;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      height: 64px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex: none;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: #fff;
+    }
+
+    .nav {
+      overflow: auto;
+      padding: 12px 10px 16px;
+    }
+
+    .section {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      padding: 0 10px 7px;
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .item {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .item:hover {
+      background: rgba(255,255,255,.07);
+    }
+
+    .item.active {
+      background: var(--yellow);
+      box-shadow: none;
+      color: #111;
+      font-weight: 560;
+    }
+
+    .item svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.9;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      color: rgba(255,255,255,.34);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .active .chevron {
+      color: rgba(17,17,17,.62);
+    }
+
+    .profile {
+      margin-top: auto;
+      padding: 14px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,.1);
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--yellow);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 850;
+      flex: none;
+    }
+
+    .profile-copy {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .profile-copy strong {
+      font-size: 13px;
+      color: #fff;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-copy span {
+      color: rgba(255,255,255,.54);
+      font-size: 11px;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 64px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .global-search {
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .top-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: end;
+      min-width: 0;
+      padding-left: 18px;
+    }
+
+    .notification {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #535b66;
+      background: #fff;
+      position: relative;
+      flex: none;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: #171717;
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+
+    .notification-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .notification-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .notification-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .notification-menu {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      width: 320px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .notification-wrap:not([open]) .notification-menu {
+      display: none;
+    }
+
+    .notification-wrap[open] .notification {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .notification-head {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .notification-head strong {
+      font-size: 14px;
+    }
+
+    .notification-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .notification-item {
+      min-height: 64px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 8px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .notification-item:last-child {
+      border-bottom: 0;
+    }
+
+    .notification-item:hover {
+      background: #fafbfc;
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: #cfd6df;
+    }
+
+    .notification-item.unread .notification-dot {
+      background: var(--yellow);
+    }
+
+    .notification-item strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .notification-item em {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-style: normal;
+    }
+
+
+    .favorite-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .favorite-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .favorite-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .favorite-wrap:not([open]) .favorite-menu {
+      display: none;
+    }
+
+    .favorite-wrap[open] .favorite-trigger {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .favorite-menu {
+      position: absolute;
+      top: 46px;
+      left: 0;
+      width: 340px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .favorite-contact {
+      min-height: 66px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .favorite-contact:hover {
+      background: #fafbfc;
+    }
+
+    .favorite-contact img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      object-fit: cover;
+    }
+
+    .favorite-contact strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-contact span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-phone {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .favorite-all {
+      min-height: 42px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      background: #fafbfc;
+    }
+
+    .top-spacer {
+      min-width: 0;
+    }
+
+    .top-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #171717;
+      font-size: 12px;
+      font-weight: 850;
+      flex: none;
+    }
+
+    .top-profile-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .top-profile-copy strong {
+      font-size: 13px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .top-profile-copy span {
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .top-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .top-profile-link:hover .top-profile-copy strong {
+      color: var(--blue);
+    }
+
+    .logout {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #606873;
+      background: #fff;
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .page-head {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      align-items: flex-start;
+    }
+
+    .kicker {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .lead {
+      margin: 12px 0 0;
+      max-width: 720px;
+      color: #59616d;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .edit-panel {
+      min-width: 300px;
+      border: 1px solid #d9c04a;
+      background: #fffbea;
+      border-radius: var(--radius);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .edit-panel strong {
+      font-size: 14px;
+    }
+
+    .edit-panel p {
+      margin: 0;
+      color: #665915;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      height: 34px;
+      padding: 0 11px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 12.5px;
+      font-weight: 820;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .button.primary {
+      background: var(--yellow);
+      border-color: #d9ba00;
+    }
+
+    .configure-button {
+      height: 32px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: #4f5661;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 58px;
+      border-bottom: 1px solid var(--line);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .panel-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .structure {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .group-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 15px;
+      display: grid;
+      gap: 11px;
+    }
+
+    .group-card h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .chip {
+      height: 28px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: #f1f3f5;
+      color: #505862;
+      font-size: 12px;
+      font-weight: 740;
+    }
+
+    .chip.strong {
+      background: var(--yellow-soft);
+      color: #6d5a00;
+    }
+
+    .rule {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 13px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .rule strong {
+      font-size: 13px;
+    }
+
+    .rule p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.42;
+    }
+
+    .rule.good {
+      border-color: #cfe7dc;
+      background: #f5fbf8;
+    }
+
+    .rule.warn {
+      border-color: #ead778;
+      background: #fffbea;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .list div {
+      min-height: 34px;
+      border-radius: 7px;
+      background: #f6f7f8;
+      padding: 8px 10px;
+      color: #4c535c;
+      font-size: 12.5px;
+      font-weight: 720;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .home-hero {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 10px;
+      min-width: 520px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fafbfc;
+      display: grid;
+      gap: 8px;
+      align-content: center;
+      min-height: 92px;
+    }
+
+    .stat strong {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .main-stack,
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quick-card {
+      min-height: 96px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      color: var(--ink);
+      text-decoration: none;
+      background: #fff;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+    }
+
+    .quick-card:hover {
+      border-color: #d6bd19;
+      background: #fffdf0;
+    }
+
+    .quick-card svg {
+      width: 22px;
+      height: 22px;
+      color: #454a52;
+      stroke-width: 1.9;
+    }
+
+    .quick-card strong {
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .quick-card.add-widget {
+      border-style: dashed;
+      color: var(--muted);
+      background: #fafbfc;
+    }
+
+    .news-block {
+      display: grid;
+      gap: 0;
+    }
+
+    .featured-news {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 22px;
+      align-items: stretch;
+      padding: 22px;
+    }
+
+    .featured-image {
+      min-height: 172px;
+      border-radius: var(--radius);
+      background: #eef1f5;
+      overflow: hidden;
+    }
+
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .featured-copy {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .featured-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .featured-copy h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    .featured-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .news-row {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .news-date {
+      height: 42px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      background: #f3f5f7;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .news-row strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .news-row span:not(.tag):not(.news-date) {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tag {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #f1f3f5;
+      color: #606873;
+      font-size: 11px;
+      font-weight: 820;
+      text-decoration: none;
+    }
+
+    .event-row {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .event-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .event-row:last-child {
+      padding-bottom: 0;
+    }
+
+    .row-copy {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .row-copy strong {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .row-copy span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .date-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: var(--yellow-soft);
+      color: #493e00;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.1;
+      flex: none;
+    }
+
+    .date-box b {
+      display: block;
+      font-size: 17px;
+    }
+
+    .empty-calendar {
+      border: 1px dashed #d5dbe4;
+      border-radius: var(--radius);
+      padding: 13px;
+      background: #fafbfc;
+      display: grid;
+      gap: 4px;
+    }
+
+    .empty-calendar strong {
+      font-size: 13px;
+    }
+
+    .empty-calendar span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .birthday-row {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .birthday-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .birthday-row:last-child {
+      padding-bottom: 0;
+    }
+
+    .birthday-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #eef1f5;
+      border: 1px solid var(--line);
+    }
+
+    @media (max-width: 1120px) {
+      .portal {
+        grid-template-columns: 270px minmax(0, 1fr);
+      }
+
+      .topbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .top-spacer {
+        display: none;
+      }
+
+      .page-head,
+      .grid,
+      .home-hero,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-strip {
+        min-width: 0;
+      }
+
+      .page-head {
+        display: grid;
+      }
+
+      .edit-panel {
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .portal {
+        display: block;
+      }
+
+      .sidebar {
+        height: auto;
+        position: static;
+      }
+
+      .profile {
+        display: none;
+      }
+
+      .topbar {
+        position: static;
+        padding: 12px 16px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .structure,
+      .before-after,
+      .quick-grid,
+      .stat-strip,
+      .featured-news {
+        grid-template-columns: 1fr;
+      }
+
+      .top-profile-copy,
+      .logout {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Боковая панель портала">
+      <div class="brand">
+        <img class="brand-logo" src="goreltech-logo.png" alt="">
+        <strong>Портал ГОРЭЛТЕХ</strong>
+      </div>
+
+      <nav class="nav">
+        <div class="section">
+          <div class="section-title">Основное</div>
+          <a class="item active" href="goreltech-sidebar-navigation-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H5.5v-6.5H4z"/></svg>
+            <span class="item-name">Главная</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-news-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 6h11a3 3 0 0 1 3 3v9H8a3 3 0 0 1-3-3z"/><path d="M8 10h7M8 14h5"/></svg>
+            <span class="item-name">Новости</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+            <span class="item-name">Календарь событий</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-tasks-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 10 2 2 4-5"/><path d="M8 16h8"/></svg>
+            <span class="item-name">Задачи</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Справочники</div>
+          <a class="item" href="goreltech-phonebook-directory-concept.html">
+            <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M16 11h5M16 6h5M16 16h5"/></svg>
+            <span class="item-name">Сотрудники</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-company-structure-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 4v5"/><path d="M6 13V9h12v4"/><rect x="4" y="13" width="4" height="5" rx="1"/><rect x="10" y="13" width="4" height="5" rx="1"/><rect x="16" y="13" width="4" height="5" rx="1"/></svg>
+            <span class="item-name">Структура компании</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-documents-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>
+            <span class="item-name">Документы</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-useful-info-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.6 5.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+            <span class="item-name">Полезная информация</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Продукция и продажи</div>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7l3-4h10l3 4M8 11h8"/></svg>
+            <span class="item-name">Каталог продукции</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-certificates-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="item-name">Сертификаты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-competitor-prices-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 19V5M17 19V5"/><path d="M5 8h10a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h10"/></svg>
+            <span class="item-name">Цены конкурентов</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 14h10M9 11h6M11 8h2"/><path d="M4 20 12 4l8 16"/></svg>
+            <span class="item-name">Архив оборудования</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-photobank-concept.html">
+            <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="12.5" r="3"/></svg>
+            <span class="item-name">Фотобанк</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Обращения</div>
+          <a class="item" href="goreltech-tickets-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m17 7 3 3-6 6-3 1 1-3z"/></svg>
+            <span class="item-name">Тикеты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-rationalization-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 11V7a4 4 0 0 1 8 0v4"/><path d="M5 11h14l-1 9H6z"/><path d="M9 15h6"/></svg>
+            <span class="item-name">Рацпредложения</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+      </nav>
+
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="global-search">
+          <svg viewBox="0 0 24 24" width="17" height="17"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Поиск сотрудника
+        </div>
+        <details class="favorite-wrap">
+          <summary class="notification favorite-trigger" aria-label="Избранные контакты">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>
+            <span class="notification-badge">3</span>
+          </summary>
+          <div class="favorite-menu">
+            <div class="notification-head">
+              <strong>Избранные контакты</strong>
+              <span>3 контакта</span>
+            </div>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-noskov">
+              <img src="birthday-denis.svg" alt="">
+              <span><strong>Носков Денис Сергеевич</strong><span>Производство</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-ganba">
+              <img src="birthday-alex.svg" alt="">
+              <span><strong>Ганьба Ирина Олеговна</strong><span>Маркетинг</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-popov">
+              <img src="birthday-ivan.svg" alt="">
+              <span><strong>Попов Дмитрий Сергеевич</strong><span>IT-отдел</span></span>
+              <span class="favorite-phone">1308</span>
+            </a>
+            <a class="favorite-all" href="goreltech-phonebook-directory-concept.html">Открыть сотрудников <span>›</span></a>
+          </div>
+        </details>
+        <div class="top-spacer"></div>
+        <div class="top-profile">
+          <details class="notification-wrap">
+            <summary class="notification" aria-label="Уведомления">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+              <span class="notification-badge">1</span>
+            </summary>
+            <div class="notification-menu">
+              <div class="notification-head">
+                <strong>Уведомления</strong>
+                <span>1 новое</span>
+              </div>
+              <a class="notification-item unread" href="goreltech-news-detail-concept.html">
+                <span class="notification-dot"></span>
+                <span><strong>Новая новость</strong><em>Летний корпоратив: регистрация открыта</em></span>
+              </a>
+            </div>
+          </details>
+          <a class="top-profile-link" href="goreltech-user-profile-concept.html">
+            <span class="top-avatar">ИГ</span>
+            <span class="top-profile-copy">
+              <strong>Ирина Олеговна</strong>
+              <span>Отдел маркетинга</span>
+            </span>
+          </a>
+          <span class="logout" aria-label="Выйти">
+            <svg viewBox="0 0 24 24" width="17" height="17"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+          </span>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="home-hero">
+          <div>
+            <div class="kicker">Главная</div>
+            <h1>Добрый день, Ирина</h1>
+            <p class="lead">Короткая сводка портала на сегодня: что нового, у кого день рождения и есть ли общие события. Основные разделы доступны в меню и в настраиваемом быстром доступе ниже.</p>
+          </div>
+          <div class="stat-strip">
+            <div class="stat"><strong>4</strong><span>новости за неделю</span></div>
+            <div class="stat"><strong>6</strong><span>дней рождения на неделе</span></div>
+            <div class="stat"><strong>0</strong><span>событий сегодня</span></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="main-stack">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Быстрый доступ</h2>
+                  <span>Самые частые разделы портала</span>
+                </div>
+                <button class="configure-button">
+                  <svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+                  Настроить
+                </button>
+              </div>
+              <div class="panel-body">
+                <div class="quick-grid">
+                  <a class="quick-card" href="#">
+                    <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+                    <strong>Документы</strong>
+                  </a>
+                  <a class="quick-card" href="goreltech-phonebook-directory-concept.html">
+                    <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M16 11h5M16 6h5M16 16h5"/></svg>
+                    <strong>Сотрудники</strong>
+                  </a>
+                  <a class="quick-card" href="#">
+                    <svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7l3-4h10l3 4M8 11h8"/></svg>
+                    <strong>Каталог продукции</strong>
+                  </a>
+                  <a class="quick-card" href="#">
+                    <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+                    <strong>Создать тикет</strong>
+                  </a>
+                  <a class="quick-card" href="goreltech-tasks-concept.html">
+                    <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 10 2 2 4-5"/><path d="M8 16h8"/></svg>
+                    <strong>Задачи</strong>
+                  </a>
+                  <a class="quick-card add-widget" href="#">
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                    <strong>Добавить виджет</strong>
+                  </a>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Новости компании</h2>
+                  <span>Последние публикации</span>
+                </div>
+                <a class="tag" href="goreltech-news-concept.html">Все новости</a>
+              </div>
+              <div class="news-block">
+                <article class="featured-news">
+                  <div class="featured-image">
+                    <img src="news-corporate-card.svg" alt="">
+                  </div>
+                  <div class="featured-copy">
+                    <div class="featured-meta">
+                      <span class="tag">Общее</span>
+                      <span class="news-date">07 июл</span>
+                    </div>
+                    <h3>Летний корпоратив: регистрация открыта</h3>
+                    <p>Краткая карточка заменяет длинную ленту на первом экране: сотрудник видит главное, дату, тему и может перейти к полной новости.</p>
+                  </div>
+                </article>
+                <div class="news-row">
+                  <span class="news-date">06 июл</span>
+                  <div>
+                    <strong>Обновлены правила оформления командировок</strong>
+                    <span>Бухгалтерия - важно для руководителей подразделений</span>
+                  </div>
+                  <span class="tag">Новое</span>
+                </div>
+                <div class="news-row">
+                  <span class="news-date">05 июл</span>
+                  <div>
+                    <strong>Плановые работы на сервере документов</strong>
+                    <span>IT-служба - окно работ с 20:00 до 21:30</span>
+                  </div>
+                  <span class="tag">IT</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="side-stack">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Календарь</h2>
+                  <span>Общие события</span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="empty-calendar">
+                  <strong>Сегодня событий нет</strong>
+                  <span>Ближайшие общие события показаны ниже.</span>
+                </div>
+                <div class="event-row">
+                  <span class="date-box"><b>09</b>июл</span>
+                  <div class="row-copy"><strong>Планерка отдела продаж</strong><span>10:00, переговорная</span></div>
+                </div>
+                <div class="event-row">
+                  <span class="date-box"><b>12</b>июл</span>
+                  <div class="row-copy"><strong>Обучение по сертификатам</strong><span>Для менеджеров</span></div>
+                </div>
+                <div class="event-row">
+                  <span class="date-box"><b>18</b>июл</span>
+                  <div class="row-copy"><strong>Корпоративное мероприятие</strong><span>Регистрация открыта</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Дни рождения</h2>
+                  <span>Сегодня и ближайшие дни</span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="birthday-row">
+                  <img class="birthday-photo" src="birthday-denis.svg" alt="">
+                  <div class="row-copy"><strong>Носков Денис Сергеевич</strong><span>Сегодня, оператор моечных машин</span></div>
+                </div>
+                <div class="birthday-row">
+                  <img class="birthday-photo" src="birthday-ivan.svg" alt="">
+                  <div class="row-copy"><strong>Фомченков Иван Сергеевич</strong><span>Сегодня, слесарь механосборочных работ</span></div>
+                </div>
+                <div class="birthday-row">
+                  <img class="birthday-photo" src="birthday-alex.svg" alt="">
+                  <div class="row-copy"><strong>Шевцов Александр Евгеньевич</strong><span>Сегодня, производство</span></div>
+                </div>
+              </div>
+            </section>
+
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,2192 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - задачи</title>
+  <style>
+    :root {
+      --yellow: #f2cf00;
+      --yellow-soft: #fff4b8;
+      --ink: #24262a;
+      --muted: #727985;
+      --line: #e5e8ed;
+      --page: #f6f7f8;
+      --dark: #2e3035;
+      --green: #197a5f;
+      --blue: #326da8;
+      --red: #b1443c;
+      --orange: #9a6500;
+      --violet: #6d55b8;
+      --radius: 8px;
+      --shadow: 0 16px 36px rgba(31, 34, 38, .07);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      letter-spacing: 0;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: #fff;
+      border-right: 1px solid #202226;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      height: 64px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex: none;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav {
+      overflow: auto;
+      padding: 12px 10px 16px;
+    }
+
+    .section {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      padding: 0 10px 7px;
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .item {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .item:hover { background: rgba(255,255,255,.07); }
+
+    .item.active {
+      background: var(--yellow);
+      color: #111;
+      font-weight: 560;
+    }
+
+    .item svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.9;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      color: rgba(255,255,255,.34);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .active .chevron { color: rgba(17,17,17,.62); }
+
+    .main { min-width: 0; }
+
+    .topbar {
+      height: 64px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .global-search {
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .top-spacer { min-width: 0; }
+
+    .top-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: end;
+      min-width: 0;
+      padding-left: 18px;
+    }
+
+    .notification,
+    .logout {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #535b66;
+      background: #fff;
+      position: relative;
+      flex: none;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: #171717;
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .favorite-wrap,
+    .notification-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .favorite-wrap summary,
+    .notification-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .favorite-wrap summary::-webkit-details-marker,
+    .notification-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .favorite-wrap:not([open]) .favorite-menu,
+    .notification-wrap:not([open]) .notification-menu {
+      display: none;
+    }
+
+    .favorite-wrap[open] .notification,
+    .notification-wrap[open] .notification {
+      border-color: rgba(242, 205, 0, .85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, .16);
+    }
+
+    .favorite-menu,
+    .notification-menu {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      width: 340px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .favorite-menu { left: 0; right: auto; }
+
+    .notification-head {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .notification-head strong { font-size: 14px; }
+    .notification-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .favorite-contact,
+    .notification-item {
+      min-height: 64px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .notification-item {
+      grid-template-columns: 8px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .favorite-contact:hover,
+    .notification-item:hover { background: #fafbfc; }
+
+    .favorite-contact img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      object-fit: cover;
+    }
+
+    .favorite-contact strong,
+    .notification-item strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-contact span,
+    .notification-item em {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-style: normal;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-phone {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--yellow);
+    }
+
+    .top-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #171717;
+      font-size: 12px;
+      font-weight: 850;
+      flex: none;
+    }
+
+    .top-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .top-profile-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .top-profile-copy strong {
+      font-size: 13px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .top-profile-copy span {
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.12;
+    }
+
+    .head-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .button {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      border-color: #cfd5dd;
+      box-shadow: 0 6px 16px rgba(31, 34, 38, .07);
+    }
+
+    .button.primary {
+      background: var(--yellow);
+      border-color: #d9ba00;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .tab.active { color: var(--ink); }
+
+    .tab.active:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .main-stack,
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 58px;
+      border-bottom: 1px solid var(--line);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .panel-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .agile-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) repeat(4, 150px);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .sprint-card {
+      min-height: 118px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .sprint-card.primary {
+      background: #fffdf0;
+      border-color: rgba(242, 205, 0, .7);
+      box-shadow: inset 0 0 0 2px rgba(242, 205, 0, .22), var(--shadow);
+    }
+
+    .sprint-card strong {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .sprint-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .sprint-metric {
+      min-height: 118px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .sprint-card:hover,
+    .sprint-metric:hover,
+    .project-card:hover,
+    .task-card:hover,
+    .scope-row:hover,
+    .compact-row:hover {
+      transform: translateY(-1px);
+      border-color: #d2d7df;
+      box-shadow: 0 18px 34px rgba(31, 34, 38, .09);
+    }
+
+    .sprint-metric strong {
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .sprint-metric span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+      font-weight: 760;
+    }
+
+    .scope-row {
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .scope-row strong {
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .scope-row span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .project-card {
+      min-height: 206px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .project-card.active {
+      border-color: #d9ba00;
+      box-shadow: inset 0 0 0 2px rgba(242,205,0,.3);
+      background: #fffdf0;
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .project-card h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .project-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .badge {
+      min-height: 24px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #f1f3f6;
+      color: #59616d;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.high {
+      background: #fdecec;
+      color: var(--red);
+    }
+
+    .badge.middle {
+      background: #fff3dc;
+      color: var(--orange);
+    }
+
+    .badge.low {
+      background: #eaf7f1;
+      color: var(--green);
+    }
+
+    .badge.private {
+      background: #f0ecff;
+      color: var(--violet);
+    }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      min-height: 50px;
+      padding: 8px;
+      border-radius: var(--radius);
+      background: #fafbfc;
+      border: 1px solid var(--line);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .progress-line {
+      height: 8px;
+      border-radius: 999px;
+      background: #eef1f4;
+      overflow: hidden;
+    }
+
+    .progress-line span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--yellow);
+    }
+
+    .project-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      background: var(--yellow-soft);
+      display: grid;
+      place-items: center;
+      color: #4d4100;
+      font-size: 10px;
+      font-weight: 850;
+      margin-left: -7px;
+    }
+
+    .avatar:first-child { margin-left: 0; }
+    .avatar.blue { background: #eaf2ff; color: var(--blue); }
+    .avatar.green { background: #eaf7f1; color: var(--green); }
+    .avatar.gray { background: #f1f3f6; color: #59616d; }
+
+    .board-toolbar {
+      padding: 14px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .board-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .board-pill {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      color: #59616d;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .board-pill.active {
+      background: var(--yellow);
+      border-color: #d9ba00;
+      color: #171717;
+    }
+
+    .board-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex: none;
+    }
+
+    .kanban {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(230px, 1fr));
+      gap: 12px;
+      overflow-x: auto;
+    }
+
+    .column {
+      min-height: 540px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .column-head {
+      min-height: 46px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .column-head strong {
+      font-size: 13px;
+    }
+
+    .column-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .column-body {
+      padding: 10px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .task-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 8px 22px rgba(31,34,38,.045);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .task-card.overdue {
+      border-color: rgba(177,68,60,.42);
+      box-shadow: inset 3px 0 0 rgba(177,68,60,.8);
+    }
+
+    .task-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .task-title strong {
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .task-people {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .task-people b {
+      color: var(--ink);
+      font-weight: 750;
+    }
+
+    .task-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .task-icons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .deadline {
+      color: #4f5661;
+      font-weight: 850;
+    }
+
+    .deadline.overdue-text { color: var(--red); }
+
+    .access-list,
+    .board-settings,
+    .compact-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .access-row,
+    .setting-row,
+    .compact-row {
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      display: grid;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .access-row.active {
+      border-color: #ead778;
+      background: #fffbea;
+    }
+
+    .access-row strong,
+    .setting-row strong,
+    .compact-row strong {
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .access-row span,
+    .setting-row span,
+    .compact-row span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .setting-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .setting-row span { grid-column: 1 / -1; }
+
+    .switch {
+      width: 38px;
+      height: 22px;
+      padding: 3px;
+      border-radius: 999px;
+      background: #d8dde4;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .switch.active {
+      background: var(--yellow);
+      justify-content: flex-end;
+    }
+
+    .switch:before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(31,34,38,.16);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(18, 20, 24, .42);
+      display: none;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .modal-backdrop.open { display: grid; }
+
+    .modal {
+      width: min(620px, 100%);
+      max-height: calc(100vh - 56px);
+      overflow: auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 26px 80px rgba(18, 20, 24, .28);
+    }
+
+    .modal-head {
+      min-height: 62px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field span {
+      color: #4f5661;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      padding: 10px 11px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .modal-actions {
+      padding: 16px 20px 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 90;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: #24262a;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      box-shadow: 0 14px 30px rgba(18, 20, 24, .24);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .content.tasks-content {
+      padding: 0;
+      gap: 0;
+      min-height: calc(100vh - 64px);
+      background: #eef1f4;
+    }
+
+    .tasks-workspace {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      background: #eef1f4;
+    }
+
+    .tasks-rail {
+      min-height: calc(100vh - 64px);
+      padding: 18px 10px;
+      background: #4d5352;
+      color: rgba(255,255,255,.88);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .rail-block {
+      display: grid;
+      gap: 5px;
+    }
+
+    .rail-link,
+    .project-link {
+      min-height: 34px;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      color: inherit;
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      font-weight: 520;
+      cursor: pointer;
+    }
+
+    .project-link {
+      grid-template-columns: 18px minmax(0, 1fr);
+      color: rgba(255,255,255,.76);
+      padding-left: 32px;
+    }
+
+    .rail-link:hover,
+    .project-link:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    .project-link.active {
+      background: rgba(255,255,255,.34);
+      color: #fff;
+    }
+
+    .rail-link svg,
+    .project-link svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.9;
+    }
+
+    .rail-count {
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .rail-footer {
+      margin-top: auto;
+      display: grid;
+      gap: 6px;
+    }
+
+    .tasks-main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      background:
+        linear-gradient(rgba(238,241,244,.18), rgba(238,241,244,.18)),
+        radial-gradient(circle at 20% 75%, rgba(242,205,0,.2), transparent 26%),
+        linear-gradient(160deg, #e8eef0 0%, #c8d1d4 37%, #eff3ef 58%, #d7ddd5 100%);
+    }
+
+    .project-topbar {
+      min-height: 64px;
+      padding: 0 22px;
+      background: #39434d;
+      color: #fff;
+      display: grid;
+      grid-template-columns: minmax(220px, auto) auto minmax(240px, 360px) 1fr auto;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .project-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .mini-avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .mini-avatar {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 2px solid #39434d;
+      margin-left: -7px;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #151515;
+      font-size: 9px;
+      font-weight: 850;
+    }
+
+    .mini-avatar:first-child { margin-left: 0; }
+    .mini-avatar.dark { background: #e9edf2; color: #49515a; }
+    .mini-avatar.more { background: rgba(255,255,255,.18); color: #fff; }
+
+    .module-search {
+      height: 38px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.66);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 13px;
+      font-size: 13px;
+    }
+
+    .project-tabs {
+      min-height: 48px;
+      padding: 0 22px;
+      background: #39434d;
+      color: rgba(255,255,255,.78);
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .project-tab {
+      min-width: 108px;
+      padding: 0 14px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .project-tab.active {
+      background: rgba(255,255,255,.32);
+      color: #fff;
+    }
+
+    .project-tab.add {
+      min-width: 40px;
+      font-size: 22px;
+    }
+
+    .board-surface {
+      min-width: 0;
+      min-height: 720px;
+      padding: 8px 18px 28px;
+      position: relative;
+      overflow: auto;
+    }
+
+    .view-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      min-width: max-content;
+    }
+
+    .view-chip,
+    .filter-chip {
+      min-height: 34px;
+      padding: 0 10px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(36,38,42,.86);
+      color: rgba(255,255,255,.72);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .view-chip.active {
+      color: #8fc1ff;
+      box-shadow: inset 0 0 0 1px rgba(143,193,255,.45);
+    }
+
+    .filter-chip svg,
+    .view-chip svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 320px) 230px;
+      gap: 10px;
+      align-items: start;
+      min-width: max-content;
+    }
+
+    .task-column {
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(31, 36, 45, .96);
+      color: #fff;
+      box-shadow: 0 18px 38px rgba(31,34,38,.16);
+    }
+
+    .task-column-head {
+      min-height: 72px;
+      padding: 14px 16px 10px;
+      display: grid;
+      gap: 7px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .task-column-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .task-column-title strong {
+      font-size: 15px;
+    }
+
+    .add-task {
+      color: #4d9dff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .task-column-body {
+      min-height: 500px;
+      padding: 10px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .task-card.board-card {
+      background: rgba(59, 68, 82, .96);
+      color: rgba(255,255,255,.88);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+    }
+
+    .task-card.board-card.overdue {
+      border-color: rgba(255,140,129,.5);
+      box-shadow: inset 3px 0 0 rgba(255,140,129,.85);
+    }
+
+    .board-card .task-title strong {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .task-card.dimmed {
+      opacity: .52;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .meta-pill {
+      min-height: 24px;
+      padding: 4px 7px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.09);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .meta-pill.high {
+      background: rgba(242, 105, 145, .28);
+      color: #ffabc7;
+    }
+
+    .card-person {
+      margin-left: auto;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #111;
+      font-size: 9px;
+      font-weight: 850;
+    }
+
+    .side-actions {
+      display: grid;
+      gap: 7px;
+    }
+
+    .side-action {
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      background: rgba(31,36,45,.9);
+      color: rgba(255,255,255,.74);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1400px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .agile-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sprint-card.primary { grid-column: 1 / -1; }
+      .tasks-workspace { grid-template-columns: 220px minmax(0, 1fr); }
+      .project-topbar { grid-template-columns: minmax(190px, auto) auto minmax(210px, 300px) 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Боковая панель портала">
+      <div class="brand">
+        <img class="brand-logo" src="goreltech-logo.png" alt="">
+        <strong>Портал ГОРЭЛТЕХ</strong>
+      </div>
+
+      <nav class="nav">
+        <div class="section">
+          <div class="section-title">Основное</div>
+          <a class="item" href="goreltech-sidebar-navigation-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H5.5v-6.5H4z"/></svg>
+            <span class="item-name">Главная</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-news-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 6h11a3 3 0 0 1 3 3v9H8a3 3 0 0 1-3-3z"/><path d="M8 10h7M8 14h5"/></svg>
+            <span class="item-name">Новости</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+            <span class="item-name">Календарь событий</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item active" href="goreltech-tasks-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 10 2 2 4-5"/><path d="M8 16h8"/></svg>
+            <span class="item-name">Задачи</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Справочники</div>
+          <a class="item" href="goreltech-phonebook-directory-concept.html">
+            <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M16 11h5M16 6h5M16 16h5"/></svg>
+            <span class="item-name">Сотрудники</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-company-structure-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 4v5"/><path d="M6 13V9h12v4"/><rect x="4" y="13" width="4" height="5" rx="1"/><rect x="10" y="13" width="4" height="5" rx="1"/><rect x="16" y="13" width="4" height="5" rx="1"/></svg>
+            <span class="item-name">Структура компании</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-documents-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>
+            <span class="item-name">Документы</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-useful-info-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.6 5.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+            <span class="item-name">Полезная информация</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Продукция и продажи</div>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7l3-4h10l3 4M8 11h8"/></svg>
+            <span class="item-name">Каталог продукции</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-certificates-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="item-name">Сертификаты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-competitor-prices-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 19V5M17 19V5"/><path d="M5 8h10a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h10"/></svg>
+            <span class="item-name">Цены конкурентов</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 14h10M9 11h6M11 8h2"/><path d="M4 20 12 4l8 16"/></svg>
+            <span class="item-name">Архив оборудования</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-photobank-concept.html">
+            <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="12.5" r="3"/></svg>
+            <span class="item-name">Фотобанк</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Обращения</div>
+          <a class="item" href="goreltech-tickets-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m17 7 3 3-6 6-3 1 1-3z"/></svg>
+            <span class="item-name">Тикеты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-rationalization-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 11V7a4 4 0 0 1 8 0v4"/><path d="M5 11h14l-1 9H6z"/><path d="M9 15h6"/></svg>
+            <span class="item-name">Рацпредложения</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="global-search">
+          <svg viewBox="0 0 24 24" width="17" height="17"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Поиск сотрудника
+        </div>
+        <details class="favorite-wrap">
+          <summary class="notification" aria-label="Избранные контакты">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>
+            <span class="notification-badge">3</span>
+          </summary>
+          <div class="favorite-menu">
+            <div class="notification-head">
+              <strong>Избранные контакты</strong>
+              <span>3 контакта</span>
+            </div>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-noskov">
+              <img src="birthday-denis.svg" alt="">
+              <span><strong>Носков Денис Сергеевич</strong><span>Производство</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-ganba">
+              <img src="birthday-alex.svg" alt="">
+              <span><strong>Ганьба Ирина Олеговна</strong><span>Маркетинг</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-popov">
+              <img src="birthday-ivan.svg" alt="">
+              <span><strong>Попов Дмитрий Сергеевич</strong><span>IT-отдел</span></span>
+              <span class="favorite-phone">1308</span>
+            </a>
+          </div>
+        </details>
+        <div class="top-spacer"></div>
+        <div class="top-profile">
+          <details class="notification-wrap">
+            <summary class="notification" aria-label="Уведомления">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+              <span class="notification-badge">1</span>
+            </summary>
+            <div class="notification-menu">
+              <div class="notification-head">
+                <strong>Уведомления</strong>
+                <span>1 новое</span>
+              </div>
+              <a class="notification-item" href="goreltech-news-detail-concept.html">
+                <span class="notification-dot"></span>
+                <span><strong>Новая новость</strong><em>Летний корпоратив: регистрация открыта</em></span>
+              </a>
+            </div>
+          </details>
+          <a class="top-profile-link" href="goreltech-user-profile-concept.html">
+            <span class="top-avatar">ИГ</span>
+            <span class="top-profile-copy">
+              <strong>Ирина Олеговна</strong>
+              <span>Отдел маркетинга</span>
+            </span>
+          </a>
+          <span class="logout" aria-label="Выйти">
+            <svg viewBox="0 0 24 24" width="17" height="17"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+          </span>
+        </div>
+      </header>
+
+      <section class="content tasks-content">
+        <div class="tasks-workspace">
+          <aside class="tasks-rail" aria-label="Проекты и рабочие области">
+            <div class="rail-block">
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+                <span>Мой профиль</span>
+                <span></span>
+              </div>
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 11 2 2 5-6"/></svg>
+                <span>Мои задачи</span>
+                <span class="rail-count">38</span>
+              </div>
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M8 8V5h8v3"/></svg>
+                <span>Моя компания</span>
+                <span></span>
+              </div>
+            </div>
+
+            <div class="rail-block">
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M4 6h6v12H4zM14 6h6v12h-6z"/></svg>
+                <span>Проекты</span>
+                <span class="rail-count">+</span>
+              </div>
+              <div class="project-link active"><span></span><span>Маркетинг</span></div>
+              <div class="project-link"><span></span><span>Управление брендами</span></div>
+              <div class="project-link"><span></span><span>Web-разработка</span></div>
+              <div class="project-link"><span></span><span>ЦИРКУТ</span></div>
+              <div class="project-link"><span></span><span>Программа лояльности</span></div>
+              <div class="project-link"><span></span><span>Новый сайт+app</span></div>
+              <div class="project-link"><span></span><span>Управление продуктами</span></div>
+            </div>
+
+            <div class="rail-footer">
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M5 6h14v10H7l-2 3z"/></svg>
+                <span>Мессенджер</span>
+                <span></span>
+              </div>
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M8 11h8M8 15h5"/><path d="M5 5h14v14H5z"/></svg>
+                <span>Лента событий</span>
+                <span></span>
+              </div>
+              <div class="rail-link">
+                <svg viewBox="0 0 24 24"><path d="M4 19h16M7 16V8M12 16V5M17 16v-6"/></svg>
+                <span>Отчеты</span>
+                <span></span>
+              </div>
+            </div>
+          </aside>
+
+          <section class="tasks-main">
+            <div class="project-topbar">
+              <div class="project-title">
+                <span>Проект “Маркетинг”</span>
+                <svg viewBox="0 0 24 24" width="17" height="17"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+              </div>
+              <div class="mini-avatars">
+                <span class="mini-avatar">ИГ</span>
+                <span class="mini-avatar dark">АП</span>
+                <span class="mini-avatar">МК</span>
+                <span class="mini-avatar dark">ДС</span>
+                <span class="mini-avatar more">+12</span>
+              </div>
+              <div class="module-search">
+                <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                Поиск
+              </div>
+              <span></span>
+              <button class="button primary">Создать задачу</button>
+            </div>
+
+            <div class="project-tabs">
+              <span class="project-tab">Общие задачи</span>
+              <span class="project-tab active">Выставки</span>
+              <span class="project-tab">Семинары</span>
+              <span class="project-tab">ФОТО/ВИДЕО</span>
+              <span class="project-tab">Архив</span>
+              <span class="project-tab">Архив (2)</span>
+              <span class="project-tab add">+</span>
+            </div>
+
+            <div class="board-surface">
+              <div class="view-toolbar">
+                <span class="view-chip active">
+                  <svg viewBox="0 0 24 24"><path d="M5 5h5v14H5zM14 5h5v14h-5z"/></svg>
+                  Доска
+                </span>
+                <span class="view-chip">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h12M4 17h8"/></svg>
+                  Гант
+                </span>
+                <span class="view-chip">
+                  <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+                  Календарь
+                </span>
+                <span class="filter-chip">
+                  <svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+                  Дедлайн
+                </span>
+                <span class="filter-chip">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+                  Исполнитель
+                </span>
+                <span class="filter-chip">
+                  <svg viewBox="0 0 24 24"><path d="M5 19V5l7 4 7-4v14l-7-4z"/></svg>
+                  Приоритет
+                </span>
+                <span class="filter-chip">
+                  <svg viewBox="0 0 24 24"><path d="M12 3 4 7l8 4 8-4z"/><path d="M4 12l8 4 8-4"/></svg>
+                  Проект
+                </span>
+                <span class="filter-chip">+</span>
+              </div>
+
+              <div class="board-grid">
+                <section class="task-column">
+                  <div class="task-column-head">
+                    <div class="task-column-title"><strong>Единый список задач</strong><span>⋮</span></div>
+                    <div class="add-task">+ Добавить задачу</div>
+                  </div>
+                  <div class="task-column-body">
+                    <article class="task-card board-card dimmed">
+                      <div class="task-title"><strong>Анонс выставка Казань</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">10 Авг</span><span class="card-person">ИГ</span></div>
+                    </article>
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>6. Kazan Oil, Gas & Chemistry</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">3/16</span><span class="meta-pill">18 Авг</span><span class="card-person">АП</span></div>
+                    </article>
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>11. Energy Expo Минск</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">0/16</span><span class="meta-pill">27 Окт</span><span class="card-person">МК</span></div>
+                    </article>
+                    <div class="add-task" style="justify-self:center; color:rgba(255,255,255,.56)">Архив задач (8)</div>
+                  </div>
+                </section>
+
+                <section class="task-column">
+                  <div class="task-column-head">
+                    <div class="task-column-title"><strong>Сегодня</strong><span>⋮</span></div>
+                    <div class="add-task">+ Добавить задачу</div>
+                  </div>
+                  <div class="task-column-body"></div>
+                </section>
+
+                <section class="task-column">
+                  <div class="task-column-head">
+                    <div class="task-column-title"><strong>Готово</strong><span>⋮</span></div>
+                    <div class="add-task">+ Добавить задачу</div>
+                  </div>
+                  <div class="task-column-body">
+                    <article class="task-card board-card dimmed">
+                      <div class="task-title"><strong>Приглашение для клиентов на выставку в Казань</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">3 Авг</span><span class="card-person">ИК</span></div>
+                    </article>
+                    <article class="task-card board-card dimmed">
+                      <div class="task-title"><strong>Визуал для стен на Казань</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="card-person">ДС</span></div>
+                    </article>
+                    <article class="task-card board-card dimmed">
+                      <div class="task-title"><strong>Поправить анкету после семинара</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">4 комм.</span><span class="card-person">ИГ</span></div>
+                    </article>
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>Контакты с выставок, оцифрованные визитки</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">файл</span><span class="card-person">АП</span></div>
+                    </article>
+                    <article class="task-card board-card overdue">
+                      <div class="task-title"><strong>Опросный лист: дизайн и Яндекс опрос</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">27 Фев</span><span class="meta-pill high">Высокий</span><span class="card-person">ИК</span></div>
+                    </article>
+                  </div>
+                </section>
+
+                <section class="task-column">
+                  <div class="task-column-head">
+                    <div class="task-column-title"><strong>Отложено</strong><span>⋮</span></div>
+                    <div class="add-task">+ Добавить задачу</div>
+                  </div>
+                  <div class="task-column-body"></div>
+                </section>
+
+                <aside class="side-actions">
+                  <button class="side-action">+ Создать колонку</button>
+                  <button class="side-action">Создать сводку</button>
+                  <button class="side-action">Создать зеркало</button>
+                </aside>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="taskModal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 id="modalTitle">Задача</h2>
+        <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions" id="modalActions">
+        <button class="button" type="button" data-close-modal>Отмена</button>
+        <button class="button primary" type="button" data-save-modal>Сохранить</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const modal = document.querySelector("#taskModal");
+    const modalTitle = document.querySelector("#modalTitle");
+    const modalBody = document.querySelector("#modalBody");
+    const modalActions = document.querySelector("#modalActions");
+    const toast = document.querySelector("#toast");
+
+    const formTemplates = {
+      project: `
+        <p>Создание проекта в упрощенной agile-логике: проект объединяет участников, доски, спринты и задачи.</p>
+        <div class="form-grid">
+          <label class="field full"><span>Название проекта</span><input value="Новый проект"></label>
+          <label class="field full"><span>Краткое описание</span><textarea>Что нужно сделать и какой результат ожидается.</textarea></label>
+          <label class="field"><span>Ответственный</span><select><option>Ганьба Ирина</option><option>Алексей Волков</option><option>Мария Иванова</option></select></label>
+          <label class="field"><span>Приоритет</span><select><option>Средний</option><option>Высокий</option><option>Низкий</option></select></label>
+          <label class="field"><span>Дата окончания</span><input value="30.09.2026"></label>
+          <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+        </div>
+      `,
+      board: `
+        <p>Доска создается внутри выбранного проекта. В ней можно вести спринт, бэклог или отдельное направление работ.</p>
+        <div class="form-grid">
+          <label class="field full"><span>Название доски</span><input value="Новая доска"></label>
+          <label class="field"><span>Тип</span><select><option>Спринт</option><option>Бэклог</option><option>Канбан</option></select></label>
+          <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+        </div>
+      `,
+      rename: `
+        <p>Переименование меняет только название текущей доски, задачи и статусы сохраняются.</p>
+        <div class="form-grid">
+          <label class="field full"><span>Новое название</span><input value="Спринт 12"></label>
+        </div>
+      `,
+      access: `
+        <p>Настройка доступа применяется к проекту, доске или отдельной задаче.</p>
+        <div class="form-grid">
+          <label class="field"><span>Уровень доступа</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+          <label class="field"><span>Наблюдатели</span><input value="Руководители проекта"></label>
+          <label class="field full"><span>Сотрудники с доступом</span><textarea>Ирина Ганьба, Алексей Попов, Дмитрий Попов</textarea></label>
+        </div>
+      `,
+      gantt: `
+        <p>Режим Ганта можно оставить как дополнительное представление для руководителей: сроки, зависимости и просрочки по проекту.</p>
+        <div class="form-grid">
+          <label class="field"><span>Период</span><select><option>Текущий спринт</option><option>Месяц</option><option>Весь проект</option></select></label>
+          <label class="field"><span>Группировка</span><select><option>По доскам</option><option>По ответственным</option><option>По статусам</option></select></label>
+        </div>
+      `,
+      backlog: `
+        <p>Бэклог нужен как очередь идей и задач, которые еще не взяли в текущий спринт.</p>
+        <div class="compact-list">
+          <div class="scope-row"><span><strong>Фильтр по подразделениям</strong><span>Для следующего спринта</span></span><span class="badge middle">средний</span></div>
+          <div class="scope-row"><span><strong>Экспорт задач в Excel</strong><span>Запрос от руководителей</span></span><span class="badge low">низкий</span></div>
+          <div class="scope-row"><span><strong>Шаблоны повторяющихся задач</strong><span>После запуска MVP</span></span><span class="badge private">идея</span></div>
+        </div>
+      `,
+      archive: `
+        <p>Архивирование скрывает доску из активной работы, но сохраняет историю задач, комментарии и вложения.</p>
+      `
+    };
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function openModal(title, body, saveText = "Сохранить") {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = body;
+      modalActions.querySelector("[data-save-modal]").textContent = saveText;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    document.querySelector(".modal-close").addEventListener("click", closeModal);
+    document.querySelector("[data-close-modal]").addEventListener("click", closeModal);
+    document.querySelector("[data-save-modal]").addEventListener("click", () => {
+      closeModal();
+      showToast("Изменения сохранены в прототипе");
+    });
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.setAttribute("role", "button");
+      tab.tabIndex = 0;
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        if (tab.textContent.trim() === "Спринты") {
+          openModal("Спринты", formTemplates.backlog, "Готово");
+        } else if (tab.textContent.trim() === "Канбан") {
+          showToast("Открыта канбан-доска текущего спринта");
+        } else if (tab.textContent.trim() === "Мои задачи") {
+          openModal("Мои задачи", `
+            <div class="compact-list">
+              <div class="compact-row"><strong>Карточка сотрудника</strong><span>Сегодня · просрочено</span></div>
+              <div class="compact-row"><strong>Согласовать быстрый доступ</strong><span>20.08 · на согласовании</span></div>
+              <div class="compact-row"><strong>Проверить документы</strong><span>22.08 · в работе</span></div>
+            </div>
+          `, "Закрыть");
+        } else if (tab.textContent.trim() === "Архив") {
+          openModal("Архив задач", formTemplates.archive, "Закрыть");
+        }
+      });
+    });
+
+    document.querySelectorAll(".sprint-card, .sprint-metric").forEach((card) => {
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.addEventListener("click", () => openModal("Текущий спринт", `
+        <p>Спринт показывает только работу, которую команда реально взяла в ближайшие две недели.</p>
+        <div class="form-grid">
+          <label class="field"><span>Период</span><input value="18.08-01.09"></label>
+          <label class="field"><span>Прогресс</span><input value="64%"></label>
+          <label class="field full"><span>Фокус</span><textarea>Сотрудники, документы, новости и базовые права доступа.</textarea></label>
+        </div>
+      `, "Закрыть"));
+    });
+
+    document.querySelectorAll(".project-card").forEach((card) => {
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".project-card").forEach((item) => item.classList.remove("active"));
+        card.classList.add("active");
+        const title = card.querySelector("h3").textContent.trim();
+        openModal(title, `
+          <p>${card.querySelector("p").textContent.trim()}</p>
+          <div class="form-grid">
+            <label class="field"><span>Ответственный</span><input value="Ганьба Ирина"></label>
+            <label class="field"><span>Приоритет</span><input value="${card.querySelector(".badge").textContent.trim()}"></label>
+            <label class="field"><span>Активные задачи</span><input value="${card.querySelector(".metric strong").textContent.trim()}"></label>
+            <label class="field"><span>Дата окончания</span><input value="${card.querySelector(".project-bottom span").textContent.trim()}"></label>
+          </div>
+        `, "Открыть проект");
+      });
+    });
+
+    document.querySelectorAll(".board-pill").forEach((pill) => {
+      pill.tabIndex = 0;
+      pill.setAttribute("role", "button");
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".board-pill").forEach((item) => item.classList.remove("active"));
+        pill.classList.add("active");
+        showToast(`Открыта доска: ${pill.textContent.trim()}`);
+      });
+    });
+
+    document.querySelectorAll(".task-card, .scope-row, .compact-row").forEach((card) => {
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.addEventListener("click", () => {
+        const title = card.querySelector("strong")?.textContent.trim() || "Задача";
+        const isOverdue = card.classList.contains("overdue") || card.textContent.includes("просрочено");
+        openModal(title, `
+          <div class="form-grid">
+            <label class="field"><span>Статус</span><select><option>Новые</option><option selected>В работе</option><option>На согласовании</option><option>Готово</option></select></label>
+            <label class="field"><span>Приоритет</span><select><option>Высокий</option><option selected>Средний</option><option>Низкий</option></select></label>
+            <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Мария Иванова</option><option>Алексей Волков</option></select></label>
+            <label class="field"><span>Исполнитель</span><select><option>Дмитрий Попов</option><option>Алексей Попов</option><option>Елена Петрова</option></select></label>
+            <label class="field"><span>Срок</span><input value="${isOverdue ? "просрочено" : "25.08.2026"}"></label>
+            <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+            <label class="field full"><span>Описание</span><textarea>Краткое описание задачи, подзадачи, вложения и комментарии открываются внутри карточки.</textarea></label>
+          </div>
+        `);
+      });
+    });
+
+    document.querySelectorAll(".access-row").forEach((row) => {
+      row.tabIndex = 0;
+      row.setAttribute("role", "button");
+      row.addEventListener("click", () => {
+        document.querySelectorAll(".access-row").forEach((item) => item.classList.remove("active"));
+        row.classList.add("active");
+        showToast(`Доступ: ${row.querySelector("strong").textContent.trim()}`);
+      });
+    });
+
+    document.querySelectorAll(".setting-row").forEach((row) => {
+      row.tabIndex = 0;
+      row.setAttribute("role", "button");
+      row.addEventListener("click", () => {
+        row.querySelector(".switch")?.classList.toggle("active");
+      });
+    });
+
+    document.querySelectorAll(".head-actions .button, .board-actions .button, .panel-head .button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const text = button.textContent.trim();
+        if (text === "Создать проект") openModal("Создать проект", formTemplates.project);
+        if (text === "Создать доску") openModal("Создать доску", formTemplates.board);
+        if (text === "Переименовать") openModal("Переименовать доску", formTemplates.rename);
+        if (text === "Доступ") openModal("Настроить доступ", formTemplates.access);
+        if (text === "Архивировать") openModal("Архивировать доску", formTemplates.archive, "Архивировать");
+        if (text === "Гант") openModal("Диаграмма Ганта", formTemplates.gantt, "Открыть режим");
+        if (text === "Бэклог") openModal("Бэклог проекта", formTemplates.backlog, "Закрыть");
+        if (text === "Все проекты") openModal("Все проекты", `
+          <div class="compact-list">
+            <div class="compact-row"><strong>Запуск обновленного портала</strong><span>24 активные · 3 просрочены</span></div>
+            <div class="compact-row"><strong>Каталог продукции 2.0</strong><span>18 активных · 1 просрочена</span></div>
+            <div class="compact-row"><strong>Сертификаты и документы</strong><span>11 активных · без просрочек</span></div>
+          </div>
+        `, "Закрыть");
+      });
+    });
+
+    document.querySelectorAll(".project-tab").forEach((tab) => {
+      tab.tabIndex = 0;
+      tab.setAttribute("role", "button");
+      tab.addEventListener("click", () => {
+        if (tab.classList.contains("add")) {
+          openModal("Создать доску", formTemplates.board);
+          return;
+        }
+        document.querySelectorAll(".project-tab").forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        showToast(`Открыта доска: ${tab.textContent.trim()}`);
+      });
+    });
+
+    document.querySelectorAll(".view-chip").forEach((chip) => {
+      chip.tabIndex = 0;
+      chip.setAttribute("role", "button");
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".view-chip").forEach((item) => item.classList.remove("active"));
+        chip.classList.add("active");
+        const text = chip.textContent.trim();
+        if (text === "Гант") openModal("Диаграмма Ганта", formTemplates.gantt, "Открыть режим");
+        if (text === "Календарь") openModal("Календарь задач", `
+          <p>Календарный режим показывает сроки задач, дедлайны выставок и контрольные даты проекта.</p>
+          <div class="form-grid">
+            <label class="field"><span>Период</span><select><option>Август 2026</option><option>Сентябрь 2026</option></select></label>
+            <label class="field"><span>Отображать</span><select><option>Все задачи проекта</option><option>Только мои задачи</option></select></label>
+          </div>
+        `, "Закрыть");
+        if (text === "Доска") showToast("Открыта доска задач");
+      });
+    });
+
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      chip.tabIndex = 0;
+      chip.setAttribute("role", "button");
+      chip.addEventListener("click", () => {
+        const label = chip.textContent.trim();
+        openModal(label === "+" ? "Добавить фильтр" : `Фильтр: ${label}`, `
+          <p>Фильтр применяется к текущей доске проекта “Маркетинг”.</p>
+          <div class="form-grid">
+            <label class="field"><span>Условие</span><select><option>${label === "+" ? "Новый фильтр" : label}</option><option>Активные задачи</option><option>Просроченные задачи</option></select></label>
+            <label class="field"><span>Доступ</span><select><option>Только мне</option><option>Всем участникам проекта</option></select></label>
+          </div>
+        `);
+      });
+    });
+
+    document.querySelectorAll(".project-link").forEach((link) => {
+      link.tabIndex = 0;
+      link.setAttribute("role", "button");
+      link.addEventListener("click", () => {
+        document.querySelectorAll(".project-link").forEach((item) => item.classList.remove("active"));
+        link.classList.add("active");
+        showToast(`Открыт проект: ${link.textContent.trim()}`);
+      });
+    });
+
+    document.querySelectorAll(".project-topbar .button, .add-task").forEach((button) => {
+      button.addEventListener("click", () => {
+        openModal("Создать задачу", `
+          <div class="form-grid">
+            <label class="field full"><span>Название</span><input value="Новая задача"></label>
+            <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Алексей Попов</option><option>Мария Иванова</option></select></label>
+            <label class="field"><span>Исполнитель</span><select><option>Алексей Попов</option><option>Дмитрий Попов</option><option>Елена Петрова</option></select></label>
+            <label class="field"><span>Срок</span><input value="25.08.2026"></label>
+            <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+            <label class="field full"><span>Описание</span><textarea>Что нужно сделать, какие материалы приложить и какой результат ожидается.</textarea></label>
+          </div>
+        `);
+      });
+    });
+
+    document.querySelectorAll(".side-action").forEach((button) => {
+      button.addEventListener("click", () => {
+        const text = button.textContent.trim();
+        if (text.includes("колонку")) openModal("Создать колонку", `
+          <div class="form-grid">
+            <label class="field full"><span>Название колонки</span><input value="Новая колонка"></label>
+            <label class="field"><span>Позиция</span><select><option>После “Отложено”</option><option>В начало доски</option></select></label>
+            <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option></select></label>
+          </div>
+        `);
+        if (text.includes("сводку")) openModal("Создать сводку", `
+          <p>Сводка собирает задачи из нескольких досок проекта в одну колонку для руководителя.</p>
+          <div class="form-grid">
+            <label class="field"><span>Источник</span><select><option>Все доски проекта</option><option>Только выставки</option></select></label>
+            <label class="field"><span>Показывать</span><select><option>Просрочки и высокие приоритеты</option><option>Все активные задачи</option></select></label>
+          </div>
+        `);
+        if (text.includes("зеркало")) openModal("Создать зеркало", `
+          <p>Зеркало показывает одну и ту же задачу на нескольких досках без дублирования.</p>
+          <div class="form-grid">
+            <label class="field full"><span>Доска назначения</span><select><option>Общие задачи</option><option>ФОТО/ВИДЕО</option><option>Семинары</option></select></label>
+          </div>
+        `);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModal();
+      if ((event.key === "Enter" || event.key === " ") && document.activeElement?.matches(".tab, .sprint-card, .sprint-metric, .project-card, .board-pill, .task-card, .access-row, .setting-row, .scope-row, .compact-row, .project-tab, .view-chip, .filter-chip, .project-link")) {
+        event.preventDefault();
+        document.activeElement.click();
+      }
+    });
+  </script>
+</body>
+</html>

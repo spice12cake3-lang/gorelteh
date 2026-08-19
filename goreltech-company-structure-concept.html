@@ -1,0 +1,1845 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - структура компании</title>
+  <style>
+    :root {
+      --yellow: #f2cf00;
+      --yellow-soft: #fff4b8;
+      --ink: #24262a;
+      --muted: #727985;
+      --line: #e5e8ed;
+      --page: #f6f7f8;
+      --dark: #2e3035;
+      --green: #197a5f;
+      --blue: #326da8;
+      --radius: 8px;
+      --shadow: 0 16px 36px rgba(31, 34, 38, .07);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      letter-spacing: 0;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: #fff;
+      border-right: 1px solid #202226;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      height: 64px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex: none;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: #fff;
+    }
+
+    .nav {
+      overflow: auto;
+      padding: 12px 10px 16px;
+    }
+
+    .section {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      padding: 0 10px 7px;
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .item {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .item:hover {
+      background: rgba(255,255,255,.07);
+    }
+
+    .item.active {
+      background: var(--yellow);
+      color: #111;
+      font-weight: 560;
+    }
+
+    .item svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.9;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      color: rgba(255,255,255,.34);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .active .chevron {
+      color: rgba(17,17,17,.62);
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 64px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .global-search {
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .top-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: end;
+      min-width: 0;
+      padding-left: 18px;
+    }
+
+    .notification,
+    .logout,
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #535b66;
+      background: #fff;
+      position: relative;
+      flex: none;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: #171717;
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+
+    .notification-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .notification-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .notification-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .notification-menu {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      width: 320px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .notification-wrap:not([open]) .notification-menu {
+      display: none;
+    }
+
+    .notification-wrap[open] .notification {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .notification-head {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .notification-head strong {
+      font-size: 14px;
+    }
+
+    .notification-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .notification-item {
+      min-height: 64px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 8px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .notification-item:last-child {
+      border-bottom: 0;
+    }
+
+    .notification-item:hover {
+      background: #fafbfc;
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: #cfd6df;
+    }
+
+    .notification-item.unread .notification-dot {
+      background: var(--yellow);
+    }
+
+    .notification-item strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .notification-item em {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-style: normal;
+    }
+
+
+    .favorite-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .favorite-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .favorite-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .favorite-wrap:not([open]) .favorite-menu {
+      display: none;
+    }
+
+    .favorite-wrap[open] .favorite-trigger {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .favorite-menu {
+      position: absolute;
+      top: 46px;
+      left: 0;
+      width: 340px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .favorite-contact {
+      min-height: 66px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .favorite-contact:hover {
+      background: #fafbfc;
+    }
+
+    .favorite-contact img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      object-fit: cover;
+    }
+
+    .favorite-contact strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-contact span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-phone {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .favorite-all {
+      min-height: 42px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      background: #fafbfc;
+    }
+
+    .top-spacer {
+      min-width: 0;
+    }
+
+    .top-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #171717;
+      font-size: 12px;
+      font-weight: 850;
+      flex: none;
+    }
+
+    .top-profile-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .top-profile-copy strong {
+      font-size: 13px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .top-profile-copy span {
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .top-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .top-profile-link:hover .top-profile-copy strong {
+      color: var(--blue);
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .page-head {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.12;
+    }
+
+    .lead {
+      margin: 10px 0 0;
+      max-width: 760px;
+      color: #59616d;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .button {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button.primary {
+      background: var(--yellow);
+      border-color: #d9ba00;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .tab.active {
+      color: var(--ink);
+    }
+
+    .tab.active:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      min-height: 96px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+      align-content: center;
+    }
+
+    .stat-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stat-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: var(--yellow-soft);
+      color: #594900;
+    }
+
+    .stat-card strong {
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .phonebook-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 58px;
+      border-bottom: 1px solid var(--line);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .panel-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .toolbar {
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 180px 180px auto auto;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+
+    .field,
+    .select {
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 11px;
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table {
+      width: 100%;
+      min-width: 1120px;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .table th {
+      color: #7a818c;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: left;
+      padding: 11px 12px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    .employee {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 238px;
+    }
+
+    .employee img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      object-fit: cover;
+      flex: none;
+    }
+
+    .employee strong,
+    .row-copy strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .employee span,
+    .row-copy span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .favorite-button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: #707782;
+      display: grid;
+      place-items: center;
+      margin-left: auto;
+      flex: none;
+    }
+
+    .favorite-button.active {
+      background: var(--yellow);
+      border-color: #d9ba00;
+      color: #171717;
+    }
+
+    .favorite-button svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+    }
+
+    .phone-cell {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .table td:nth-child(5) {
+      white-space: nowrap;
+    }
+
+    .status {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #eaf7f1;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status.away {
+      background: #fff3dc;
+      color: #9a6500;
+    }
+
+    .status.sick {
+      background: #fdecec;
+      color: #b1443c;
+    }
+
+    .status.vacation {
+      background: #eaf2ff;
+      color: #326da8;
+    }
+
+    .status.trip {
+      background: #f0ecff;
+      color: #6d55b8;
+    }
+
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 7px;
+      border: 1px solid #ead778;
+      background: #fffbea;
+      color: #6d5a00;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .rating-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .rate-button {
+      height: 28px;
+      padding: 0 8px;
+      border: 1px solid #ead778;
+      border-radius: 7px;
+      background: #fffbea;
+      color: #6d5a00;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .rating-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .selected-employee {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+    }
+
+    .selected-employee img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+
+    .score-picker {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .score-option {
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: #4f5661;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .score-option.active {
+      background: var(--yellow);
+      border-color: #d9ba00;
+      color: #171717;
+    }
+
+    .rating-summary {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      padding: 13px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .rating-value {
+      width: 66px;
+      height: 54px;
+      border-radius: var(--radius);
+      background: var(--yellow);
+      color: #171717;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .rating-meta {
+      display: grid;
+      gap: 3px;
+    }
+
+    .rating-meta strong {
+      font-size: 13px;
+    }
+
+    .rating-meta span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .rating-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .criteria {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .criterion {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #4f5661;
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .criterion.active {
+      background: var(--yellow-soft);
+      border-color: #ead778;
+      color: #6d5a00;
+    }
+
+    .comment-box {
+      min-height: 82px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      padding: 11px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .table-foot {
+      min-height: 54px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #616976;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .page.active {
+      border-color: #d9ba00;
+      background: var(--yellow);
+      color: #171717;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .filter-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .filter-group label {
+      font-size: 12px;
+      font-weight: 750;
+      color: #4f5661;
+    }
+
+    .filter-card .button {
+      justify-content: center;
+      width: 100%;
+    }
+
+    .quick-result {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+    }
+
+    .quick-result img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+
+    .quick-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 4px;
+    }
+
+    .mini-button {
+      height: 28px;
+      padding: 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #424850;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .org-tree {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tree-row {
+      min-height: 34px;
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      color: #3f454d;
+      font-size: 13px;
+    }
+
+    .tree-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .birthday-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .birthday-row:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .birthday-row img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+
+
+    .structure-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .structure-toolbar {
+      min-height: 64px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .structure-tools,
+    .zoom-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .zoom-control {
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .zoom-button {
+      width: 38px;
+      height: 36px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: #fff;
+      color: #4f5661;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .zoom-button:last-child {
+      border-right: 0;
+      border-left: 1px solid var(--line);
+    }
+
+    .zoom-value {
+      width: 64px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      color: #4f5661;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .structure-viewport {
+      height: calc(100vh - 250px);
+      min-height: 620px;
+      overflow: auto;
+      background:
+        linear-gradient(#f1f3f5 1px, transparent 1px),
+        linear-gradient(90deg, #f1f3f5 1px, transparent 1px),
+        #fbfcfd;
+      background-size: 44px 44px;
+      position: relative;
+    }
+
+    .fullscreen-exit {
+      display: none;
+    }
+
+    body.structure-fullscreen {
+      overflow: hidden;
+    }
+
+    .structure-panel.is-fullscreen {
+      position: fixed;
+      inset: 16px;
+      z-index: 80;
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      box-shadow: 0 24px 70px rgba(0,0,0,.24);
+    }
+
+    .structure-panel.is-fullscreen .structure-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .structure-panel.is-fullscreen .structure-viewport {
+      height: auto;
+      min-height: 0;
+    }
+
+    .structure-panel.is-fullscreen .fullscreen-exit {
+      display: inline-flex;
+    }
+
+    .structure-panel.is-fullscreen .fullscreen-open {
+      display: none;
+    }
+
+    .structure-canvas {
+      width: 1860px;
+      height: 1040px;
+      position: relative;
+      transform-origin: 0 0;
+      transition: transform .18s ease;
+    }
+
+    .structure-lines {
+      position: absolute;
+      inset: 0;
+      width: 1860px;
+      height: 1040px;
+      pointer-events: none;
+    }
+
+    .structure-lines path {
+      fill: none;
+      stroke: #aeb5bf;
+      stroke-width: 2;
+    }
+
+    .structure-lines .line-muted {
+      stroke-dasharray: 7 7;
+      stroke: #c5cbd3;
+    }
+
+    .level-label {
+      position: absolute;
+      left: 24px;
+      width: 96px;
+      min-height: 110px;
+      border: 1px dashed #c6ccd4;
+      border-radius: 8px;
+      background: rgba(255,255,255,.86);
+      color: #6a717c;
+      display: grid;
+      place-items: center;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .org-node {
+      position: absolute;
+      width: 220px;
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(31, 34, 38, .08);
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .org-node.large {
+      width: 290px;
+      min-height: 112px;
+      padding: 16px;
+      border-color: #c9ced6;
+      box-shadow: 0 16px 36px rgba(31, 34, 38, .12);
+    }
+
+    .org-node.compact {
+      width: 184px;
+      min-height: 72px;
+      padding: 12px;
+    }
+
+    .org-node.vertical {
+      width: 76px;
+      height: 320px;
+      padding: 12px 8px;
+      place-items: center;
+      text-align: center;
+    }
+
+    .org-node.vertical strong {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      line-height: 1.2;
+      white-space: normal;
+    }
+
+    .node-kicker {
+      color: #e77817;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .org-node strong {
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .org-node span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .org-node-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .collapse-node {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: #626a75;
+      display: grid;
+      place-items: center;
+      flex: none;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .node-chip {
+      min-height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #fff4b8;
+      color: #6d5a00;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      justify-self: start;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .node-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .structure-canvas.collapsed-all [data-level="3"],
+    .structure-canvas.collapsed-all [data-level="4"],
+    .structure-canvas.collapsed-all .line-level-3,
+    .structure-canvas.collapsed-all .line-level-4,
+    .structure-canvas.is-collapsed-production [data-branch="production-child"],
+    .structure-canvas.is-collapsed-production .line-production,
+    .structure-canvas.is-collapsed-commerce [data-branch="commerce-child"],
+    .structure-canvas.is-collapsed-commerce .line-commerce,
+    .structure-canvas.is-collapsed-it [data-branch="it-child"],
+    .structure-canvas.is-collapsed-it .line-it {
+      display: none;
+    }
+
+    .structure-side-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .structure-metric {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .structure-metric:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .structure-metric .stat-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .structure-metric strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .structure-metric span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .change-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .change-item {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .change-item strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .change-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .change-date {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1280px) {
+      .phonebook-grid,
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .portal {
+        display: block;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .topbar {
+        position: static;
+        grid-template-columns: 1fr auto;
+        padding: 12px 16px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .stats,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .top-profile-copy,
+      .logout {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Боковая панель портала">
+      <div class="brand">
+        <img class="brand-logo" src="goreltech-logo.png" alt="">
+        <strong>Портал ГОРЭЛТЕХ</strong>
+      </div>
+
+      <nav class="nav">
+        <div class="section">
+          <div class="section-title">Основное</div>
+          <a class="item" href="goreltech-sidebar-navigation-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H5.5v-6.5H4z"/></svg>
+            <span class="item-name">Главная</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-news-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 6h11a3 3 0 0 1 3 3v9H8a3 3 0 0 1-3-3z"/><path d="M8 10h7M8 14h5"/></svg>
+            <span class="item-name">Новости</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+            <span class="item-name">Календарь событий</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-tasks-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 10 2 2 4-5"/><path d="M8 16h8"/></svg>
+            <span class="item-name">Задачи</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Справочники</div>
+          <a class="item" href="goreltech-phonebook-directory-concept.html">
+            <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M16 11h5M16 6h5M16 16h5"/></svg>
+            <span class="item-name">Сотрудники</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item active" href="goreltech-company-structure-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 4v5"/><path d="M6 13V9h12v4"/><rect x="4" y="13" width="4" height="5" rx="1"/><rect x="10" y="13" width="4" height="5" rx="1"/><rect x="16" y="13" width="4" height="5" rx="1"/></svg>
+            <span class="item-name">Структура компании</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-documents-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>
+            <span class="item-name">Документы</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-useful-info-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.6 5.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+            <span class="item-name">Полезная информация</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Продукция и продажи</div>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7l3-4h10l3 4M8 11h8"/></svg>
+            <span class="item-name">Каталог продукции</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-certificates-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="item-name">Сертификаты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-competitor-prices-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 19V5M17 19V5"/><path d="M5 8h10a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h10"/></svg>
+            <span class="item-name">Цены конкурентов</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 14h10M9 11h6M11 8h2"/><path d="M4 20 12 4l8 16"/></svg>
+            <span class="item-name">Архив оборудования</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-photobank-concept.html">
+            <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="12.5" r="3"/></svg>
+            <span class="item-name">Фотобанк</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Обращения</div>
+          <a class="item" href="goreltech-tickets-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m17 7 3 3-6 6-3 1 1-3z"/></svg>
+            <span class="item-name">Тикеты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-rationalization-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 11V7a4 4 0 0 1 8 0v4"/><path d="M5 11h14l-1 9H6z"/><path d="M9 15h6"/></svg>
+            <span class="item-name">Рацпредложения</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="global-search">
+          <svg viewBox="0 0 24 24" width="17" height="17"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Поиск сотрудника
+        </div>
+        <details class="favorite-wrap">
+          <summary class="notification favorite-trigger" aria-label="Избранные контакты">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>
+            <span class="notification-badge">3</span>
+          </summary>
+          <div class="favorite-menu">
+            <div class="notification-head">
+              <strong>Избранные контакты</strong>
+              <span>3 контакта</span>
+            </div>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-noskov">
+              <img src="birthday-denis.svg" alt="">
+              <span><strong>Носков Денис Сергеевич</strong><span>Производство</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-ganba">
+              <img src="birthday-alex.svg" alt="">
+              <span><strong>Ганьба Ирина Олеговна</strong><span>Маркетинг</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-popov">
+              <img src="birthday-ivan.svg" alt="">
+              <span><strong>Попов Дмитрий Сергеевич</strong><span>IT-отдел</span></span>
+              <span class="favorite-phone">1308</span>
+            </a>
+            <a class="favorite-all" href="goreltech-phonebook-directory-concept.html">Открыть сотрудников <span>›</span></a>
+          </div>
+        </details>
+        <div class="top-spacer"></div>
+        <div class="top-profile">
+          <details class="notification-wrap">
+            <summary class="notification" aria-label="Уведомления">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+              <span class="notification-badge">1</span>
+            </summary>
+            <div class="notification-menu">
+              <div class="notification-head">
+                <strong>Уведомления</strong>
+                <span>1 новое</span>
+              </div>
+              <a class="notification-item unread" href="goreltech-news-detail-concept.html">
+                <span class="notification-dot"></span>
+                <span><strong>Новая новость</strong><em>Летний корпоратив: регистрация открыта</em></span>
+              </a>
+            </div>
+          </details>
+          <a class="top-profile-link" href="goreltech-user-profile-concept.html">
+            <span class="top-avatar">ИГ</span>
+            <span class="top-profile-copy">
+              <strong>Ирина Олеговна</strong>
+              <span>Отдел маркетинга</span>
+            </span>
+          </a>
+          <span class="logout" aria-label="Выйти">
+            <svg viewBox="0 0 24 24" width="17" height="17"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+          </span>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="page-head">
+          <h1>Структура компании</h1>
+        </div>
+
+        <div class="structure-shell">
+          <section class="panel structure-panel" data-structure-panel>
+            <div class="structure-toolbar">
+              <div class="structure-tools">
+                <div class="select">Вся компания</div>
+                <button class="button" type="button" data-expand-all>Развернуть все</button>
+                <button class="button" type="button" data-collapse-all>Свернуть уровни 3-4</button>
+              </div>
+              <div class="structure-tools">
+                <div class="zoom-control" aria-label="Масштаб схемы">
+                  <button class="zoom-button" type="button" data-zoom-out>−</button>
+                  <span class="zoom-value" data-zoom-value>100%</span>
+                  <button class="zoom-button" type="button" data-zoom-in>+</button>
+                </div>
+                <button class="icon-button" type="button" data-reset-zoom aria-label="Сбросить масштаб">
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="M4 4l6 6M20 20l-6-6"/></svg>
+                </button>
+                <button class="icon-button fullscreen-open" type="button" data-open-fullscreen aria-label="Открыть схему во весь экран">
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 3H3v5"/><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M16 21h5v-5"/><path d="M3 3l7 7"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/><path d="M21 21l-7-7"/></svg>
+                </button>
+                <button class="button fullscreen-exit" type="button" data-close-fullscreen>
+                  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  Закрыть
+                </button>
+              </div>
+            </div>
+
+            <div class="structure-viewport">
+              <div class="structure-canvas" data-structure-canvas>
+                <svg class="structure-lines" viewBox="0 0 1860 1040" aria-hidden="true">
+                  <path d="M360 112 H1500" class="line-level-1"/>
+                  <path d="M930 112 V170" class="line-level-1"/>
+                  <path d="M930 282 V336" class="line-level-2"/>
+                  <path d="M250 336 H1570" class="line-level-2"/>
+                  <path d="M250 336 V390" class="line-level-2"/>
+                  <path d="M450 336 V390" class="line-level-2 line-production"/>
+                  <path d="M650 336 V390" class="line-level-2 line-commerce"/>
+                  <path d="M850 336 V390" class="line-level-2"/>
+                  <path d="M1050 336 V390" class="line-level-2"/>
+                  <path d="M1250 336 V390" class="line-level-2 line-it"/>
+                  <path d="M1450 336 V390" class="line-level-2"/>
+                  <path d="M1570 336 V390" class="line-level-2"/>
+                  <path d="M450 482 V540 H290 V582" class="line-level-3 line-production"/>
+                  <path d="M450 540 H450 V582" class="line-level-3 line-production"/>
+                  <path d="M450 540 H610 V582" class="line-level-3 line-production"/>
+                  <path d="M650 482 V540 H610 V714" class="line-level-3 line-commerce"/>
+                  <path d="M650 540 H770 V582" class="line-level-3 line-commerce"/>
+                  <path d="M650 540 H930 V582" class="line-level-3 line-commerce"/>
+                  <path d="M850 482 V540 H930 V714" class="line-level-3"/>
+                  <path d="M850 540 H1090 V582" class="line-level-3"/>
+                  <path d="M1250 482 V540 H1210 V582" class="line-level-3 line-it"/>
+                  <path d="M1250 540 H1370 V582" class="line-level-3 line-it"/>
+                  <path d="M1250 540 H1530 V582" class="line-level-3 line-it"/>
+                  <path d="M1450 482 V560 H1690 V582" class="line-level-3"/>
+                  <path d="M610 674 V728 H450 V780" class="line-level-4 line-commerce"/>
+                  <path d="M610 728 H610 V780" class="line-level-4 line-commerce"/>
+                  <path d="M610 728 H770 V780" class="line-level-4 line-commerce"/>
+                  <path d="M930 674 V728 H930 V780" class="line-level-4"/>
+                  <path d="M930 728 H1090 V780" class="line-level-4"/>
+                  <path d="M1540 662 L1750 874" class="line-muted line-level-4"/>
+                  <path d="M1620 662 L1750 874" class="line-muted line-level-4"/>
+                  <path d="M1690 662 L1750 874" class="line-muted line-level-4"/>
+                </svg>
+
+                <div class="level-label" style="top: 86px;">Акционеры</div>
+                <div class="level-label" style="top: 220px;">1 уровень управления</div>
+                <div class="level-label" style="top: 380px;">2 уровень управления</div>
+                <div class="level-label" style="top: 570px;">3 уровень управления</div>
+                <div class="level-label" style="top: 780px;">4 уровень управления</div>
+
+                <article class="org-node compact" style="left: 210px; top: 54px;" data-level="0"><strong>Совет директоров</strong><span>ООО «ЗАВОД ГОРЭЛТЕХ»</span><span class="node-kicker">A1</span></article>
+                <article class="org-node compact" style="left: 1390px; top: 54px;" data-level="0"><strong>Общее собрание участников</strong><span>ООО «ЗАВОД ГОРЭЛТЕХ»</span><span class="node-kicker">A2</span></article>
+
+                <article class="org-node large" style="left: 785px; top: 170px;" data-level="1"><div class="org-node-header"><div><strong>ООО «ЗАВОД ГОРЭЛТЕХ»</strong><span>Генеральный директор</span></div><span class="node-chip">Б0.00</span></div></article>
+                <article class="org-node compact" style="left: 1460px; top: 240px;" data-level="1"><strong>Директор по стратегическому развитию</strong><span class="node-kicker">A1</span></article>
+
+                <article class="org-node" style="left: 140px; top: 390px;" data-level="2"><strong>Департамент технических разработок</strong><span>Технический директор</span><span class="node-chip">Б1.01</span></article>
+                <article class="org-node" style="left: 340px; top: 390px;" data-level="2"><div class="org-node-header"><div><strong>Департамент производства</strong><span>Директор по производству</span></div><button class="collapse-node" type="button" data-branch-toggle="production">−</button></div><span class="node-chip">Б1.02</span></article>
+                <article class="org-node" style="left: 540px; top: 390px;" data-level="2"><div class="org-node-header"><div><strong>Департамент маркетинга и продаж</strong><span>Коммерческий директор</span></div><button class="collapse-node" type="button" data-branch-toggle="commerce">−</button></div><span class="node-chip">Б1.03</span></article>
+                <article class="org-node" style="left: 740px; top: 390px;" data-level="2"><strong>Департамент качества</strong><span>Директор по качеству</span><span class="node-chip">Б1.04</span></article>
+                <article class="org-node" style="left: 940px; top: 390px;" data-level="2"><strong>Департамент снабжения и логистики</strong><span>Директор по снабжению и логистике</span><span class="node-chip">Б1.05</span></article>
+                <article class="org-node" style="left: 1140px; top: 390px;" data-level="2"><div class="org-node-header"><div><strong>Департамент информационных технологий</strong><span>Директор по ИТ</span></div><button class="collapse-node" type="button" data-branch-toggle="it">−</button></div><span class="node-chip">Б1.06</span></article>
+                <article class="org-node" style="left: 1340px; top: 390px;" data-level="2"><strong>Департамент экономики и финансов</strong><span>Финансовый директор</span><span class="node-chip">Б1.07</span></article>
+                <article class="org-node compact" style="left: 1520px; top: 390px;" data-level="2"><strong>Бухгалтерия</strong><span class="node-chip">Б1.07.1</span></article>
+
+                <article class="org-node compact" style="left: 210px; top: 582px;" data-level="3" data-branch="production-child"><strong>Технический отдел</strong><span class="node-kicker">Б1.01.1</span></article>
+                <article class="org-node compact" style="left: 370px; top: 582px;" data-level="3" data-branch="production-child"><strong>Отдел развития производства</strong><span class="node-kicker">Б1.02.1</span></article>
+                <article class="org-node compact" style="left: 530px; top: 582px;" data-level="3" data-branch="production-child"><strong>Механосборочный цех</strong><span class="node-kicker">Б1.02.3</span></article>
+
+                <article class="org-node compact" style="left: 690px; top: 582px;" data-level="3" data-branch="commerce-child"><strong>Отдел продаж</strong><span class="node-kicker">Б1.03.1</span></article>
+                <article class="org-node compact" style="left: 850px; top: 582px;" data-level="3" data-branch="commerce-child"><strong>Тендерный отдел</strong><span class="node-kicker">Б1.03.2</span></article>
+                <article class="org-node compact" style="left: 1010px; top: 582px;" data-level="3" data-branch="commerce-child"><strong>Отдел проектных продаж</strong><span class="node-kicker">Б1.03.3</span></article>
+
+                <article class="org-node compact" style="left: 1170px; top: 582px;" data-level="3" data-branch="it-child"><strong>Отдел информационно-коммуникационных систем</strong><span class="node-kicker">Б1.06.1</span></article>
+                <article class="org-node compact" style="left: 1330px; top: 582px;" data-level="3" data-branch="it-child"><strong>Отдел внедрения автоматизированных систем</strong><span class="node-kicker">Б1.06.2</span></article>
+                <article class="org-node compact" style="left: 1490px; top: 582px;" data-level="3" data-branch="it-child"><strong>Отдел информационной безопасности</strong><span class="node-kicker">Б1.06.3</span></article>
+
+                <article class="org-node vertical" style="left: 1660px; top: 568px;" data-level="3"><strong>Юридический отдел</strong><span class="node-kicker">Б1.00.2</span></article>
+                <article class="org-node vertical" style="left: 1740px; top: 568px;" data-level="3"><strong>Отдел кадров</strong><span class="node-kicker">Б1.00.3</span></article>
+
+                <article class="org-node compact" style="left: 370px; top: 780px;" data-level="4" data-branch="commerce-child"><strong>Отдел маркетинга</strong><span class="node-kicker">Б1.03.5</span></article>
+                <article class="org-node compact" style="left: 530px; top: 780px;" data-level="4" data-branch="commerce-child"><strong>Отдел развития бизнеса</strong><span class="node-kicker">Б1.03.6</span></article>
+                <article class="org-node compact" style="left: 690px; top: 780px;" data-level="4" data-branch="commerce-child"><strong>Группа промышленной автоматизации</strong><span class="node-kicker">Б1.03.6.1</span></article>
+                <article class="org-node compact" style="left: 850px; top: 780px;" data-level="4"><strong>Отдел систем менеджмента</strong><span class="node-kicker">Б1.04.1</span></article>
+                <article class="org-node compact" style="left: 1010px; top: 780px;" data-level="4"><strong>Отдел по работе с рекламациями</strong><span class="node-kicker">Б1.04.2</span></article>
+                <article class="org-node compact" style="left: 1330px; top: 780px;" data-level="4"><strong>Участок технического обслуживания</strong><span class="node-kicker">Б1.00.4.1</span></article>
+                <article class="org-node compact" style="left: 1490px; top: 780px;" data-level="4"><strong>Административно-хозяйственный участок</strong><span class="node-kicker">Б1.00.4.2</span></article>
+                <article class="org-node compact" style="left: 1660px; top: 900px; background: #fffbea; border-color: #ead778;" data-level="4"><strong>Продолжение на листе 2.2</strong><span>Филиалы и площадки</span></article>
+              </div>
+            </div>
+          </section>
+
+          <aside class="side-stack">
+            <section class="panel">
+              <div class="panel-head"><h2>Структура в цифрах</h2></div>
+              <div class="panel-body structure-side-card">
+                <div class="structure-metric"><span class="stat-icon"><svg viewBox="0 0 24 24" width="17" height="17"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M17 11h4M17 6h4M17 16h4"/></svg></span><span><strong>1 245</strong><span>сотрудников</span></span></div>
+                <div class="structure-metric"><span class="stat-icon"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 6h7v5H4zM13 4h7v5h-7zM13 15h7v5h-7zM4 15h7v5H4z"/></svg></span><span><strong>84</strong><span>подразделения</span></span></div>
+                <div class="structure-metric"><span class="stat-icon"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 8h2a2 2 0 0 1 2 2v11"/></svg></span><span><strong>12</strong><span>офисов и площадок</span></span></div>
+                <div class="structure-metric"><span class="stat-icon"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 4v5"/><path d="M6 13V9h12v4"/><rect x="4" y="13" width="4" height="5" rx="1"/><rect x="10" y="13" width="4" height="5" rx="1"/><rect x="16" y="13" width="4" height="5" rx="1"/></svg></span><span><strong>4</strong><span>уровня управления</span></span></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head"><h2>Недавние изменения</h2><span>в структуре</span></div>
+              <div class="panel-body change-list">
+                <div class="change-item"><span class="stat-icon"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 5v14M5 12h14"/></svg></span><span><strong>Новый отдел</strong><span>Отдел информационной безопасности</span></span><span class="change-date">08.07</span></div>
+                <div class="change-item"><span class="stat-icon"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span><strong>Обновлена схема</strong><span>Добавлен лист 2.2 для филиалов</span></span><span class="change-date">02.07</span></div>
+                <div class="change-item"><span class="stat-icon"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span><strong>Изменение должности</strong><span>Департамент маркетинга и продаж</span></span><span class="change-date">28.06</span></div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const canvas = document.querySelector('[data-structure-canvas]');
+    const structurePanel = document.querySelector('[data-structure-panel]');
+    const zoomValue = document.querySelector('[data-zoom-value]');
+    let zoom = 1;
+
+    function renderZoom() {
+      canvas.style.transform = `scale(${zoom})`;
+      zoomValue.textContent = `${Math.round(zoom * 100)}%`;
+    }
+
+    document.querySelector('[data-zoom-in]').addEventListener('click', () => {
+      zoom = Math.min(1.4, +(zoom + 0.1).toFixed(2));
+      renderZoom();
+    });
+
+    document.querySelector('[data-zoom-out]').addEventListener('click', () => {
+      zoom = Math.max(0.6, +(zoom - 0.1).toFixed(2));
+      renderZoom();
+    });
+
+    document.querySelector('[data-reset-zoom]').addEventListener('click', () => {
+      zoom = 1;
+      renderZoom();
+    });
+
+    function openStructureFullscreen() {
+      structurePanel.classList.add('is-fullscreen');
+      document.body.classList.add('structure-fullscreen');
+    }
+
+    function closeStructureFullscreen() {
+      structurePanel.classList.remove('is-fullscreen');
+      document.body.classList.remove('structure-fullscreen');
+    }
+
+    document.querySelector('[data-open-fullscreen]').addEventListener('click', openStructureFullscreen);
+    document.querySelector('[data-close-fullscreen]').addEventListener('click', closeStructureFullscreen);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeStructureFullscreen();
+      }
+    });
+
+    document.querySelector('[data-collapse-all]').addEventListener('click', () => {
+      canvas.classList.add('collapsed-all');
+    });
+
+    document.querySelector('[data-expand-all]').addEventListener('click', () => {
+      canvas.classList.remove('collapsed-all', 'is-collapsed-production', 'is-collapsed-commerce', 'is-collapsed-it');
+      document.querySelectorAll('[data-branch-toggle]').forEach((button) => { button.textContent = '−'; });
+    });
+
+    document.querySelectorAll('[data-branch-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const branch = button.dataset.branchToggle;
+        const className = `is-collapsed-${branch}`;
+        const collapsed = canvas.classList.toggle(className);
+        button.textContent = collapsed ? '+' : '−';
+      });
+    });
+  </script>
+
+</body>
+</html>

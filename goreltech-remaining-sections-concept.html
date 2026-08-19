@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - остальные разделы</title>
+  <style>
+    :root {
+      --yellow: #f1ce2f;
+      --yellow-soft: #fff7cf;
+      --yellow-strong: #d7ad00;
+      --ink: #24262a;
+      --muted: #707782;
+      --line: #e6e8ec;
+      --page: #f6f7f8;
+      --card: #ffffff;
+      --dark: #202226;
+      --green: #14845f;
+      --red: #c64a3b;
+      --blue: #326da8;
+      --radius: 8px;
+      --shadow: 0 14px 34px rgba(29, 32, 37, .07);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      letter-spacing: 0;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: #fff;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 8px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #fff;
+      border-radius: 7px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-mark:before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      border: 5px solid var(--yellow);
+      border-radius: 50%;
+    }
+
+    .brand-mark:after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      top: 5px;
+      width: 10px;
+      height: 18px;
+      border-top: 3px solid var(--yellow);
+      border-right: 3px solid var(--yellow);
+    }
+
+    .brand-title {
+      display: grid;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    .brand-title strong {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .brand-title span {
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+    }
+
+    .side-section {
+      display: grid;
+      gap: 6px;
+    }
+
+    .side-label {
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0 10px 4px;
+    }
+
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      padding: 0 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .side-link.active {
+      background: var(--yellow);
+      color: #171717;
+    }
+
+    .side-link svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.9;
+    }
+
+    .side-footer {
+      margin-top: auto;
+      padding: 12px 10px 6px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e6c23b, #f6e9a7);
+      display: grid;
+      place-items: center;
+      color: #222;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.4);
+    }
+
+    .user-meta {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .user-meta strong {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-meta span {
+      color: rgba(255,255,255,.52);
+    }
+
+    .main { min-width: 0; }
+
+    .topbar {
+      min-height: 68px;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(280px, 520px) 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .global-search {
+      height: 44px;
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      color: var(--muted);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+
+    .global-search span {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .nav-tabs a {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+    }
+
+    .nav-tabs a.active {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-button,
+    .mobile-menu {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: var(--dark);
+      position: relative;
+    }
+
+    .mobile-menu { display: none; }
+
+    .dot {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--yellow);
+      border: 2px solid #fff;
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .page-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+    }
+
+    .crumbs {
+      display: flex;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .page-head p {
+      margin: 10px 0 0;
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .primary-button {
+      height: 44px;
+      border: 0;
+      border-radius: var(--radius);
+      background: var(--yellow);
+      color: #1e1e1e;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 850;
+      white-space: nowrap;
+      box-shadow: 0 10px 22px rgba(215, 173, 0, .22);
+    }
+
+    .section-nav {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: sticky;
+      top: 84px;
+      z-index: 4;
+    }
+
+    .section-nav a {
+      min-height: 34px;
+      border-radius: 999px;
+      background: #f2f4f6;
+      color: #5f6670;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .section-nav a:first-child {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .screen {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      scroll-margin-top: 150px;
+    }
+
+    .screen-head {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .screen-title {
+      display: flex;
+      gap: 12px;
+      align-items: start;
+      min-width: 0;
+    }
+
+    .screen-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--yellow);
+      color: var(--dark);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .screen-title h2 {
+      margin: 0 0 5px;
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    .screen-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      max-width: 760px;
+    }
+
+    .screen-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-button {
+      min-height: 38px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .ghost-button.primary {
+      border-color: var(--yellow);
+      background: var(--yellow);
+    }
+
+    .screen-body {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .command {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f9fafb;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 0 14px;
+      color: var(--muted);
+    }
+
+    .command strong {
+      color: var(--ink);
+      font-size: 14px;
+      margin-right: 4px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      min-height: 30px;
+      border-radius: 999px;
+      background: #f2f4f6;
+      color: #5f6670;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .chip.yellow {
+      background: var(--yellow-soft);
+      color: #746000;
+    }
+
+    .chip.green {
+      background: #e9f7f1;
+      color: var(--green);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(29,32,37,.04);
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .card.soft {
+      background: var(--yellow-soft);
+      border-color: #edd867;
+    }
+
+    .metric {
+      min-height: 112px;
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+    }
+
+    .metric svg,
+    .card-icon {
+      width: 24px;
+      height: 24px;
+      color: var(--dark);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .metric span,
+    .card span,
+    .table-row span,
+    .timeline-item span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .card h3 {
+      margin: 8px 0 6px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .table {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-head,
+    .table-row {
+      display: grid;
+      gap: 12px;
+      align-items: center;
+      padding: 0 14px;
+    }
+
+    .table-head {
+      min-height: 42px;
+      background: #f9fafb;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .table-row {
+      min-height: 66px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table-row:last-child { border-bottom: 0; }
+
+    .table-row.active { background: var(--yellow-soft); }
+
+    .table-row strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cols-4 { grid-template-columns: minmax(260px, 1fr) 140px 130px 110px; }
+    .cols-5 { grid-template-columns: minmax(250px, 1fr) 130px 130px 130px 110px; }
+
+    .badge {
+      min-height: 26px;
+      border-radius: 999px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      background: #f2f4f6;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      background: #e9f7f1;
+      color: var(--green);
+    }
+
+    .badge.yellow {
+      background: var(--yellow-soft);
+      color: #746000;
+    }
+
+    .badge.red {
+      background: #fff1ee;
+      color: var(--red);
+    }
+
+    .mini-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .mini-button {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: var(--dark);
+    }
+
+    .kanban {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .lane {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f9fafb;
+      padding: 10px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .lane-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .ticket-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .ticket-card strong {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .time-box {
+      width: 54px;
+      height: 42px;
+      border-radius: var(--radius);
+      background: #f2f4f6;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .timeline-item strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .media-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(29,32,37,.04);
+    }
+
+    .media-thumb {
+      aspect-ratio: 4 / 3;
+      background:
+        linear-gradient(135deg, rgba(241,206,47,.82), rgba(50,109,168,.24)),
+        #f2f4f6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .media-thumb:nth-child(2n) {
+      background:
+        linear-gradient(135deg, rgba(20,132,95,.7), rgba(241,206,47,.18)),
+        #f2f4f6;
+    }
+
+    .media-thumb:after {
+      content: "";
+      position: absolute;
+      width: 70%;
+      height: 18%;
+      border-radius: 999px;
+      background: rgba(255,255,255,.42);
+      left: 15%;
+      bottom: 24%;
+      transform: rotate(-18deg);
+    }
+
+    .media-meta {
+      padding: 11px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .media-meta strong {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .profile-card {
+      min-height: 360px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .profile-cover {
+      height: 96px;
+      background:
+        linear-gradient(135deg, rgba(241,206,47,.88), rgba(241,206,47,.18)),
+        linear-gradient(135deg, #34373d, #17191d);
+    }
+
+    .profile-body {
+      padding: 0 18px 18px;
+    }
+
+    .profile-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--dark);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 900;
+      border: 4px solid #fff;
+      margin-top: -38px;
+      box-shadow: 0 0 0 1px var(--line);
+    }
+
+    .profile-body h3 {
+      margin: 12px 0 5px;
+      font-size: 22px;
+    }
+
+    .detail-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail:last-child { border-bottom: 0; }
+
+    .detail-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius);
+      background: #f2f4f6;
+      display: grid;
+      place-items: center;
+      color: var(--dark);
+    }
+
+    .detail strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .detail span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1280px) {
+      .split,
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-4,
+      .media-grid,
+      .kanban {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .portal {
+        grid-template-columns: 82px minmax(0, 1fr);
+      }
+
+      .brand-title,
+      .side-label,
+      .side-link span,
+      .user-meta {
+        display: none;
+      }
+
+      .brand,
+      .side-link,
+      .side-footer {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .portal {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .topbar {
+        grid-template-columns: auto 1fr auto;
+        padding: 0 16px;
+      }
+
+      .mobile-menu {
+        display: grid;
+      }
+
+      .nav-tabs {
+        display: none;
+      }
+
+      .content { padding: 16px; }
+
+      .page-head,
+      .screen-head,
+      .command {
+        grid-template-columns: 1fr;
+      }
+
+      .screen-actions,
+      .chips {
+        justify-content: flex-start;
+      }
+
+      .grid-3,
+      .grid-4,
+      .media-grid,
+      .kanban {
+        grid-template-columns: 1fr;
+      }
+
+      .table-head { display: none; }
+
+      .table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+
+      .mini-actions { justify-content: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .top-actions { display: none; }
+
+      h1 { font-size: 26px; }
+
+      .section-nav { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Основная навигация">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-title">
+          <strong>Портал ГОРЭЛТЕХ</strong>
+          <span>Рабочее пространство</span>
+        </div>
+      </div>
+
+      <nav class="side-section">
+        <div class="side-label">Навигация</div>
+        <a class="side-link" href="goreltech-dashboard-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M4 13h7V4H4z"/><path d="M13 20h7V4h-7z"/><path d="M4 20h7v-5H4z"/></svg>
+          <span>Главная</span>
+        </a>
+        <a class="side-link" href="goreltech-news-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+          <span>Новости</span>
+        </a>
+        <a class="side-link active" href="goreltech-services-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+          <span>Сервисы</span>
+        </a>
+        <a class="side-link" href="goreltech-phonebook-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span>Сотрудники</span>
+        </a>
+        <a class="side-link" href="goreltech-documents-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M3 5h18"/><path d="M3 12h18"/><path d="M3 19h18"/></svg>
+          <span>Документы</span>
+        </a>
+      </nav>
+
+      <nav class="side-section">
+        <div class="side-label">Остальные</div>
+        <a class="side-link active" href="goreltech-tickets-concept.html">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          <span>Тикеты</span>
+        </a>
+        <a class="side-link" href="#calendar">
+          <svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+          <span>Календарь</span>
+        </a>
+      </nav>
+
+      <div class="side-footer">
+        <div class="avatar">ГИ</div>
+        <div class="user-meta">
+          <strong>Ганьба Ирина</strong>
+          <span>Личный кабинет</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" aria-label="Меню">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+        </button>
+
+        <div class="global-search">
+          <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span>Поиск сотрудников, отделов, документов</span>
+        </div>
+
+        <nav class="nav-tabs" aria-label="Разделы портала">
+          <a href="goreltech-dashboard-concept.html">Кабинет</a>
+          <a href="goreltech-news-concept.html">Новости</a>
+          <a class="active" href="goreltech-services-concept.html">Сервисы</a>
+          <a href="#">Каталог</a>
+        </nav>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Уведомления">
+            <span class="dot"></span>
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <button class="icon-button" aria-label="Профиль">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="page-head">
+          <div>
+            <div class="crumbs"><span>Сервисы</span><span>/</span><span>Остальные разделы</span></div>
+            <h1>Остальные части портала</h1>
+            <p>Комплект концептов для разделов, которые в старом портале жили как пункты меню. Каждый блок показывает будущую структуру экрана: поиск, фильтры, ключевые карточки, списки и рабочие действия.</p>
+          </div>
+          <button class="primary-button">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            Открыть сервис
+          </button>
+        </div>
+
+        <nav class="section-nav" aria-label="Остальные разделы">
+          <a href="#useful">Полезная информация</a>
+          <a href="goreltech-tickets-concept.html">Тикеты</a>
+          <a href="goreltech-rationalization-concept.html">Рацпредложения</a>
+          <a href="#calendar">Календарь</a>
+          <a href="#photobank">Фотобанк</a>
+          <a href="#equipment">Архив оборудования</a>
+          <a href="#prices">Цены конкурентов</a>
+          <a href="#certificates">Сертификаты</a>
+          <a href="#profile">Профиль</a>
+        </nav>
+
+        <section class="screen" id="useful">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+              </div>
+              <div>
+                <h2>Полезная информация</h2>
+                <p>База знаний для сотрудников: инструкции, ответы на частые вопросы, контакты дежурных служб и быстрые памятки.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Добавить материал</button>
+              <button class="ghost-button">Предложить тему</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="command">
+              <span><strong>Поиск по полезной информации</strong> развозка, график, контакт, памятка, медпункт</span>
+              <div class="chips"><span class="chip active">Все</span><span class="chip">Развозки</span><span class="chip">Контакты</span><span class="chip">Памятки</span></div>
+            </div>
+            <div class="grid-4">
+              <article class="card soft metric"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/></svg><div><strong>42</strong><span>актуальные инструкции</span></div></article>
+              <article class="card metric"><svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg><div><strong>8</strong><span>контактов дежурных служб</span></div></article>
+              <article class="card metric"><svg viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><div><strong>14</strong><span>избранных материалов</span></div></article>
+              <article class="card metric"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><div><strong>5</strong><span>новых ответов за неделю</span></div></article>
+            </div>
+            <div class="table">
+              <div class="table-head cols-4"><span>Материал</span><span>Раздел</span><span>Обновлено</span><span>Статус</span></div>
+              <div class="table-row cols-4 active"><div><strong>График корпоративных развозок</strong><span>маршруты, места посадки и изменения расписания</span></div><span>Администрация</span><span>06.07.2026</span><span class="badge yellow">обновлено</span></div>
+              <div class="table-row cols-4"><div><strong>Дежурные контакты служб</strong><span>охрана, медпункт, сервисные ответственные</span></div><span>Администрация</span><span>28.06.2026</span><span class="badge green">актуально</span></div>
+              <div class="table-row cols-4"><div><strong>Памятка по работе с порталом</strong><span>где найти документы, новости и справочник</span></div><span>Коммуникации</span><span>17.06.2026</span><span class="badge green">актуально</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="tickets">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              </div>
+              <div>
+                <h2>Тикеты контента и каталога</h2>
+                <p>Очередь задач по карточкам продукции, контенту, данным каталога и сервисным уточнениям без редизайна IT/АХО-заявок.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Создать контентный тикет</button>
+              <button class="ghost-button">Мои тикеты</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="command">
+              <span><strong>Найти тикет</strong> номер, тема, оборудование, исполнитель, подразделение</span>
+              <div class="chips"><span class="chip active">Мои</span><span class="chip">Все открытые</span><span class="chip yellow">Просроченные</span><span class="chip green">SLA ok</span></div>
+            </div>
+            <div class="kanban">
+              <div class="lane"><div class="lane-title"><span>Новые</span><span>4</span></div><div class="ticket-card"><strong>CAT-1842 Исправить параметры товара</strong><span>сегодня, средний приоритет</span><span class="badge">каталог</span></div><div class="ticket-card"><strong>PRD-506 Добавить фото изделия</strong><span>до 16:00</span><span class="badge">контент</span></div></div>
+              <div class="lane"><div class="lane-title"><span>В работе</span><span>7</span></div><div class="ticket-card"><strong>SVC-339 Уточнить паспорт оборудования</strong><span>исполнитель назначен</span><span class="badge yellow">сервис</span></div><div class="ticket-card"><strong>CAT-1835 Обновить описание серии</strong><span>SLA 3 часа</span><span class="badge green">ok</span></div></div>
+              <div class="lane"><div class="lane-title"><span>На согласовании</span><span>3</span></div><div class="ticket-card"><strong>MT-118 Заявка на материалы</strong><span>ожидает руководителя</span><span class="badge yellow">склад</span></div></div>
+              <div class="lane"><div class="lane-title"><span>Готово</span><span>12</span></div><div class="ticket-card"><strong>DOC-74 Обновить сертификат</strong><span>готово вчера</span><span class="badge green">закрыто</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="ideas">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div>
+                <h2>Рацпредложения</h2>
+                <p>Раздел отмечен в план-графике как требующий отдельного решения, поэтому в текущем редизайне не меняем существующий сценарий.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Открыть текущий модуль</button>
+              <button class="ghost-button">Не изменять</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="grid-3">
+              <article class="card soft"><svg class="card-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><h3>Заморожено</h3><span>Не проектируем новую форму до решения по требованию.</span></article>
+              <article class="card"><svg class="card-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg><h3>Текущий модуль</h3><span>Существующий функционал остается точкой входа без изменений.</span></article>
+              <article class="card"><svg class="card-icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><h3>Решение позже</h3><span>После согласования можно вернуться к UX-сценарию.</span></article>
+            </div>
+            <div class="table">
+              <div class="table-head cols-5"><span>Предложение</span><span>Автор</span><span>Эффект</span><span>Статус</span><span></span></div>
+              <div class="table-row cols-5 active"><div><strong>Существующие предложения</strong><span>отображаются через текущий модуль без редизайна</span></div><span>Текущий модуль</span><span>без изменений</span><span class="badge yellow">не трогать</span><div class="mini-actions"><button class="mini-button"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="calendar">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+              </div>
+              <div>
+                <h2>Календарь событий</h2>
+                <p>Корпоративные даты, мероприятия, обучение и важные события компании без проектирования бронирования переговорных.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Создать событие</button>
+              <button class="ghost-button">Рубрики событий</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="split">
+              <div class="timeline">
+                <div class="timeline-item"><div class="time-box">09:30</div><div><strong>Дайджест отдела продаж</strong><span>корпоративное событие отдела</span></div><span class="badge">продажи</span></div>
+                <div class="timeline-item"><div class="time-box">11:00</div><div><strong>Производственный статус</strong><span>цех 2, склад, снабжение</span></div><span class="badge yellow">важно</span></div>
+                <div class="timeline-item"><div class="time-box">15:00</div><div><strong>Сервисный дайджест</strong><span>открытые выезды и оборудование</span></div><span class="badge">сервис</span></div>
+                <div class="timeline-item"><div class="time-box">18 июл</div><div><strong>Летний корпоратив</strong><span>рафтинг и кемпинг в Лосево</span></div><span class="badge green">регистрация</span></div>
+              </div>
+              <aside class="card soft">
+                <svg class="card-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                <h3>Умные напоминания</h3>
+                <span>Сотрудник видит только релевантные события: свои встречи, обязательные мероприятия, дни рождения команды и корпоративные даты.</span>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="photobank">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 4h16v16H4z"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              </div>
+              <div>
+                <h2>Фотобанк</h2>
+                <p>Медиаархив компании: производство, оборудование, мероприятия, сотрудники, материалы для презентаций и внутренних публикаций.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Загрузить фото</button>
+              <button class="ghost-button">Создать альбом</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="command">
+              <span><strong>Поиск медиа</strong> изделие, участок, дата, автор, мероприятие</span>
+              <div class="chips"><span class="chip active">Все</span><span class="chip">Оборудование</span><span class="chip">Производство</span><span class="chip">События</span></div>
+            </div>
+            <div class="media-grid">
+              <article class="media-card"><div class="media-thumb"></div><div class="media-meta"><strong>Испытания светильников</strong><span>18 фото, производство</span></div></article>
+              <article class="media-card"><div class="media-thumb"></div><div class="media-meta"><strong>Корпоратив 2026</strong><span>42 фото, HR</span></div></article>
+              <article class="media-card"><div class="media-thumb"></div><div class="media-meta"><strong>Шкафы управления</strong><span>12 фото, каталог</span></div></article>
+              <article class="media-card"><div class="media-thumb"></div><div class="media-meta"><strong>Склад комплектующих</strong><span>9 фото, производство</span></div></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="equipment">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 11h18"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div>
+                <h2>Архив оборудования</h2>
+                <p>Реестр изделий и оборудования с паспортами, серийными номерами, фото, историей обслуживания и ответственными.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Добавить единицу</button>
+              <button class="ghost-button">Сканировать код</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="command">
+              <span><strong>Поиск оборудования</strong> серийный номер, изделие, заказ, клиент, участок</span>
+              <div class="chips"><span class="chip active">Все</span><span class="chip">На складе</span><span class="chip">В сервисе</span><span class="chip yellow">Требует проверки</span></div>
+            </div>
+            <div class="table">
+              <div class="table-head cols-5"><span>Оборудование</span><span>Серийный номер</span><span>Статус</span><span>Документы</span><span></span></div>
+              <div class="table-row cols-5 active"><div><strong>Пост управления ПВК-Ех</strong><span>фото, паспорт, история сборки</span></div><span>GT-26-00418</span><span class="badge green">готово</span><span>паспорт, фото</span><div class="mini-actions"><button class="mini-button"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div></div>
+              <div class="table-row cols-5"><div><strong>Светильник взрывозащищенный</strong><span>испытания, сертификаты, фото</span></div><span>GT-26-00401</span><span class="badge yellow">проверка</span><span>сертификат</span><div class="mini-actions"><button class="mini-button"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="prices">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+              </div>
+              <div>
+                <h2>Цены конкурентов</h2>
+                <p>Внутренняя аналитика для отдела продаж: цены, источники, динамика, комментарии и дата последней проверки.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Добавить цену</button>
+              <button class="ghost-button">Экспорт</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="grid-3">
+              <article class="card soft metric"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><div><strong>286</strong><span>позиций в мониторинге</span></div></article>
+              <article class="card metric"><svg viewBox="0 0 24 24"><path d="M18 15 12 9l-6 6"/></svg><div><strong>+4.8%</strong><span>среднее изменение за месяц</span></div></article>
+              <article class="card metric"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><strong>41</strong><span>проверено на этой неделе</span></div></article>
+            </div>
+            <div class="table">
+              <div class="table-head cols-5"><span>Позиция</span><span>Конкурент</span><span>Цена</span><span>Проверено</span><span>Статус</span></div>
+              <div class="table-row cols-5 active"><div><strong>Коробка клеммная взрывозащищенная</strong><span>аналог серии КВ-Ех</span></div><span>Поставщик А</span><span>18 400 ₽</span><span>05.07.2026</span><span class="badge yellow">выше рынка</span></div>
+              <div class="table-row cols-5"><div><strong>Светильник промышленный Ex</strong><span>линейка освещения</span></div><span>Поставщик Б</span><span>12 900 ₽</span><span>01.07.2026</span><span class="badge green">актуально</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="certificates">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <div>
+                <h2>Сертификаты</h2>
+                <p>Реестр сертификатов, деклараций, сроков действия и связанных документов по продукции и направлениям.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Добавить сертификат</button>
+              <button class="ghost-button">Контроль сроков</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="table">
+              <div class="table-head cols-5"><span>Документ</span><span>Продукция</span><span>Действует до</span><span>Ответственный</span><span>Статус</span></div>
+              <div class="table-row cols-5 active"><div><strong>Сертификат соответствия ЕАЭС</strong><span>взрывозащищенное оборудование</span></div><span>основная линейка</span><span>12.09.2027</span><span>Качество</span><span class="badge green">актуально</span></div>
+              <div class="table-row cols-5"><div><strong>Декларация ТР ТС</strong><span>шкафы управления и автоматики</span></div><span>ШУА</span><span>01.12.2026</span><span>Качество</span><span class="badge yellow">контроль</span></div>
+              <div class="table-row cols-5"><div><strong>Протокол испытаний</strong><span>светотехническое оборудование</span></div><span>освещение</span><span>архив</span><span>Лаборатория</span><span class="badge">архив</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="profile">
+          <div class="screen-head">
+            <div class="screen-title">
+              <div class="screen-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div>
+                <h2>О пользователе</h2>
+                <p>Личный профиль сотрудника: контакты, должность, подразделение, доступы, настройки портала и быстрые действия.</p>
+              </div>
+            </div>
+            <div class="screen-actions">
+              <button class="ghost-button primary">Редактировать профиль</button>
+              <button class="ghost-button">Настройки</button>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="profile-layout">
+              <aside class="profile-card">
+                <div class="profile-cover"></div>
+                <div class="profile-body">
+                  <div class="profile-avatar">ГИ</div>
+                  <h3>Ганьба Ирина Олеговна</h3>
+                  <span>HR и внутренние коммуникации, административный корпус</span>
+                </div>
+              </aside>
+              <div class="grid-3">
+                <article class="card"><div class="detail-list"><div class="detail"><div class="detail-icon"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2"/></svg></div><div><strong>1300</strong><span>внутренний номер</span></div></div><div class="detail"><div class="detail-icon"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></div><div><strong>i.ganba@exd.ru</strong><span>корпоративная почта</span></div></div></div></article>
+                <article class="card soft"><svg class="card-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><h3>Доступы</h3><span>Документы, новости, HR-сервисы, телефонный справочник.</span></article>
+                <article class="card"><svg class="card-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg><h3>Активность</h3><span>2 сохраненных документа, 6 избранных контактов, последние просмотры.</span></article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

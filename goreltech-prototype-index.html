@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - прототипы</title>
+  <style>
+    :root {
+      --yellow: #f2cf00;
+      --ink: #24262a;
+      --muted: #727985;
+      --line: #e5e8ed;
+      --page: #f6f7f8;
+      --dark: #2e3035;
+      --radius: 8px;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 42px;
+    }
+
+    .hero {
+      max-width: 1180px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--dark);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.12;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .open-main {
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: var(--radius);
+      background: var(--yellow);
+      color: #151515;
+      border: 1px solid #d7b900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .section {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .section h2 {
+      margin: 0;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 16px;
+    }
+
+    .links {
+      display: grid;
+    }
+
+    .links a {
+      min-height: 44px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .links a:hover {
+      background: #fffbea;
+    }
+
+    .links a:last-child {
+      border-bottom: 0;
+    }
+
+    .links span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="brand">
+        <img src="goreltech-logo.png" alt="">
+        <div>
+          <h1>Прототип портала ГОРЭЛТЕХ</h1>
+          <p>Все актуальные HTML-экраны для просмотра и выгрузки.</p>
+        </div>
+      </div>
+      <a class="open-main" href="goreltech-sidebar-navigation-concept.html">Открыть главную</a>
+    </header>
+
+    <div class="grid">
+      <section class="section">
+        <h2>Основное</h2>
+        <div class="links">
+          <a href="goreltech-sidebar-navigation-concept.html">Главная <span>dashboard</span></a>
+          <a href="goreltech-dashboard-concept.html">Первый концепт главной <span>archive</span></a>
+          <a href="goreltech-services-concept.html">Сервисы <span>services</span></a>
+          <a href="goreltech-tasks-concept.html">Задачи <span>agile / kanban</span></a>
+          <a href="tasks.html">Задачи - короткая ссылка <span>tasks.html</span></a>
+          <a href="goreltech-remaining-sections-concept.html">Остальные разделы <span>overview</span></a>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Сотрудники</h2>
+        <div class="links">
+          <a href="goreltech-phonebook-directory-concept.html">Сотрудники <span>directory</span></a>
+          <a href="goreltech-phonebook-concept.html">Телефонный справочник <span>old flow</span></a>
+          <a href="goreltech-company-structure-concept.html">Структура компании <span>tree</span></a>
+          <a href="goreltech-staff-changes-concept.html">Кадровые изменения <span>HR</span></a>
+          <a href="goreltech-talent-pool-application-concept.html">Заявка в кадровый резерв <span>form</span></a>
+          <a href="goreltech-user-profile-concept.html">Личный кабинет <span>profile</span></a>
+          <a href="goreltech-password-change-concept.html">Изменение пароля <span>profile</span></a>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Новости и информация</h2>
+        <div class="links">
+          <a href="goreltech-news-concept.html">Новости <span>feed</span></a>
+          <a href="goreltech-news-detail-concept.html">Открытая новость <span>detail</span></a>
+          <a href="goreltech-news-editor-concept.html">Редактор новости <span>editor</span></a>
+          <a href="goreltech-useful-info-concept.html">Полезная информация <span>base</span></a>
+          <a href="goreltech-useful-info-editor-concept.html">Добавить полезную информацию <span>editor</span></a>
+          <a href="goreltech-useful-info-shuttle-concept.html">Материал полезной информации <span>detail</span></a>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Документы</h2>
+        <div class="links">
+          <a href="goreltech-documents-concept.html">Документы <span>list</span></a>
+          <a href="goreltech-documents-folder-zavod-concept.html">Папка документов <span>folder</span></a>
+          <a href="goreltech-documents-upload-concept.html">Загрузка документов <span>optional</span></a>
+          <a href="goreltech-certificates-concept.html">Сертификаты <span>table</span></a>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Продажи и продукция</h2>
+        <div class="links">
+          <a href="goreltech-competitor-prices-concept.html">Цены конкурентов <span>table</span></a>
+          <a href="goreltech-competitor-price-editor-concept.html">Редактор цены конкурента <span>editor</span></a>
+          <a href="goreltech-photobank-concept.html">Фотобанк <span>albums</span></a>
+          <a href="goreltech-photobank-album-concept.html">Альбом фотобанка <span>gallery</span></a>
+          <a href="goreltech-photobank-upload-concept.html">Загрузка фото <span>upload</span></a>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Обращения</h2>
+        <div class="links">
+          <a href="goreltech-tickets-concept.html">Тикеты <span>statuses</span></a>
+          <a href="goreltech-tickets-admin-concept.html">Администрирование тикетов <span>admin</span></a>
+          <a href="goreltech-rationalization-concept.html">Рацпредложения <span>form</span></a>
+          <a href="goreltech-rationalization-admin-concept.html">Администрирование рацпредложений <span>admin</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

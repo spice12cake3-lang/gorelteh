@@ -1,0 +1,2272 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - фотобанк: оборудование</title>
+  <style>
+    :root {
+      --yellow: #f2cf00;
+      --yellow-soft: #fff4b8;
+      --ink: #24262a;
+      --muted: #727985;
+      --line: #e5e8ed;
+      --page: #f6f7f8;
+      --dark: #2e3035;
+      --green: #197a5f;
+      --blue: #326da8;
+      --radius: 8px;
+      --shadow: 0 16px 36px rgba(31, 34, 38, .07);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      letter-spacing: 0;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: #fff;
+      border-right: 1px solid #202226;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      height: 64px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex: none;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: #fff;
+    }
+
+    .nav {
+      overflow: auto;
+      padding: 12px 10px 16px;
+    }
+
+    .section {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      padding: 0 10px 7px;
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .item {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .item:hover {
+      background: rgba(255,255,255,.07);
+    }
+
+    .item.active {
+      background: var(--yellow);
+      color: #111;
+      font-weight: 560;
+    }
+
+    .item svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.9;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      color: rgba(255,255,255,.34);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .active .chevron {
+      color: rgba(17,17,17,.62);
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 64px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .global-search {
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .top-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: end;
+      min-width: 0;
+      padding-left: 18px;
+    }
+
+    .notification,
+    .logout {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #535b66;
+      background: #fff;
+      position: relative;
+      flex: none;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: #171717;
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+
+    .notification-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .notification-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .notification-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .notification-menu {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      width: 320px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .notification-wrap:not([open]) .notification-menu {
+      display: none;
+    }
+
+    .notification-wrap[open] .notification {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .notification-head {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .notification-head strong {
+      font-size: 14px;
+    }
+
+    .notification-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .notification-item {
+      min-height: 64px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 8px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .notification-item:last-child {
+      border-bottom: 0;
+    }
+
+    .notification-item:hover {
+      background: #fafbfc;
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: #cfd6df;
+    }
+
+    .notification-item.unread .notification-dot {
+      background: var(--yellow);
+    }
+
+    .notification-item strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .notification-item em {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-style: normal;
+    }
+
+
+    .favorite-wrap {
+      position: relative;
+      flex: none;
+    }
+
+    .favorite-wrap summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .favorite-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .favorite-wrap:not([open]) .favorite-menu {
+      display: none;
+    }
+
+    .favorite-wrap[open] .favorite-trigger {
+      border-color: rgba(242, 205, 0, 0.85);
+      box-shadow: 0 0 0 4px rgba(242, 205, 0, 0.16);
+    }
+
+    .favorite-menu {
+      position: absolute;
+      top: 46px;
+      left: 0;
+      width: 340px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .favorite-contact {
+      min-height: 66px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .favorite-contact:hover {
+      background: #fafbfc;
+    }
+
+    .favorite-contact img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      object-fit: cover;
+    }
+
+    .favorite-contact strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-contact span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .favorite-phone {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .favorite-all {
+      min-height: 42px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      background: #fafbfc;
+    }
+
+    .top-spacer {
+      min-width: 0;
+    }
+
+    .top-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: #171717;
+      font-size: 12px;
+      font-weight: 850;
+      flex: none;
+    }
+
+    .top-profile-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .top-profile-copy strong {
+      font-size: 13px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .top-profile-copy span {
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .top-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .top-profile-link:hover .top-profile-copy strong {
+      color: var(--blue);
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.12;
+    }
+
+    .button {
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      background: var(--yellow);
+      border-color: #d9ba00;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .tab.active {
+      color: var(--ink);
+    }
+
+    .tab.active:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 58px;
+      border-bottom: 1px solid var(--line);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .toolbar {
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 180px 180px auto;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+
+    .field,
+    .select {
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 11px;
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    .change-list {
+      display: grid;
+    }
+
+    .change-row {
+      min-height: 92px;
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .change-row:last-child {
+      border-bottom: 0;
+    }
+
+    .date-chip {
+      min-height: 54px;
+      border-radius: var(--radius);
+      background: #fafbfc;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: #626a75;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .change-copy {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .change-copy strong {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .change-copy span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .status {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #eaf7f1;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status.blue {
+      background: #eaf2ff;
+      color: var(--blue);
+    }
+
+    .status.yellow {
+      background: var(--yellow-soft);
+      color: #6d5a00;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+      position: sticky;
+      top: 82px;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .reserve-card {
+      border: 1px solid #ead778;
+      border-radius: var(--radius);
+      background: #fffbea;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .reserve-card strong {
+      font-size: 15px;
+    }
+
+    .reserve-card span {
+      color: #665b24;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini-stat {
+      min-height: 72px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      padding: 12px;
+      display: grid;
+      align-content: center;
+      gap: 5px;
+    }
+
+    .mini-stat strong {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .request-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .request-row:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .request-row strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .request-row span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .portal {
+        display: block;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .topbar {
+        position: static;
+        grid-template-columns: 1fr auto;
+        padding: 12px 16px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .toolbar,
+      .change-row,
+      .mini-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .top-profile-copy,
+      .logout {
+        display: none;
+      }
+    }
+
+
+    .info-layout, .useful-editor-layout {
+      grid-template-columns: minmax(0, 1fr) 360px;
+      align-items: start;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .category-card, .info-card, .compact-row, .preview-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .category-card {
+      min-height: 70px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .category-card:hover, .info-card:hover {
+      border-color: rgba(242, 207, 0, .9);
+      box-shadow: 0 12px 28px rgba(31, 34, 38, .07);
+    }
+
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      background: var(--yellow-soft);
+      color: #111;
+    }
+
+    .category-card strong {
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .info-list, .compact-list, .form-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-card {
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 14px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .info-thumb, .preview-image {
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f2cf00, #6f737a);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-thumb { height: 86px; }
+    .preview-image { height: 130px; border-radius: 0; }
+
+    .info-thumb::before, .info-thumb::after, .preview-image::before {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,.46);
+    }
+
+    .info-thumb::before, .preview-image::before {
+      width: 62px;
+      height: 62px;
+      left: 18px;
+      top: 16px;
+    }
+
+    .info-thumb::after {
+      width: 112px;
+      height: 18px;
+      left: 28px;
+      bottom: 18px;
+      transform: rotate(-12deg);
+    }
+
+    .info-thumb.blue { background: linear-gradient(135deg, #326da8, #e9eef5); }
+    .info-thumb.gray { background: linear-gradient(135deg, #3b3e44, #f2cf00); }
+
+    .info-copy { min-width: 0; display: grid; gap: 7px; }
+    .info-copy strong { font-size: 17px; line-height: 1.25; }
+    .info-copy span, .compact-row span, .preview-body span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .meta-pill {
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #f1f3f5;
+      color: #5d6570;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .info-arrow {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: #606873;
+    }
+
+    .compact-row, .editor-note, .preview-body { padding: 14px; display: grid; gap: 6px; }
+    .compact-row strong { font-size: 14px; }
+
+    .editor-note {
+      border-radius: var(--radius);
+      border: 1px solid rgba(242, 207, 0, .55);
+      background: #fff9ce;
+      color: #5b5200;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .photo-drop {
+      min-height: 150px;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+      line-height: 1.45;
+    }
+
+    .photo-drop strong { display: block; margin-bottom: 6px; color: var(--ink); }
+
+    @media (max-width: 1120px) {
+      .info-layout, .useful-editor-layout, .category-grid, .info-card { grid-template-columns: 1fr; }
+      .info-thumb { height: 120px; }
+    }
+
+
+
+
+
+    .document-layout {
+      grid-template-columns: minmax(0, 1fr) 330px;
+      align-items: start;
+    }
+
+    .doc-tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .doc-tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .doc-tab.active {
+      color: var(--ink);
+    }
+
+    .doc-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .doc-category-title {
+      margin: 4px 0 -4px;
+      font-size: 16px;
+    }
+
+    .doc-category-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .doc-category-card {
+      min-height: 132px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+      display: grid;
+      align-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-category-card:hover {
+      border-color: rgba(242, 207, 0, .9);
+    }
+
+    .doc-category-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      background: var(--yellow-soft);
+      color: #111;
+    }
+
+    .doc-category-icon.blue { background: #eaf2ff; color: var(--blue); }
+    .doc-category-icon.red { background: #fff0ef; color: #b63d34; }
+    .doc-category-icon.gray { background: #f1f3f5; color: #4d545d; }
+
+    .doc-category-card strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .doc-category-card span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .doc-toolbar {
+      grid-template-columns: minmax(260px, 1fr) 150px 170px auto;
+    }
+
+    .doc-table {
+      display: grid;
+    }
+
+    .doc-table-head,
+    .doc-row {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 160px 90px 142px 150px 88px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .doc-table-head {
+      min-height: 44px;
+      padding: 0 18px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .doc-row {
+      min-height: 66px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .doc-row:last-child {
+      border-bottom: 0;
+    }
+
+    .doc-name-cell {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .doc-folder-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .doc-folder-link:hover .doc-name strong {
+      color: var(--blue);
+    }
+
+    .doc-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      background: #f2f4f7;
+      color: #555e69;
+    }
+
+    .doc-icon.folder { background: var(--yellow-soft); color: #4d4500; }
+    .doc-icon.pdf { background: #fff0ef; color: #b63d34; }
+    .doc-icon.word { background: #edf5ff; color: var(--blue); }
+    .doc-icon.excel { background: #eaf7f1; color: var(--green); }
+
+    .doc-name {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+
+    .doc-name strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .doc-name span,
+    .doc-cell {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .doc-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .icon-action {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: #57606b;
+    }
+
+    .icon-action.active {
+      background: var(--yellow);
+      border-color: #d8b900;
+      color: #111;
+    }
+
+    .recent-list,
+    .my-docs-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .recent-doc,
+    .my-doc {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .recent-doc strong,
+    .my-doc strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .recent-doc span,
+    .my-doc span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .upload-box {
+      min-height: 156px;
+      border: 1px dashed #cdd3dc;
+      border-radius: var(--radius);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 18px;
+      gap: 10px;
+    }
+
+    .upload-box svg {
+      color: var(--blue);
+      stroke-width: 1.8;
+    }
+
+    .upload-box strong {
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .upload-box .button {
+      color: var(--blue);
+      border-color: rgba(50, 109, 168, .35);
+    }
+
+
+    .prices-layout {
+      grid-template-columns: minmax(0, 1fr) 330px;
+      align-items: start;
+    }
+
+    .price-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .summary-card {
+      min-height: 96px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 8px;
+      align-content: center;
+    }
+
+    .summary-card strong {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .summary-card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .price-tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .price-tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .price-tab.active {
+      color: var(--ink);
+    }
+
+    .price-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .price-toolbar {
+      grid-template-columns: minmax(260px, 1fr) 180px 170px 170px auto;
+    }
+
+    .price-table {
+      display: grid;
+    }
+
+    .price-table-head,
+    .price-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) 104px minmax(150px, 1.1fr) 88px 96px 86px minmax(115px, .9fr) 116px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .price-table-head {
+      min-height: 46px;
+      padding: 0 18px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .price-row {
+      min-height: 74px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .price-row:last-child {
+      border-bottom: 0;
+    }
+
+    .price-row:hover {
+      background: #fafbfc;
+    }
+
+    .price-main {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .price-main strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .price-main span,
+    .price-cell {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .price-money {
+      font-weight: 800;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .price-analog {
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .date-range {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mini-panel-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-panel-row {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .mini-panel-row strong {
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .mini-panel-row span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .editor-layout {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      align-items: start;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      color: #565e69;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .text-input,
+    .textarea-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      outline: 0;
+    }
+
+    .text-input {
+      height: 42px;
+      padding: 0 12px;
+    }
+
+    .textarea-input {
+      min-height: 110px;
+      padding: 12px;
+      resize: vertical;
+    }
+
+    .calc-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafbfc;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .calc-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .calc-row strong {
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .help-note {
+      border: 1px solid rgba(242, 207, 0, .55);
+      border-radius: var(--radius);
+      background: #fff9ce;
+      color: #5b5200;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+
+    .cert-layout {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      align-items: start;
+    }
+
+    .cert-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .cert-card {
+      min-height: 96px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 8px;
+      align-content: center;
+    }
+
+    .cert-card strong {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .cert-card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .cert-toolbar {
+      grid-template-columns: minmax(260px, 1fr) 170px 170px auto;
+    }
+
+    .cert-table {
+      display: grid;
+    }
+
+    .cert-table-head,
+    .cert-row {
+      display: grid;
+      grid-template-columns: 76px minmax(220px, 1.15fr) 108px 108px 118px minmax(260px, 1.25fr) 86px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .cert-table-head {
+      min-height: 46px;
+      padding: 0 18px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .cert-row {
+      min-height: 72px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .cert-row:last-child {
+      border-bottom: 0;
+    }
+
+    .cert-row:hover {
+      background: #fafbfc;
+    }
+
+    .cert-group {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: #fff9ce;
+      color: #4d4500;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .cert-group.eac { background: #f1f3f5; color: #24262a; }
+    .cert-group.sea { background: #eaf2ff; color: var(--blue); }
+    .cert-group.fire { background: #fff0ef; color: #b63d34; }
+
+    .cert-main {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .cert-main strong,
+    .cert-doc strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .cert-main span,
+    .cert-cell,
+    .cert-doc span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .cert-doc {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .cert-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .status.red {
+      background: #fff0ef;
+      color: #b63d34;
+    }
+
+    .status.gray {
+      background: #f1f3f5;
+      color: #555e69;
+    }
+
+    .expiry-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .expiry-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 9px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .expiry-item strong {
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .expiry-item span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .sync-note {
+      border: 1px solid rgba(50, 109, 168, .2);
+      border-radius: var(--radius);
+      background: #f4f8ff;
+      padding: 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .sync-note strong {
+      font-size: 14px;
+    }
+
+    .sync-note span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+  
+    .media-topline {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .media-search {
+      min-height: 46px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      color: var(--muted);
+      box-shadow: 0 10px 24px rgba(31, 34, 38, .04);
+    }
+
+    .media-tabs {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 22px;
+    }
+
+    .media-tab {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 4px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .media-tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--yellow);
+    }
+
+    .media-layout {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .folder-tree {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tree-link,
+    .tree-child {
+      min-height: 38px;
+      border-radius: var(--radius);
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .tree-link:hover,
+    .tree-child:hover {
+      background: #f7f8fa;
+    }
+
+    .tree-link.active,
+    .tree-child.active {
+      background: var(--yellow-soft);
+      color: #161616;
+    }
+
+    .tree-group {
+      display: grid;
+      gap: 2px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tree-children {
+      display: grid;
+      gap: 2px;
+      padding-left: 26px;
+    }
+
+    .tree-child {
+      color: var(--muted);
+      font-weight: 560;
+      min-height: 34px;
+      font-size: 13px;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .album-card,
+    .photo-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(31, 34, 38, .04);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .album-thumb,
+    .photo-thumb {
+      height: 178px;
+      position: relative;
+      background: #eceff3;
+      overflow: hidden;
+    }
+
+    .album-thumb::before,
+    .photo-thumb::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(130deg, rgba(255,255,255,.1), rgba(255,255,255,0) 36%),
+        var(--media-bg, linear-gradient(135deg, #d8dde4, #a7b0bb));
+    }
+
+    .album-card:hover,
+    .photo-card:hover {
+      border-color: rgba(242, 205, 0, .78);
+      box-shadow: 0 14px 30px rgba(31, 34, 38, .08);
+    }
+
+    .album-copy {
+      min-height: 92px;
+      padding: 15px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .album-copy strong {
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .album-copy span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .album-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .mini-badge {
+      min-height: 24px;
+      border-radius: 999px;
+      background: #f1f3f6;
+      color: #5e6672;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-badge.yellow {
+      background: var(--yellow-soft);
+      color: #6e5a00;
+    }
+
+    .section-note {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .photo-card {
+      position: relative;
+    }
+
+    .photo-thumb {
+      height: 160px;
+    }
+
+    .photo-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 7px;
+    }
+
+    .photo-action {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,.76);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.9);
+      color: #444b55;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      box-shadow: 0 8px 16px rgba(31,34,38,.12);
+    }
+
+    .photo-action.active {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      color: #111;
+    }
+
+    .photo-copy {
+      padding: 12px 13px 14px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .photo-copy strong {
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .photo-copy span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .path-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .path-row a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .upload-card {
+      border: 1px dashed #cdd3dc;
+      background: #fbfcfd;
+      border-radius: var(--radius);
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 28px;
+    }
+
+    .upload-box {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      color: var(--muted);
+    }
+
+    .upload-box svg {
+      color: var(--yellow);
+      width: 56px;
+      height: 56px;
+      stroke-width: 1.7;
+    }
+
+    .upload-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-row label {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .input,
+    .textarea,
+    .select-field {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 11px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    .dropzone {
+      min-height: 260px;
+      border: 1px dashed #cdd3dc;
+      border-radius: var(--radius);
+      background: #fbfcfd;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 28px;
+      color: var(--muted);
+    }
+
+    .access-note {
+      display: grid;
+      gap: 10px;
+    }
+
+    .access-note .status {
+      justify-self: start;
+    }
+
+    .thumb-marketing { --media-bg: linear-gradient(135deg, #f2cf00 0%, #a2901d 45%, #3b3d42 100%); }
+    .thumb-products { --media-bg: linear-gradient(135deg, #d8dde4 0%, #8a939e 38%, #303238 100%); }
+    .thumb-lab { --media-bg: linear-gradient(135deg, #cdd7df 0%, #edf2f6 48%, #8c9aa7 100%); }
+    .thumb-fav { --media-bg: linear-gradient(135deg, #fff4b8 0%, #f2cf00 42%, #f8f9fb 100%); }
+    .thumb-one { --media-bg: linear-gradient(135deg, #d9dde2 0%, #f2cf00 8%, #737b86 36%, #22252a 100%); }
+    .thumb-two { --media-bg: linear-gradient(135deg, #9ba5ae 0%, #e9ecef 38%, #5c6570 70%, #f2cf00 100%); }
+    .thumb-three { --media-bg: linear-gradient(135deg, #eef1f3 0%, #aeb7c0 46%, #2f343b 100%); }
+    .thumb-four { --media-bg: linear-gradient(135deg, #1f2328 0%, #79828d 48%, #f2cf00 52%, #e7ebef 100%); }
+    .thumb-five { --media-bg: linear-gradient(135deg, #e7ebef 0%, #b1bac4 28%, #3f454d 72%, #f2cf00 100%); }
+    .thumb-six { --media-bg: linear-gradient(135deg, #f7f8fa 0%, #717a85 38%, #23262b 100%); }
+
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Боковая панель портала">
+      <div class="brand">
+        <img class="brand-logo" src="goreltech-logo.png" alt="">
+        <strong>Портал ГОРЭЛТЕХ</strong>
+      </div>
+
+      <nav class="nav">
+        <div class="section">
+          <div class="section-title">Основное</div>
+          <a class="item" href="goreltech-sidebar-navigation-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H5.5v-6.5H4z"/></svg>
+            <span class="item-name">Главная</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-news-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 6h11a3 3 0 0 1 3 3v9H8a3 3 0 0 1-3-3z"/><path d="M8 10h7M8 14h5"/></svg>
+            <span class="item-name">Новости</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+            <span class="item-name">Календарь событий</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-tasks-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 10 2 2 4-5"/><path d="M8 16h8"/></svg>
+            <span class="item-name">Задачи</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Справочники</div>
+          <a class="item" href="goreltech-phonebook-directory-concept.html">
+            <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M16 11h5M16 6h5M16 16h5"/></svg>
+            <span class="item-name">Сотрудники</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-company-structure-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 4v5"/><path d="M6 13V9h12v4"/><rect x="4" y="13" width="4" height="5" rx="1"/><rect x="10" y="13" width="4" height="5" rx="1"/><rect x="16" y="13" width="4" height="5" rx="1"/></svg>
+            <span class="item-name">Структура компании</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-documents-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>
+            <span class="item-name">Документы</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-useful-info-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.6 5.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+            <span class="item-name">Полезная информация</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Продукция и продажи</div>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7l3-4h10l3 4M8 11h8"/></svg>
+            <span class="item-name">Каталог продукции</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-certificates-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="item-name">Сертификаты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-competitor-prices-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 19V5M17 19V5"/><path d="M5 8h10a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h10"/></svg>
+            <span class="item-name">Цены конкурентов</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="#">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 14h10M9 11h6M11 8h2"/><path d="M4 20 12 4l8 16"/></svg>
+            <span class="item-name">Архив оборудования</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item active" href="goreltech-photobank-concept.html">
+            <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="12.5" r="3"/></svg>
+            <span class="item-name">Фотобанк</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Обращения</div>
+          <a class="item" href="goreltech-tickets-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m17 7 3 3-6 6-3 1 1-3z"/></svg>
+            <span class="item-name">Тикеты</span>
+            <span class="chevron">›</span>
+          </a>
+          <a class="item" href="goreltech-rationalization-concept.html">
+            <svg viewBox="0 0 24 24"><path d="M7 11V7a4 4 0 0 1 8 0v4"/><path d="M5 11h14l-1 9H6z"/><path d="M9 15h6"/></svg>
+            <span class="item-name">Рацпредложения</span>
+            <span class="chevron">›</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="global-search">
+          <svg viewBox="0 0 24 24" width="17" height="17"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Поиск сотрудника
+        </div>
+        <details class="favorite-wrap">
+          <summary class="notification favorite-trigger" aria-label="Избранные контакты">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>
+            <span class="notification-badge">3</span>
+          </summary>
+          <div class="favorite-menu">
+            <div class="notification-head">
+              <strong>Избранные контакты</strong>
+              <span>3 контакта</span>
+            </div>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-noskov">
+              <img src="birthday-denis.svg" alt="">
+              <span><strong>Носков Денис Сергеевич</strong><span>Производство</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-ganba">
+              <img src="birthday-alex.svg" alt="">
+              <span><strong>Ганьба Ирина Олеговна</strong><span>Маркетинг</span></span>
+              <span class="favorite-phone">1423</span>
+            </a>
+            <a class="favorite-contact" href="goreltech-phonebook-directory-concept.html#favorite-popov">
+              <img src="birthday-ivan.svg" alt="">
+              <span><strong>Попов Дмитрий Сергеевич</strong><span>IT-отдел</span></span>
+              <span class="favorite-phone">1308</span>
+            </a>
+            <a class="favorite-all" href="goreltech-phonebook-directory-concept.html">Открыть сотрудников <span>›</span></a>
+          </div>
+        </details>
+        <div class="top-spacer"></div>
+        <div class="top-profile">
+          <details class="notification-wrap">
+            <summary class="notification" aria-label="Уведомления">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+              <span class="notification-badge">1</span>
+            </summary>
+            <div class="notification-menu">
+              <div class="notification-head">
+                <strong>Уведомления</strong>
+                <span>1 новое</span>
+              </div>
+              <a class="notification-item unread" href="goreltech-news-detail-concept.html">
+                <span class="notification-dot"></span>
+                <span><strong>Новая новость</strong><em>Летний корпоратив: регистрация открыта</em></span>
+              </a>
+            </div>
+          </details>
+          <a class="top-profile-link" href="goreltech-user-profile-concept.html">
+            <span class="top-avatar">ИГ</span>
+            <span class="top-profile-copy">
+              <strong>Ирина Олеговна</strong>
+              <span>Отдел маркетинга</span>
+            </span>
+          </a>
+          <span class="logout" aria-label="Выйти">
+            <svg viewBox="0 0 24 24" width="17" height="17"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+          </span>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="page-head">
+          <h1>Оборудование</h1>
+          <a class="button primary" href="goreltech-photobank-upload-concept.html"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 20h14"/></svg>Загрузить фото</a>
+        </div>
+
+        <div class="path-row"><a href="goreltech-photobank-concept.html">Фотобанк</a><span>›</span><a href="goreltech-photobank-concept.html">Маркетинг</a><span>›</span><span>Оборудование</span></div>
+
+        <div class="media-topline">
+          <div class="media-search"><svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Поиск внутри альбома</span><button class="button primary">Найти</button></div>
+        </div>
+
+        <nav class="media-tabs" aria-label="Разделы фотобанка">
+          <a class="media-tab active" href="goreltech-photobank-concept.html">Маркетинг</a>
+          <a class="media-tab" href="#">Продукция</a>
+          <a class="media-tab" href="#">Разработки лаборатории</a>
+          <a class="media-tab" href="#">Избранное</a>
+        </nav>
+
+        <div class="media-layout">
+          <aside class="panel">
+            <div class="panel-head"><h2>Структура</h2></div>
+            <div class="folder-tree">
+              <div class="tree-group">
+                <a class="tree-link active" href="goreltech-photobank-concept.html"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 7h7l2 2h9v9H3z"/></svg>Маркетинг</a>
+                <div class="tree-children">
+                  <a class="tree-child" href="#">Интересные решения</a>
+                  <a class="tree-child active" href="goreltech-photobank-album-concept.html">Оборудование</a>
+                  <a class="tree-child" href="#">Оборудование на объектах</a>
+                </div>
+              </div>
+              <div class="tree-group">
+                <a class="tree-link" href="#"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 7h7l2 2h9v9H3z"/></svg>Продукция</a>
+                <div class="tree-children">
+                  <a class="tree-child" href="#">Большое количество</a>
+                  <a class="tree-child" href="#">Монтаж</a>
+                  <a class="tree-child" href="#">Открытые шкафы</a>
+                </div>
+              </div>
+              <a class="tree-link" href="#"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 7h7l2 2h9v9H3z"/></svg>Разработки лаборатории</a>
+              <a class="tree-link" href="#"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>Избранное</a>
+            </div>
+          </aside>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Фотографии</h2>
+              <span class="status blue">50 фото</span>
+            </div>
+            <div class="photo-grid">
+              <article class="photo-card"><div class="photo-thumb thumb-one"></div><div class="photo-actions"><a class="photo-action active" href="#" aria-label="В избранном"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Сборка корпуса КП-01</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-two"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Линия сборки шкафов</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-three"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Открытый шкаф управления</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-four"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Монтаж кнопочного поста</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-five"></div><div class="photo-actions"><a class="photo-action active" href="#" aria-label="В избранном"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Промышленный светильник</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-six"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Проверка маркировки</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-products"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Готовые изделия</strong><span>Маркетинг / Оборудование</span></div></article>
+              <article class="photo-card"><div class="photo-thumb thumb-lab"></div><div class="photo-actions"><a class="photo-action" href="#" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></a><a class="photo-action" href="#" aria-label="Скачать"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a></div><div class="photo-copy"><strong>Испытательный стенд</strong><span>Маркетинг / Оборудование</span></div></article>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

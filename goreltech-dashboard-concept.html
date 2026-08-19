@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портал ГОРЭЛТЕХ - концепт главной</title>
+  <style>
+    :root {
+      --yellow: #f1ce2f;
+      --yellow-soft: #fff7cf;
+      --yellow-strong: #d7ad00;
+      --ink: #24262a;
+      --muted: #707782;
+      --line: #e6e8ec;
+      --page: #f6f7f8;
+      --card: #ffffff;
+      --dark: #34373d;
+      --green: #14845f;
+      --red: #c64a3b;
+      --blue: #326da8;
+      --shadow: 0 16px 40px rgba(29, 32, 37, .08);
+      --radius: 8px;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: #202226;
+      color: #fff;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 8px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #fff;
+      border-radius: 7px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-mark:before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      border: 5px solid var(--yellow);
+      border-radius: 50%;
+      display: block;
+    }
+
+    .brand-mark:after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      top: 5px;
+      width: 10px;
+      height: 18px;
+      border-top: 3px solid var(--yellow);
+      border-right: 3px solid var(--yellow);
+    }
+
+    .brand-title {
+      display: grid;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    .brand-title strong {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .brand-title span {
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+    }
+
+    .side-section {
+      display: grid;
+      gap: 6px;
+    }
+
+    .side-label {
+      color: rgba(255,255,255,.42);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0 10px 4px;
+    }
+
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      padding: 0 10px;
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .side-link.active {
+      color: #171717;
+      background: var(--yellow);
+    }
+
+    .side-link svg {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      stroke-width: 1.9;
+    }
+
+    .side-footer {
+      margin-top: auto;
+      padding: 12px 10px 6px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e6c23b, #f6e9a7);
+      display: grid;
+      place-items: center;
+      color: #222;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.4);
+    }
+
+    .user-meta {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .user-meta strong {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-meta span {
+      color: rgba(255,255,255,.52);
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      min-height: 68px;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(280px, 520px) 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .search {
+      height: 44px;
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      color: var(--muted);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+
+    .search span {
+      font-size: 14px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .nav-tabs a {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+    }
+
+    .nav-tabs a.active {
+      background: #22252a;
+      color: #fff;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: var(--dark);
+      position: relative;
+    }
+
+    .dot {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--yellow);
+      border: 2px solid #fff;
+    }
+
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -120px;
+      width: 260px;
+      height: 260px;
+      background: var(--yellow);
+      transform: rotate(18deg);
+      opacity: .18;
+    }
+
+    .kicker {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.15;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .hero-copy {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 710px;
+    }
+
+    .quick-row {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .quick-action {
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      min-height: 86px;
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+    }
+
+    .quick-action svg {
+      color: var(--dark);
+      width: 22px;
+      height: 22px;
+    }
+
+    .quick-action strong {
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .briefing {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      z-index: 1;
+    }
+
+    .status-card {
+      background: #24262a;
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .status-card .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,.66);
+    }
+
+    .status-card strong {
+      color: #fff;
+      font-size: 22px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 28px;
+      border-radius: 999px;
+      padding: 0 10px;
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chip.yellow {
+      background: var(--yellow);
+      color: #252525;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, .75fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .left-col,
+    .right-col {
+      display: grid;
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(29,32,37,.05);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .card-title svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .muted-link {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .service-grid {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .service {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 13px;
+      min-height: 116px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+      position: relative;
+    }
+
+    .service.featured {
+      background: var(--yellow-soft);
+      border-color: #efd861;
+    }
+
+    .service svg {
+      width: 24px;
+      height: 24px;
+      color: var(--dark);
+    }
+
+    .service strong {
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .service span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .news-list {
+      padding: 6px 18px 18px;
+      display: grid;
+      gap: 0;
+    }
+
+    .news-main {
+      display: grid;
+      grid-template-columns: 168px minmax(0, 1fr);
+      gap: 16px;
+      padding: 14px 0 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .news-image {
+      min-height: 128px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(241,206,47,.95), rgba(241,206,47,.18)),
+        linear-gradient(135deg, #3f4146, #181a1e);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .news-image:before,
+    .news-image:after {
+      content: "";
+      position: absolute;
+      background: rgba(255,255,255,.8);
+      border-radius: 999px;
+    }
+
+    .news-image:before {
+      width: 90px;
+      height: 90px;
+      left: 22px;
+      top: 18px;
+      opacity: .18;
+    }
+
+    .news-image:after {
+      width: 130px;
+      height: 18px;
+      left: 25px;
+      bottom: 28px;
+      transform: rotate(-18deg);
+      opacity: .55;
+    }
+
+    .tag {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      background: #eef2f5;
+      color: #626a75;
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .news-main h2 {
+      margin: 9px 0 8px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .news-main p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .news-row {
+      display: grid;
+      grid-template-columns: 94px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .news-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .date-pill {
+      background: #f4f5f7;
+      border-radius: var(--radius);
+      min-height: 50px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .news-row strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .news-row span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tasks {
+      padding: 12px 18px 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 8px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fff;
+    }
+
+    .task-bar {
+      height: 42px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .task.red .task-bar {
+      background: var(--red);
+    }
+
+    .task.green .task-bar {
+      background: var(--green);
+    }
+
+    .task strong {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .task span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f4f5f7;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .badge.red {
+      background: #fff1ee;
+      color: var(--red);
+    }
+
+    .badge.green {
+      background: #eaf7f1;
+      color: var(--green);
+    }
+
+    .timeline {
+      padding: 10px 18px 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .event-time {
+      min-height: 36px;
+      border-radius: var(--radius);
+      background: #f4f5f7;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .event strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .event span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .people {
+      padding: 8px 18px 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .person {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .person .face {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eceff2;
+      display: grid;
+      place-items: center;
+      color: #222;
+      font-size: 13px;
+      font-weight: 800;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--line);
+    }
+
+    .person strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .person span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .docs {
+      padding: 8px 18px 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .doc {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .doc:last-child {
+      border-bottom: 0;
+    }
+
+    .doc-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius);
+      background: #f4f5f7;
+      display: grid;
+      place-items: center;
+      color: var(--dark);
+    }
+
+    .doc strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 1180px) {
+      .portal {
+        grid-template-columns: 82px minmax(0, 1fr);
+      }
+
+      .brand-title,
+      .side-label,
+      .side-link span,
+      .user-meta {
+        display: none;
+      }
+
+      .brand {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .side-link {
+        justify-content: center;
+      }
+
+      .side-footer {
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .briefing {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .portal {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .topbar {
+        grid-template-columns: auto 1fr auto;
+        padding: 0 16px;
+      }
+
+      .mobile-menu {
+        display: grid;
+      }
+
+      .nav-tabs {
+        display: none;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .topbar {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .top-actions {
+        display: none;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .briefing {
+        grid-template-columns: 1fr;
+      }
+
+      .news-main,
+      .news-row {
+        grid-template-columns: 1fr;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+    <aside class="sidebar" aria-label="Основная навигация">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-title">
+          <strong>Портал ГОРЭЛТЕХ</strong>
+          <span>Рабочее пространство</span>
+        </div>
+      </div>
+
+      <nav class="side-section">
+        <div class="side-label">Навигация</div>
+        <div class="side-link active">
+          <svg viewBox="0 0 24 24"><path d="M4 13h7V4H4z"/><path d="M13 20h7V4h-7z"/><path d="M4 20h7v-5H4z"/></svg>
+          <span>Главная</span>
+        </div>
+        <a class="side-link" href="goreltech-news-concept.html" style="text-decoration: none;">
+          <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+          <span>Новости</span>
+        </a>
+        <a class="side-link" href="goreltech-services-concept.html" style="text-decoration: none;">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+          <span>Сервисы</span>
+        </a>
+        <div class="side-link">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Сотрудники</span>
+        </div>
+        <a class="side-link" href="goreltech-documents-concept.html" style="text-decoration: none;">
+          <svg viewBox="0 0 24 24"><path d="M3 5h18"/><path d="M3 12h18"/><path d="M3 19h18"/></svg>
+          <span>Документы</span>
+        </a>
+      </nav>
+
+      <nav class="side-section">
+        <div class="side-label">Быстрые разделы</div>
+        <div class="side-link">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Бухгалтерия</span>
+        </div>
+        <div class="side-link">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          <span>Тикеты</span>
+        </div>
+        <div class="side-link">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Справочник</span>
+        </div>
+      </nav>
+
+      <a class="side-footer" href="goreltech-user-profile-concept.html" style="text-decoration: none; color: inherit;">
+        <div class="avatar">ГИ</div>
+        <div class="user-meta">
+          <strong>Ганьба Ирина</strong>
+          <span>Личный кабинет</span>
+        </div>
+      </a>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" aria-label="Меню">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+        </button>
+
+        <div class="search">
+          <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span>Поиск сотрудников, отделов, документов</span>
+        </div>
+
+        <nav class="nav-tabs" aria-label="Разделы портала">
+          <a class="active" href="#">Кабинет</a>
+          <a href="goreltech-news-concept.html">Новости</a>
+          <a href="goreltech-services-concept.html">Сервисы</a>
+          <a href="#">Каталог</a>
+        </nav>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Уведомления">
+            <span class="dot"></span>
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <a class="icon-button" aria-label="Профиль" href="goreltech-user-profile-concept.html" style="text-decoration: none; color: inherit;">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <section class="content">
+        <section class="hero">
+          <div>
+            <div class="kicker">Вторник, 7 июля 2026</div>
+            <h1>Портал ГОРЭЛТЕХ: база знаний, справочники и рабочие разделы.</h1>
+            <p class="hero-copy">Главная страница работает как вход в корпоративную базу: сотрудники, документы, сертификаты, цены, новости, общий календарь и ключевые сервисы без лишней персональной логики.</p>
+
+            <div class="quick-row">
+              <a class="quick-action" href="goreltech-phonebook-concept.html" style="text-decoration: none; color: inherit;">
+                <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                <strong>Найти сотрудника</strong>
+              </a>
+              <a class="quick-action" href="#" style="text-decoration: none; color: inherit;">
+                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg>
+                <strong>Каталог продукции</strong>
+              </a>
+              <a class="quick-action" href="goreltech-documents-concept.html" style="text-decoration: none; color: inherit;">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+                <strong>Открыть документы</strong>
+              </a>
+              <a class="quick-action" href="goreltech-certificates-concept.html" style="text-decoration: none; color: inherit;">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <strong>Сертификаты и цены</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="briefing">
+            <div class="status-card">
+              <div class="line"><span>Портал</span><span>быстрый вход</span></div>
+              <strong>Документы, продукция и сотрудники в одном месте</strong>
+              <div class="chips">
+                <span class="chip yellow">каталог</span>
+                <span class="chip">документы</span>
+                <span class="chip">справочник</span>
+              </div>
+            </div>
+            <div class="status-card">
+              <div class="line"><span>Менеджерам</span><span>ежедневно</span></div>
+              <strong>Сертификаты, цены и карточки продукции</strong>
+              <div class="chips">
+                <span class="chip">цены</span>
+                <span class="chip">сертификаты</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="left-col">
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+                  Популярные сервисы
+                </div>
+                <a class="muted-link" href="goreltech-services-concept.html">Все сервисы</a>
+              </div>
+              <div class="service-grid">
+                <a class="service featured" href="goreltech-tickets-concept.html" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                  <div><strong>Тикеты</strong><span>контент, каталог, сервис</span></div>
+                </a>
+                <a class="service" href="goreltech-phonebook-concept.html" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 5.15 12 19.8 19.8 0 0 1 2.08 3.18 2 2 0 0 1 4.06 1h3a2 2 0 0 1 2 1.72c.12.91.33 1.8.62 2.65a2 2 0 0 1-.45 2.11L8 8.7a16 16 0 0 0 7.3 7.3l1.22-1.23a2 2 0 0 1 2.11-.45c.85.29 1.74.5 2.65.62A2 2 0 0 1 22 16.92z"/></svg>
+                  <div><strong>Телефонный справочник</strong><span>отделы и контакты</span></div>
+                </a>
+                <a class="service" href="goreltech-certificates-concept.html" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                  <div><strong>Сертификаты</strong><span>качество и продукция</span></div>
+                </a>
+                <a class="service" href="goreltech-remaining-sections-concept.html#equipment" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <div><strong>Архив оборудования</strong><span>паспорта и фото</span></div>
+                </a>
+                <div class="service">
+                  <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg>
+                  <div><strong>Склад и МТР</strong><span>остатки и материалы</span></div>
+                </div>
+                <a class="service" href="goreltech-rationalization-concept.html" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  <div><strong>Рацпредложения</strong><span>улучшения и идеи</span></div>
+                </a>
+                <a class="service" href="goreltech-competitor-prices-concept.html" style="text-decoration: none; color: inherit;">
+                  <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                  <div><strong>Цены конкурентов</strong><span>для отдела продаж</span></div>
+                </a>
+                <div class="service">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <div><strong>Служебные</strong><span>приказы и графики</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+                  Новости компании
+                </div>
+                <a class="muted-link" href="goreltech-news-concept.html">Открыть ленту</a>
+              </div>
+              <div class="news-list">
+                <article class="news-main">
+                  <div class="news-image" aria-hidden="true"></div>
+                  <div>
+                    <span class="tag">Общее</span>
+                    <h2>Летний корпоратив: регистрация открыта</h2>
+                    <p>Краткая карточка заменяет длинную ленту на первом экране: сотрудник видит главное, дату, тему и может перейти к полной новости.</p>
+                  </div>
+                </article>
+                <article class="news-row">
+                  <div class="date-pill">06 июл</div>
+                  <div>
+                    <strong>Обновлены правила оформления командировок</strong>
+                    <span>Бухгалтерия - важно для руководителей подразделений</span>
+                  </div>
+                  <span class="badge">новое</span>
+                </article>
+                <article class="news-row">
+                  <div class="date-pill">05 июл</div>
+                  <div>
+                    <strong>Плановые работы на сервере документов</strong>
+                    <span>Системное уведомление - окно работ с 20:00 до 21:30</span>
+                  </div>
+                  <span class="badge">сервис</span>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <aside class="right-col">
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  Менеджерам
+                </div>
+                <a class="muted-link" href="goreltech-services-concept.html">Все</a>
+              </div>
+              <div class="tasks">
+                <div class="task red">
+                  <div class="task-bar"></div>
+                  <div><strong>Каталог продукции</strong><span>карточки товаров, группы, описания</span></div>
+                  <span class="badge red">ключевое</span>
+                </div>
+                <div class="task">
+                  <div class="task-bar"></div>
+                  <div><strong>Цены конкурентов</strong><span>заполнение и мониторинг цен</span></div>
+                  <span class="badge">продажи</span>
+                </div>
+                <div class="task green">
+                  <div class="task-bar"></div>
+                  <div><strong>Сертификаты</strong><span>актуальные документы по продукции</span></div>
+                  <span class="badge green">качество</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+                  Общий календарь
+                </div>
+                <a class="muted-link" href="goreltech-remaining-sections-concept.html#calendar">Календарь</a>
+              </div>
+              <div class="timeline">
+                <div class="event">
+                  <div class="event-time">09 июл</div>
+                  <div><strong>День охраны труда</strong><span>общее корпоративное событие</span></div>
+                </div>
+                <div class="event">
+                  <div class="event-time">12 июл</div>
+                  <div><strong>Экскурсия для новых сотрудников</strong><span>производство и склад</span></div>
+                </div>
+                <div class="event">
+                  <div class="event-time">18 июл</div>
+                  <div><strong>Летний корпоратив</strong><span>регистрация через новость</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                  Дни рождения
+                </div>
+                <a class="muted-link" href="#">Поздравить</a>
+              </div>
+              <div class="people">
+                <div class="person">
+                  <div class="face">ДН</div>
+                  <div><strong>Носков Денис Сергеевич</strong><span>Оператор моечных машин</span></div>
+                  <span class="badge">07.07</span>
+                </div>
+                <div class="person">
+                  <div class="face">ИФ</div>
+                  <div><strong>Фомченков Иван Сергеевич</strong><span>Слесарь механосборочных работ</span></div>
+                  <span class="badge">07.07</span>
+                </div>
+                <div class="person">
+                  <div class="face">АШ</div>
+                  <div><strong>Шевцов Александр Евгеньевич</strong><span>Производство</span></div>
+                  <span class="badge">07.07</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                  Последние документы
+                </div>
+                <a class="muted-link" href="goreltech-documents-concept.html">Архив</a>
+              </div>
+              <div class="docs">
+                <div class="doc">
+                  <div class="doc-icon"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+                  <div><strong>Регламент командировок 2026</strong><span>обновлено вчера</span></div>
+                </div>
+                <div class="doc">
+                  <div class="doc-icon"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg></div>
+                  <div><strong>Телефонный справочник цехов</strong><span>версия от 04.07</span></div>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
