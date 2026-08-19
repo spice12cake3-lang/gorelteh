@@ -1102,140 +1102,33 @@
     }
 
     .history-view {
-      display: grid;
-      gap: 16px;
-    }
-
-    .completion-summary {
-      padding: 16px;
-      border: 1px solid #cfe6d3;
-      border-radius: var(--radius);
-      background: #f2faf3;
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .completion-summary-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #63b45b;
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
-
-    .completion-summary strong,
-    .completion-summary span {
       display: block;
     }
 
-    .completion-summary strong {
-      margin-bottom: 3px;
-      font-size: 13px;
-    }
-
-    .completion-summary span {
-      color: #5f7162;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .completion-summary b {
-      color: #347a3b;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .history-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .history-filter {
-      min-height: 32px;
-      padding: 0 11px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #fff;
-      color: var(--muted);
-      font: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .history-filter.active {
-      border-color: #d7bb00;
-      background: var(--yellow-soft);
-      color: #5f4e00;
-    }
-
-    .history-timeline {
-      position: relative;
+    .history-list {
       display: grid;
-    }
-
-    .history-timeline:before {
-      content: "";
-      position: absolute;
-      top: 15px;
-      bottom: 15px;
-      left: 122px;
-      width: 1px;
-      background: var(--line);
+      border-top: 1px solid var(--line);
     }
 
     .history-event {
-      position: relative;
       display: grid;
-      grid-template-columns: 105px 14px minmax(0, 1fr);
-      gap: 10px;
-      padding: 11px 0;
-    }
-
-    .history-event[hidden] {
-      display: none;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
     }
 
     .history-time {
       color: var(--muted);
       font-size: 11px;
       line-height: 1.4;
-      text-align: right;
+      white-space: nowrap;
     }
-
-    .history-marker {
-      position: relative;
-      z-index: 1;
-      width: 10px;
-      height: 10px;
-      margin-top: 3px;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      background: #adb5c1;
-      box-shadow: 0 0 0 1px #adb5c1;
-    }
-
-    .history-event[data-event-type="status"] .history-marker { background: #5a8bd8; box-shadow: 0 0 0 1px #5a8bd8; }
-    .history-event[data-event-type="people"] .history-marker { background: #8d6ccf; box-shadow: 0 0 0 1px #8d6ccf; }
-    .history-event[data-event-type="deadline"] .history-marker { background: #d55c54; box-shadow: 0 0 0 1px #d55c54; }
-    .history-event[data-event-type="files"] .history-marker { background: #d5a700; box-shadow: 0 0 0 1px #d5a700; }
 
     .history-copy {
       min-width: 0;
-      padding-bottom: 11px;
-      border-bottom: 1px solid var(--line);
       display: grid;
-      gap: 4px;
-    }
-
-    .history-event:last-child .history-copy {
-      border-bottom: 0;
+      gap: 3px;
     }
 
     .history-copy strong {
@@ -1748,6 +1641,26 @@
       min-width: 122px;
     }
 
+    .project-tab.utility {
+      min-width: auto;
+      color: rgba(255,255,255,.58);
+    }
+
+    .project-tab.board-start {
+      position: relative;
+      margin-left: 14px;
+    }
+
+    .project-tab.board-start:before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: rgba(255,255,255,.18);
+    }
+
     .project-tab .count {
       min-width: 22px;
       height: 22px;
@@ -2072,14 +1985,29 @@
       width: 100%;
       min-height: 32px;
       margin-top: 8px;
-      border: 1px solid rgba(242, 207, 0, .75);
+      border: 1px solid #f2cf00;
       border-radius: var(--radius);
-      background: rgba(242, 207, 0, .14);
-      color: #6b5800;
+      background: #f2cf00;
+      color: #1f242d;
       font: inherit;
       font-size: 12px;
       font-weight: 760;
       cursor: pointer;
+      transition: background-color .16s ease, border-color .16s ease, transform .16s ease;
+    }
+
+    .boardless-action:hover {
+      border-color: #ffe34d;
+      background: #ffe34d;
+    }
+
+    .boardless-action:active {
+      transform: translateY(1px);
+    }
+
+    .boardless-action:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
     }
 
     .side-actions {
@@ -2521,11 +2449,6 @@
                 <span class="rail-count">+</span>
               </div>
               <div class="project-link active"><span></span><span>Маркетинг</span></div>
-              <div class="project-link"><span></span><span>Управление брендами</span></div>
-              <div class="project-link"><span></span><span>Web-разработка</span></div>
-              <div class="project-link"><span></span><span>ЦИРКУТ</span></div>
-              <div class="project-link"><span></span><span>Программа лояльности</span></div>
-              <div class="project-link"><span></span><span>Новый сайт+app</span></div>
               <div class="project-link"><span></span><span>Управление продуктами</span></div>
             </div>
           </aside>
@@ -2553,11 +2476,11 @@
             </div>
 
             <div class="project-tabs">
-              <span class="project-tab">Общие задачи</span>
-              <span class="project-tab counter">Вне досок <span class="count">4</span></span>
-              <span class="project-tab active">Выставки</span>
-              <span class="project-tab">Семинары</span>
-              <span class="project-tab">ФОТО/ВИДЕО</span>
+              <span class="project-tab utility">Общие задачи</span>
+              <span class="project-tab utility counter">Вне досок <span class="count">4</span></span>
+              <span class="project-tab board board-start active">Выставки</span>
+              <span class="project-tab board">Семинары</span>
+              <span class="project-tab board">ФОТО/ВИДЕО</span>
               <span class="project-tab add">+</span>
             </div>
 
@@ -2950,7 +2873,7 @@
           <div class="compact-row"><strong>Собрать вопросы по семинару</strong><span>Без исполнителя · низкий</span></div>
         </div>
         <div class="form-grid" style="margin-top:14px">
-          <label class="field"><span>Доска назначения</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+          <label class="field"><span>Доска назначения</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option></select></label>
           <label class="field"><span>Статус на доске</span><select><option>Новые</option><option>В работе</option><option>На согласовании</option></select></label>
         </div>
       `,
@@ -2958,7 +2881,7 @@
         <p>После назначения задача появится на выбранной доске и дальше будет двигаться по колонкам как обычная карточка.</p>
         <div class="form-grid">
           <label class="field full"><span>Задача</span><input value="Согласовать список сувениров"></label>
-          <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+          <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option></select></label>
           <label class="field"><span>Колонка</span><select><option>Новые</option><option>В работе</option><option>На согласовании</option><option>Готово</option></select></label>
         </div>
       `
@@ -3052,50 +2975,36 @@
 
     const taskHistoryTemplate = (isDone = false) => `
       <section class="history-view">
-        ${isDone ? `
-          <div class="completion-summary">
-            <span class="completion-summary-icon">✓</span>
-            <div><strong>Задача завершена</strong><span>Все обязательные подзадачи выполнены, итоговые материалы сохранены.</span></div>
-            <b>19.08.2026 · 15:40</b>
-          </div>
-        ` : ""}
-        <div class="history-filters" aria-label="Фильтры истории">
-          <button class="history-filter active" type="button" data-history-filter="all">Все</button>
-          <button class="history-filter" type="button" data-history-filter="status">Статусы</button>
-          <button class="history-filter" type="button" data-history-filter="people">Участники</button>
-          <button class="history-filter" type="button" data-history-filter="deadline">Сроки</button>
-          <button class="history-filter" type="button" data-history-filter="files">Файлы</button>
-        </div>
-        <div class="history-timeline">
+        <div class="history-list">
           ${isDone ? `
-            <article class="history-event" data-event-type="status">
-              <time class="history-time">Сегодня<br>15:40</time><span class="history-marker"></span>
+            <article class="history-event">
+              <time class="history-time">Сегодня, 15:40</time>
               <div class="history-copy"><strong>Ирина Ганьба завершила задачу</strong><span>Статус изменён: <span class="history-value">На согласовании → Готово</span></span></div>
             </article>
           ` : `
-            <article class="history-event" data-event-type="status">
-              <time class="history-time">Сегодня<br>14:32</time><span class="history-marker"></span>
+            <article class="history-event">
+              <time class="history-time">Сегодня, 14:32</time>
               <div class="history-copy"><strong>Алексей Попов изменил статус</strong><span><span class="history-value">Новые → В работе</span></span></div>
             </article>
           `}
-          <article class="history-event" data-event-type="deadline">
-            <time class="history-time">Сегодня<br>12:10</time><span class="history-marker"></span>
+          <article class="history-event">
+            <time class="history-time">Сегодня, 12:10</time>
             <div class="history-copy"><strong>Ирина Ганьба изменила срок</strong><span><span class="history-value">20.08.2026 → 25.08.2026</span></span></div>
           </article>
-          <article class="history-event" data-event-type="people">
-            <time class="history-time">Вчера<br>17:45</time><span class="history-marker"></span>
+          <article class="history-event">
+            <time class="history-time">Вчера, 17:45</time>
             <div class="history-copy"><strong>Добавлен исполнитель</strong><span>К задаче присоединился <span class="history-value">Дмитрий Попов</span></span></div>
           </article>
-          <article class="history-event" data-event-type="status">
-            <time class="history-time">Вчера<br>15:20</time><span class="history-marker"></span>
+          <article class="history-event">
+            <time class="history-time">Вчера, 15:20</time>
             <div class="history-copy"><strong>Завершена подзадача</strong><span><span class="history-value">Работа с застройщиком</span></span></div>
           </article>
-          <article class="history-event" data-event-type="files">
-            <time class="history-time">18 августа<br>11:05</time><span class="history-marker"></span>
+          <article class="history-event">
+            <time class="history-time">18 августа, 11:05</time>
             <div class="history-copy"><strong>Загружен файл</strong><span><span class="history-value">budget-expo.xlsx</span> · 840 КБ</span></div>
           </article>
-          <article class="history-event" data-event-type="people">
-            <time class="history-time">18 августа<br>09:30</time><span class="history-marker"></span>
+          <article class="history-event">
+            <time class="history-time">18 августа, 09:30</time>
             <div class="history-copy"><strong>Ирина Ганьба создала задачу</strong><span>Ответственный и наблюдатели получили доступ.</span></div>
           </article>
         </div>
@@ -3152,17 +3061,6 @@
         });
         detail.querySelectorAll("[data-task-panel]").forEach((panel) => {
           panel.classList.toggle("active", panel.dataset.taskPanel === panelName);
-        });
-        return;
-      }
-
-      const historyFilter = event.target.closest("[data-history-filter]");
-      if (historyFilter) {
-        const history = historyFilter.closest(".history-view");
-        const filterName = historyFilter.dataset.historyFilter;
-        history.querySelectorAll("[data-history-filter]").forEach((button) => button.classList.toggle("active", button === historyFilter));
-        history.querySelectorAll("[data-event-type]").forEach((item) => {
-          item.hidden = filterName !== "all" && item.dataset.eventType !== filterName;
         });
         return;
       }
@@ -3235,7 +3133,7 @@
             <section class="task-detail-panel active" data-task-panel="overview">
               <div class="form-grid">
                 <label class="field"><span>Статус</span><select><option>Новые</option><option${isDone ? "" : " selected"}>В работе</option><option>На согласовании</option><option${isDone ? " selected" : ""}>Готово</option></select></label>
-                <label class="field"><span>Доска</span><select><option${isBoardless ? " selected" : ""}>Не назначена</option><option${isBoardless ? "" : " selected"}>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+                <label class="field"><span>Доска</span><select><option${isBoardless ? " selected" : ""}>Не назначена</option><option${isBoardless ? "" : " selected"}>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option></select></label>
                 <label class="field"><span>Приоритет</span><select><option>Высокий</option><option selected>Средний</option><option>Низкий</option></select></label>
                 <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Мария Иванова</option><option>Алексей Волков</option></select></label>
                 <label class="field"><span>Исполнители</span><input value="Дмитрий Попов, Алексей Попов"></label>
@@ -3352,10 +3250,20 @@
       link.tabIndex = 0;
       link.setAttribute("role", "button");
       link.addEventListener("click", () => {
+        const projectName = link.textContent.trim();
+        const boardNames = projectName === "Маркетинг"
+          ? ["Выставки", "Семинары", "ФОТО/ВИДЕО"]
+          : ["Каталог", "Развитие продукта", "Обновления"];
         showTaskView("board");
         document.querySelectorAll(".project-link").forEach((item) => item.classList.remove("active"));
         link.classList.add("active");
-        showToast(`Открыт проект: ${link.textContent.trim()}`);
+        document.querySelector(".project-title span").textContent = `Проект “${projectName}”`;
+        document.querySelectorAll(".project-tab.board").forEach((tab, index) => {
+          tab.textContent = boardNames[index];
+          tab.classList.toggle("active", index === 0);
+        });
+        document.querySelectorAll(".project-tab.utility").forEach((tab) => tab.classList.remove("active"));
+        showToast(`Открыт проект: ${projectName}`);
       });
     });
 
@@ -3387,7 +3295,7 @@
             <label class="field full"><span>Название</span><input value="Новая задача"></label>
             <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Алексей Попов</option><option>Мария Иванова</option></select></label>
             <label class="field"><span>Исполнители</span><input value="Алексей Попов, Дмитрий Попов"></label>
-            <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option><option>Не назначать</option></select></label>
+            <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Не назначать</option></select></label>
             <label class="field"><span>Срок</span><input value="25.08.2026"></label>
             <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта"></label>
             <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
