@@ -544,46 +544,41 @@
       background: var(--yellow);
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat-card {
-      min-height: 96px;
+    .city-tabs {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 6px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: #fff;
       box-shadow: var(--shadow);
-      padding: 16px;
-      display: grid;
-      gap: 8px;
-      align-content: center;
     }
 
-    .stat-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .stat-icon {
-      width: 28px;
-      height: 28px;
+    .city-tab {
+      min-width: auto;
+      height: 36px;
+      padding: 0 14px;
+      border: 1px solid transparent;
       border-radius: 7px;
-      display: grid;
-      place-items: center;
-      background: var(--yellow-soft);
-      color: #594900;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+      cursor: pointer;
     }
 
-    .stat-card strong {
-      font-size: 25px;
-      line-height: 1;
+    .city-tab:hover {
+      background: #f6f7f8;
+      color: var(--ink);
+    }
+
+    .city-tab.active {
+      background: var(--yellow-soft);
+      border-color: rgba(242, 207, 0, .78);
+      color: #5f4e00;
     }
 
     .phonebook-grid {
@@ -625,7 +620,7 @@
     .toolbar {
       padding: 16px 18px;
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) 178px 168px 144px auto auto;
+      grid-template-columns: minmax(220px, 1fr) 210px 190px 150px auto auto;
       gap: 10px;
       border-bottom: 1px solid var(--line);
       align-items: center;
@@ -646,6 +641,34 @@
       min-width: 0;
     }
 
+    .field input,
+    .select {
+      width: 100%;
+      font: inherit;
+    }
+
+    .field input {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      min-width: 0;
+    }
+
+    .field input::placeholder {
+      color: var(--muted);
+    }
+
+    select.select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #7c838d 50%), linear-gradient(135deg, #7c838d 50%, transparent 50%);
+      background-position: calc(100% - 15px) 16px, calc(100% - 10px) 16px;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 28px;
+      cursor: pointer;
+    }
+
     .table-scroll {
       overflow-x: auto;
       border-bottom: 1px solid var(--line);
@@ -653,7 +676,7 @@
 
     .table {
       width: 100%;
-      min-width: 1120px;
+      min-width: 1040px;
       border-collapse: collapse;
       font-size: 12px;
     }
@@ -788,22 +811,6 @@
     .status.trip {
       background: #f0ecff;
       color: #6d55b8;
-    }
-
-    .rating {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 52px;
-      height: 28px;
-      padding: 0 8px;
-      border-radius: 7px;
-      border: 1px solid #ead778;
-      background: #fffbea;
-      color: #6d5a00;
-      white-space: nowrap;
-      font-size: 12px;
-      font-weight: 750;
     }
 
     .table-foot {
@@ -1051,7 +1058,6 @@
         padding: 16px;
       }
 
-      .stats,
       .toolbar {
         grid-template-columns: 1fr;
       }
@@ -1241,34 +1247,50 @@
           <a class="tab" href="goreltech-staff-changes-concept.html">Кадровые изменения</a>
         </div>
 
-        <section class="stats">
-          <div class="stat-card">
-            <div class="stat-title"><span class="stat-icon"><svg viewBox="0 0 24 24" width="16" height="16"><circle cx="8" cy="8" r="3"/><path d="M3 19a5 5 0 0 1 10 0"/><path d="M17 11h4M17 6h4M17 16h4"/></svg></span>Всего сотрудников</div>
-            <strong>1 245</strong>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title"><span class="stat-icon"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 6h7v5H4zM13 4h7v5h-7zM13 15h7v5h-7zM4 15h7v5H4z"/></svg></span>Подразделений</div>
-            <strong>84</strong>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title"><span class="stat-icon"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7l.4 2.8a2 2 0 0 1-.5 1.7l-1.3 1.3a16 16 0 0 0 6.9 6.9l1.3-1.3a2 2 0 0 1 1.7-.5l2.8.4a2 2 0 0 1 1.7 1.9z"/></svg></span>Внутренних номеров</div>
-            <strong>326</strong>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title"><span class="stat-icon"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 8h2a2 2 0 0 1 2 2v11"/><path d="M8 7h4M8 11h4M8 15h4"/></svg></span>Офисов и площадок</div>
-            <strong>12</strong>
-          </div>
-        </section>
+        <div class="city-tabs" aria-label="Фильтр по площадкам">
+          <button class="city-tab active" type="button" data-city-filter="all">Все</button>
+          <button class="city-tab" type="button" data-city-filter="Санкт-Петербург">Санкт-Петербург</button>
+          <button class="city-tab" type="button" data-city-filter="Новосаратовка">Новосаратовка</button>
+          <button class="city-tab" type="button" data-city-filter="Москва">Москва</button>
+          <button class="city-tab" type="button" data-city-filter="Казань">Казань</button>
+          <button class="city-tab" type="button" data-city-filter="Тюмень">Тюмень</button>
+          <button class="city-tab" type="button" data-city-filter="Хабаровск">Хабаровск</button>
+          <button class="city-tab" type="button" data-city-filter="Минск">Минск</button>
+        </div>
 
         <div class="phonebook-grid">
           <section class="panel">
             <div class="toolbar">
-              <div class="field"><svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Поиск по ФИО, номеру, email</div>
-              <div class="select">Все подразделения</div>
-              <div class="select">Все должности</div>
-              <div class="select">Все статусы</div>
-              <button class="button">Сбросить</button>
-              <button class="button primary">Найти</button>
+              <label class="field"><svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="employeeSearch" placeholder="Поиск по ФИО, номеру, email"></label>
+              <select class="select" id="departmentFilter" aria-label="Подразделение">
+                <option value="all">Все подразделения</option>
+                <option value="Производство">Производство</option>
+                <option value="Маркетинг">Маркетинг</option>
+                <option value="Отдел продаж">Отдел продаж</option>
+                <option value="IT-отдел">IT-отдел</option>
+                <option value="Бухгалтерия">Бухгалтерия</option>
+                <option value="Качество">Качество</option>
+                <option value="Снабжение и логистика">Снабжение и логистика</option>
+              </select>
+              <select class="select" id="roleFilter" aria-label="Должность">
+                <option value="all">Все должности</option>
+                <option value="Оператор">Оператор</option>
+                <option value="Слесарь">Слесарь</option>
+                <option value="Руководитель">Руководитель</option>
+                <option value="IT-специалист">IT-специалист</option>
+                <option value="Бухгалтер">Бухгалтер</option>
+                <option value="Инженер">Инженер</option>
+                <option value="Менеджер">Менеджер</option>
+              </select>
+              <select class="select" id="statusFilter" aria-label="Статус">
+                <option value="all">Все статусы</option>
+                <option value="На месте">На месте</option>
+                <option value="Больный">Больный</option>
+                <option value="Отпуск">Отпуск</option>
+                <option value="Командировка">Командировка</option>
+              </select>
+              <button class="button" type="button" id="resetFilters">Сбросить</button>
+              <button class="button primary" type="button" id="applyFilters">Найти</button>
             </div>
 
             <div class="table-scroll">
@@ -1282,76 +1304,106 @@
                   <th>Телефон</th>
                   <th>E-mail</th>
                   <th>Статус</th>
-                  <th>Рейтинг</th>
+                  <th>Избранное</th>
                 </tr>
               </thead>
               <tbody>
-                <tr id="favorite-noskov">
-                  <td><div class="employee"><img src="birthday-denis.svg" alt=""><div><strong>Носков Денис Сергеевич</strong><span>Новосаратовка</span></div><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr id="favorite-noskov" data-city="Новосаратовка" data-department="Производство" data-role="Оператор" data-status="На месте">
+                  <td><div class="employee"><img src="birthday-denis.svg" alt=""><div><strong>Носков Денис Сергеевич</strong><span>Новосаратовка</span></div></div></td>
                   <td>Оператор моечных машин</td>
                   <td>Производство</td>
                   <td><span class="phone-cell">1423</span></td>
                   <td>+7 999 123-45-67</td>
                   <td>d.noskov@exd.ru</td>
                   <td><span class="status">На месте</span></td>
-                  <td><span class="rating">4.9/5</span></td>
+                  <td><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
-                <tr class="selected">
-                  <td><div class="employee"><img src="birthday-ivan.svg" alt=""><div><strong>Фомченков Иван Сергеевич</strong><span>Сборочный участок</span></div><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr class="selected" data-city="Новосаратовка" data-department="Производство" data-role="Слесарь" data-status="Больный">
+                  <td><div class="employee"><img src="birthday-ivan.svg" alt=""><div><strong>Фомченков Иван Сергеевич</strong><span>Сборочный участок</span></div></div></td>
                   <td>Слесарь МСР</td>
                   <td>Производство</td>
                   <td><span class="phone-cell">1184</span></td>
                   <td>+7 999 234-56-78</td>
                   <td>i.fomchenkov@exd.ru</td>
                   <td><span class="status sick">Больный</span></td>
-                  <td><span class="rating">4.6/5</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
-                <tr>
-                  <td><div class="employee"><img src="birthday-alex.svg" alt=""><div><strong>Шевцов Александр Евгеньевич</strong><span>Производство</span></div><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr data-city="Санкт-Петербург" data-department="Производство" data-role="Слесарь" data-status="Отпуск">
+                  <td><div class="employee"><img src="birthday-alex.svg" alt=""><div><strong>Шевцов Александр Евгеньевич</strong><span>Санкт-Петербург</span></div></div></td>
                   <td>Слесарь МСР</td>
                   <td>Производство</td>
                   <td><span class="phone-cell">1192</span></td>
                   <td>+7 999 345-67-89</td>
                   <td>a.shevtsov@exd.ru</td>
                   <td><span class="status vacation">Отпуск</span></td>
-                  <td><span class="rating">4.7/5</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
-                <tr id="favorite-ganba">
-                  <td><div class="employee"><img src="birthday-denis.svg" alt=""><div><strong>Ганьба Ирина Олеговна</strong><span>Санкт-Петербург</span></div><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr id="favorite-ganba" data-city="Санкт-Петербург" data-department="Маркетинг" data-role="Руководитель" data-status="На месте">
+                  <td><div class="employee"><img src="birthday-denis.svg" alt=""><div><strong>Ганьба Ирина Олеговна</strong><span>Санкт-Петербург</span></div></div></td>
                   <td>Руководитель направления</td>
                   <td>Маркетинг</td>
                   <td><span class="phone-cell">1423</span></td>
                   <td>+7 969 738-58-86</td>
                   <td>i.o.ganba@exd.ru</td>
                   <td><span class="status">На месте</span></td>
-                  <td><span class="rating">5.0/5</span></td>
+                  <td><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
-                <tr id="favorite-popov">
-                  <td><div class="employee"><img src="birthday-ivan.svg" alt=""><div><strong>Попов Дмитрий Сергеевич</strong><span>Москва</span></div><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr id="favorite-popov" data-city="Москва" data-department="IT-отдел" data-role="IT-специалист" data-status="Командировка">
+                  <td><div class="employee"><img src="birthday-ivan.svg" alt=""><div><strong>Попов Дмитрий Сергеевич</strong><span>Москва</span></div></div></td>
                   <td>IT-специалист</td>
                   <td>IT-отдел</td>
                   <td><span class="phone-cell">1308</span></td>
                   <td>+7 999 678-90-12</td>
                   <td>d.popov@exd.ru</td>
                   <td><span class="status trip">Командировка</span></td>
-                  <td><span class="rating">4.5/5</span></td>
+                  <td><button class="favorite-button active" type="button" aria-label="В избранном"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
-                <tr>
-                  <td><div class="employee"><img src="birthday-alex.svg" alt=""><div><strong>Кузнецова Ольга Викторовна</strong><span>Офис</span></div><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div></td>
+                <tr data-city="Казань" data-department="Бухгалтерия" data-role="Бухгалтер" data-status="На месте">
+                  <td><div class="employee"><img src="birthday-alex.svg" alt=""><div><strong>Кузнецова Ольга Викторовна</strong><span>Казань</span></div></div></td>
                   <td>Бухгалтер</td>
                   <td>Бухгалтерия</td>
                   <td><span class="phone-cell">1277</span></td>
                   <td>+7 999 567-89-01</td>
                   <td>o.kuznetsova@exd.ru</td>
                   <td><span class="status">На месте</span></td>
-                  <td><span class="rating">4.8/5</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
+                </tr>
+                <tr data-city="Тюмень" data-department="Отдел продаж" data-role="Менеджер" data-status="На месте">
+                  <td><div class="employee"><img src="birthday-denis.svg" alt=""><div><strong>Соколова Мария Андреевна</strong><span>Тюмень</span></div></div></td>
+                  <td>Менеджер по продажам</td>
+                  <td>Отдел продаж</td>
+                  <td><span class="phone-cell">1461</span></td>
+                  <td>+7 999 111-22-33</td>
+                  <td>m.sokolova@exd.ru</td>
+                  <td><span class="status">На месте</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
+                </tr>
+                <tr data-city="Хабаровск" data-department="Снабжение и логистика" data-role="Менеджер" data-status="Отпуск">
+                  <td><div class="employee"><img src="birthday-ivan.svg" alt=""><div><strong>Лебедев Сергей Александрович</strong><span>Хабаровск</span></div></div></td>
+                  <td>Менеджер по логистике</td>
+                  <td>Снабжение и логистика</td>
+                  <td><span class="phone-cell">1510</span></td>
+                  <td>+7 999 222-33-44</td>
+                  <td>s.lebedev@exd.ru</td>
+                  <td><span class="status vacation">Отпуск</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
+                </tr>
+                <tr data-city="Минск" data-department="Качество" data-role="Инженер" data-status="Командировка">
+                  <td><div class="employee"><img src="birthday-alex.svg" alt=""><div><strong>Морозов Никита Павлович</strong><span>Минск</span></div></div></td>
+                  <td>Инженер по качеству</td>
+                  <td>Качество</td>
+                  <td><span class="phone-cell">1324</span></td>
+                  <td>+7 999 333-44-55</td>
+                  <td>n.morozov@exd.ru</td>
+                  <td><span class="status trip">Командировка</span></td>
+                  <td><button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button></td>
                 </tr>
               </tbody>
               </table>
             </div>
 
             <div class="table-foot">
-              <span>Показано 1-6 из 1 245 сотрудников</span>
+              <span id="resultsCount">Показано 9 из 1 245 сотрудников</span>
               <div class="pagination">
                 <span class="page active">1</span>
                 <span class="page">2</span>
@@ -1379,7 +1431,7 @@
                   </div>
                   <div class="employee-card-meta">
                     <span class="status sick">Больный</span>
-                    <span class="rating">4.6/5</span>
+                    <button class="favorite-button" type="button" aria-label="Добавить в избранное"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button>
                   </div>
                   <div class="employee-details">
                     <div class="detail-row"><span>Внутр. номер</span><strong>1184</strong></div>
@@ -1453,5 +1505,76 @@
       </section>
     </main>
   </div>
+  <script>
+    const cityTabs = document.querySelectorAll('[data-city-filter]');
+    const employeeRows = document.querySelectorAll('.table tbody tr');
+    const searchInput = document.getElementById('employeeSearch');
+    const departmentFilter = document.getElementById('departmentFilter');
+    const roleFilter = document.getElementById('roleFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const resetFilters = document.getElementById('resetFilters');
+    const applyFilters = document.getElementById('applyFilters');
+    const resultsCount = document.getElementById('resultsCount');
+    let activeCity = 'all';
+
+    function applyEmployeeFilters() {
+      const query = (searchInput.value || '').trim().toLowerCase();
+      const department = departmentFilter.value;
+      const role = roleFilter.value;
+      const status = statusFilter.value;
+      let visible = 0;
+
+      employeeRows.forEach((row) => {
+        const text = row.textContent.toLowerCase();
+        const matchesCity = activeCity === 'all' || row.dataset.city === activeCity;
+        const matchesDepartment = department === 'all' || row.dataset.department === department;
+        const matchesRole = role === 'all' || row.dataset.role === role;
+        const matchesStatus = status === 'all' || row.dataset.status === status;
+        const matchesSearch = !query || text.includes(query);
+        const show = matchesCity && matchesDepartment && matchesRole && matchesStatus && matchesSearch;
+
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      resultsCount.textContent = `Показано ${visible} из 1 245 сотрудников`;
+    }
+
+    cityTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        cityTabs.forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+        activeCity = tab.dataset.cityFilter;
+        applyEmployeeFilters();
+      });
+    });
+
+    [searchInput, departmentFilter, roleFilter, statusFilter].forEach((control) => {
+      control.addEventListener('input', applyEmployeeFilters);
+      control.addEventListener('change', applyEmployeeFilters);
+    });
+
+    applyFilters.addEventListener('click', applyEmployeeFilters);
+
+    resetFilters.addEventListener('click', () => {
+      activeCity = 'all';
+      cityTabs.forEach((item) => item.classList.toggle('active', item.dataset.cityFilter === 'all'));
+      searchInput.value = '';
+      departmentFilter.value = 'all';
+      roleFilter.value = 'all';
+      statusFilter.value = 'all';
+      applyEmployeeFilters();
+    });
+
+    document.querySelectorAll('.favorite-button').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        button.classList.toggle('active');
+        button.setAttribute('aria-label', button.classList.contains('active') ? 'В избранном' : 'Добавить в избранное');
+      });
+    });
+
+    applyEmployeeFilters();
+  </script>
 </body>
 </html>

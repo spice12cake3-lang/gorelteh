@@ -1515,6 +1515,155 @@
       font-weight: 850;
     }
 
+    .complex-task {
+      gap: 12px;
+    }
+
+    .complex-task .task-title strong {
+      line-height: 1.25;
+    }
+
+    .complex-progress {
+      display: grid;
+      gap: 8px;
+      padding: 10px 0 2px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .complex-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,.7);
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .complex-bar {
+      flex: 1;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+    }
+
+    .complex-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: #8794a8;
+    }
+
+    .complex-bar.done span,
+    .stage-card.done .complex-bar span {
+      background: #78cf64;
+    }
+
+    .complex-deadline {
+      width: fit-content;
+      min-height: 26px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: rgba(255, 113, 101, .18);
+      color: #ff887e;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .stage-toggle {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(143, 193, 255, .22);
+      border-radius: 8px;
+      background: rgba(143, 193, 255, .09);
+      color: #8fc1ff;
+      font-size: 15px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .stage-list {
+      display: grid;
+      gap: 8px;
+      padding-left: 12px;
+      border-left: 2px solid rgba(77,157,255,.55);
+    }
+
+    .complex-task.is-collapsed .stage-list {
+      display: none;
+    }
+
+    .complex-task.is-collapsed .stage-toggle {
+      transform: rotate(180deg);
+    }
+
+    .stage-card {
+      display: grid;
+      gap: 9px;
+      padding: 10px;
+      border-radius: 11px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(31,36,45,.58);
+    }
+
+    .stage-card.done {
+      opacity: .68;
+    }
+
+    .stage-card.overdue {
+      border-color: rgba(255, 113, 101, .38);
+    }
+
+    .stage-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: rgba(255,255,255,.88);
+      font-size: 13px;
+      font-weight: 780;
+      line-height: 1.25;
+    }
+
+    .stage-status {
+      flex: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.35);
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .stage-card.done .stage-status {
+      border-color: #78cf64;
+      background: #78cf64;
+      color: #14200f;
+    }
+
+    .stage-title-text {
+      flex: 1;
+    }
+
+    .stage-menu {
+      color: rgba(255,255,255,.42);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .stage-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.56);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
     .boardless-action {
       width: 100%;
       min-height: 32px;
@@ -2069,9 +2218,78 @@
                       <div class="task-title"><strong>Анонс выставка Казань</strong><span>⋮</span></div>
                       <div class="card-meta"><span class="meta-pill">10 Авг</span><span class="card-person">ИГ</span></div>
                     </article>
-                    <article class="task-card board-card">
-                      <div class="task-title"><strong>6. Kazan Oil, Gas & Chemistry</strong><span>⋮</span></div>
-                      <div class="card-meta"><span class="meta-pill">3/16</span><span class="meta-pill">18 Авг</span><span class="card-person">АП</span></div>
+                    <article class="task-card board-card complex-task">
+                      <div class="task-title"><strong>6. Kazan Oil, Gas & Chemistry<br>(Казань, 26-28 августа)</strong><span>⋮</span></div>
+                      <div class="card-meta">
+                        <span class="meta-pill">3/16 подзадач</span>
+                        <span class="card-person">АП</span>
+                      </div>
+                      <div class="complex-progress">
+                        <div class="complex-progress-row">
+                          <div class="complex-bar"><span style="width: 19%"></span></div>
+                          <span>3/16</span>
+                          <button class="stage-toggle" type="button" aria-label="Свернуть подзадачи" aria-expanded="true">⌃</button>
+                        </div>
+                        <div class="complex-deadline">18 Авг</div>
+                      </div>
+                      <div class="stage-list">
+                        <div class="stage-card">
+                          <div class="stage-title">
+                            <span class="stage-status">✓</span>
+                            <span class="stage-title-text">1. Работа с организатором</span>
+                            <span class="stage-menu">⋮</span>
+                          </div>
+                          <div class="stage-meta">
+                            <div class="complex-bar"><span style="width: 86%"></span></div>
+                            <span>6/7</span>
+                          </div>
+                        </div>
+                        <div class="stage-card done">
+                          <div class="stage-title">
+                            <span class="stage-status">✓</span>
+                            <span class="stage-title-text">2. Работа с застройщиком</span>
+                            <span class="stage-menu">⋮</span>
+                          </div>
+                          <div class="stage-meta">
+                            <div class="complex-bar done"><span style="width: 100%"></span></div>
+                            <span>6/6</span>
+                          </div>
+                        </div>
+                        <div class="stage-card">
+                          <div class="stage-title">
+                            <span class="stage-status">✓</span>
+                            <span class="stage-title-text">3. Выставочные образцы</span>
+                            <span class="stage-menu">⋮</span>
+                          </div>
+                          <div class="stage-meta">
+                            <div class="complex-bar"><span style="width: 67%"></span></div>
+                            <span>2/3</span>
+                          </div>
+                        </div>
+                        <div class="stage-card done">
+                          <div class="stage-title">
+                            <span class="stage-status">✓</span>
+                            <span class="stage-title-text">4. Оформить доверенности для контрагентов</span>
+                            <span class="stage-menu">⋮</span>
+                          </div>
+                          <div class="stage-meta">
+                            <div class="complex-bar done"><span style="width: 100%"></span></div>
+                            <span>3/3</span>
+                          </div>
+                        </div>
+                        <div class="stage-card overdue">
+                          <div class="stage-title">
+                            <span class="stage-status">✓</span>
+                            <span class="stage-title-text">5. Оповестить логистов о составе, объеме груза и сроках доставки</span>
+                            <span class="stage-menu">⋮</span>
+                          </div>
+                          <div class="complex-deadline">18 Авг</div>
+                          <div class="stage-meta">
+                            <div class="complex-bar"><span style="width: 0%"></span></div>
+                            <span>0/2</span>
+                          </div>
+                        </div>
+                      </div>
                     </article>
                     <article class="task-card board-card">
                       <div class="task-title"><strong>11. Energy Expo Минск</strong><span>⋮</span></div>
@@ -2403,6 +2621,16 @@
             <label class="field"><span>История</span><input value="19.08: срок изменен, 18.08: добавлен исполнитель"></label>
           </div>
         `);
+      });
+    });
+
+    document.querySelectorAll(".stage-toggle").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const card = button.closest(".complex-task");
+        const isCollapsed = card.classList.toggle("is-collapsed");
+        button.setAttribute("aria-expanded", String(!isCollapsed));
+        button.setAttribute("aria-label", isCollapsed ? "Развернуть подзадачи" : "Свернуть подзадачи");
       });
     });
 
