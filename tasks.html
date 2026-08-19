@@ -1000,13 +1000,17 @@
     .modal-backdrop.open { display: grid; }
 
     .modal {
-      width: min(620px, 100%);
+      width: min(760px, 100%);
       max-height: calc(100vh - 56px);
       overflow: auto;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: 0 26px 80px rgba(18, 20, 24, .28);
+    }
+
+    .modal.task-detail-modal {
+      width: min(900px, 100%);
     }
 
     .modal-head {
@@ -1051,6 +1055,205 @@
       line-height: 1.5;
     }
 
+    .task-detail {
+      display: grid;
+      gap: 18px;
+    }
+
+    .task-detail-tabs {
+      display: flex;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .task-detail-tab {
+      position: relative;
+      min-height: 42px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .task-detail-tab.active {
+      color: var(--ink);
+    }
+
+    .task-detail-tab.active:after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 3px;
+      background: var(--yellow);
+    }
+
+    .task-detail-panel {
+      display: none;
+    }
+
+    .task-detail-panel.active {
+      display: block;
+    }
+
+    .history-view {
+      display: grid;
+      gap: 16px;
+    }
+
+    .completion-summary {
+      padding: 16px;
+      border: 1px solid #cfe6d3;
+      border-radius: var(--radius);
+      background: #f2faf3;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .completion-summary-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #63b45b;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .completion-summary strong,
+    .completion-summary span {
+      display: block;
+    }
+
+    .completion-summary strong {
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .completion-summary span {
+      color: #5f7162;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .completion-summary b {
+      color: #347a3b;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .history-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .history-filter {
+      min-height: 32px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .history-filter.active {
+      border-color: #d7bb00;
+      background: var(--yellow-soft);
+      color: #5f4e00;
+    }
+
+    .history-timeline {
+      position: relative;
+      display: grid;
+    }
+
+    .history-timeline:before {
+      content: "";
+      position: absolute;
+      top: 15px;
+      bottom: 15px;
+      left: 122px;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .history-event {
+      position: relative;
+      display: grid;
+      grid-template-columns: 105px 14px minmax(0, 1fr);
+      gap: 10px;
+      padding: 11px 0;
+    }
+
+    .history-event[hidden] {
+      display: none;
+    }
+
+    .history-time {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .history-marker {
+      position: relative;
+      z-index: 1;
+      width: 10px;
+      height: 10px;
+      margin-top: 3px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #adb5c1;
+      box-shadow: 0 0 0 1px #adb5c1;
+    }
+
+    .history-event[data-event-type="status"] .history-marker { background: #5a8bd8; box-shadow: 0 0 0 1px #5a8bd8; }
+    .history-event[data-event-type="people"] .history-marker { background: #8d6ccf; box-shadow: 0 0 0 1px #8d6ccf; }
+    .history-event[data-event-type="deadline"] .history-marker { background: #d55c54; box-shadow: 0 0 0 1px #d55c54; }
+    .history-event[data-event-type="files"] .history-marker { background: #d5a700; box-shadow: 0 0 0 1px #d5a700; }
+
+    .history-copy {
+      min-width: 0;
+      padding-bottom: 11px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 4px;
+    }
+
+    .history-event:last-child .history-copy {
+      border-bottom: 0;
+    }
+
+    .history-copy strong {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .history-copy span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .history-value {
+      color: var(--ink);
+      font-weight: 750;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1086,6 +1289,234 @@
     .field textarea {
       min-height: 92px;
       resize: vertical;
+    }
+
+    .subtask-editor {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .subtask-editor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .subtask-editor-head strong {
+      color: #4f5661;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .subtask-add {
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid rgba(242, 207, 0, .8);
+      border-radius: var(--radius);
+      background: var(--yellow-soft);
+      color: #5f4e00;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .subtask-table {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .subtask-row {
+      min-width: 580px;
+      display: grid;
+      grid-template-columns: 30px minmax(220px, 1.55fr) minmax(160px, 1fr) 116px 28px;
+      gap: 8px;
+      align-items: center;
+      padding: 9px 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .subtask-row:first-child {
+      border-top: 0;
+    }
+
+    .subtask-row-head {
+      min-height: 36px;
+      background: #fafbfc;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 780;
+    }
+
+    .subtask-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid #aab2be;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .subtask-row.done .subtask-check {
+      border-color: #63b45b;
+      background: #63b45b;
+      color: #fff;
+    }
+
+    .subtask-input,
+    .subtask-select {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fafbfc;
+      color: var(--ink);
+      padding: 7px 9px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .subtask-menu {
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #8a929d;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .attachments-editor {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .attachments-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .attachments-head strong {
+      color: #4f5661;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .attachment-upload {
+      min-height: 74px;
+      border: 1px dashed #cfd5de;
+      border-radius: var(--radius);
+      background: #fafbfc;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .attachment-upload button {
+      margin-top: 8px;
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid rgba(242, 207, 0, .8);
+      border-radius: 7px;
+      background: var(--yellow-soft);
+      color: #5f4e00;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .attachments-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .attachment-row {
+      min-height: 48px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .attachment-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--yellow-soft);
+      color: #5f4e00;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .attachment-copy {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .attachment-copy strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .attachment-copy span,
+    .attachment-meta {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .attachment-download {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #58616d;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .attachment-download:hover {
+      border-color: #d9ba00;
+      background: #fffdf0;
+      color: #5f4e00;
+    }
+
+    .attachment-download svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2;
     }
 
     .modal-actions {
@@ -1423,31 +1854,11 @@
       gap: 10px;
     }
 
-    .task-column.unassigned {
-      background: rgba(255, 251, 232, .98);
-      color: var(--ink);
-      border: 1px solid rgba(242, 207, 0, .7);
-    }
-
-    .task-column.unassigned .task-column-head {
-      border-bottom: 1px solid rgba(121, 100, 0, .12);
-    }
-
-    .task-column.unassigned .add-task {
-      color: #8b7200;
-    }
-
     .task-card.board-card {
       background: rgba(59, 68, 82, .96);
       color: rgba(255,255,255,.88);
       border: 1px solid rgba(255,255,255,.08);
       box-shadow: none;
-    }
-
-    .task-column.unassigned .task-card.board-card {
-      background: #fff;
-      color: var(--ink);
-      border: 1px solid rgba(242, 207, 0, .55);
     }
 
     .task-card.board-card.overdue {
@@ -1459,10 +1870,6 @@
       color: #fff;
       font-size: 14px;
       font-weight: 700;
-    }
-
-    .task-column.unassigned .board-card .task-title strong {
-      color: var(--ink);
     }
 
     .task-card.dimmed {
@@ -1479,10 +1886,6 @@
       font-weight: 700;
     }
 
-    .task-column.unassigned .card-meta {
-      color: var(--muted);
-    }
-
     .meta-pill {
       min-height: 24px;
       padding: 4px 7px;
@@ -1493,8 +1896,9 @@
       gap: 5px;
     }
 
-    .task-column.unassigned .meta-pill {
-      background: #f1f3f6;
+    .meta-pill.files {
+      background: rgba(255, 255, 255, .14);
+      color: rgba(255, 255, 255, .82);
     }
 
     .meta-pill.high {
@@ -2216,12 +2620,13 @@
                   <div class="task-column-body">
                     <article class="task-card board-card dimmed">
                       <div class="task-title"><strong>Анонс выставка Казань</strong><span>⋮</span></div>
-                      <div class="card-meta"><span class="meta-pill">10 Авг</span><span class="card-person">ИГ</span></div>
+                      <div class="card-meta"><span class="meta-pill">10 Авг</span><span class="meta-pill files">1 файл</span><span class="card-person">ИГ</span></div>
                     </article>
                     <article class="task-card board-card complex-task">
                       <div class="task-title"><strong>6. Kazan Oil, Gas & Chemistry<br>(Казань, 26-28 августа)</strong><span>⋮</span></div>
                       <div class="card-meta">
                         <span class="meta-pill">3/16 подзадач</span>
+                        <span class="meta-pill files">3 файла</span>
                         <span class="card-person">АП</span>
                       </div>
                       <div class="complex-progress">
@@ -2293,7 +2698,7 @@
                     </article>
                     <article class="task-card board-card">
                       <div class="task-title"><strong>11. Energy Expo Минск</strong><span>⋮</span></div>
-                      <div class="card-meta"><span class="meta-pill">0/16</span><span class="meta-pill">27 Окт</span><span class="card-person">МК</span></div>
+                      <div class="card-meta"><span class="meta-pill">0/16</span><span class="meta-pill">27 Окт</span><span class="meta-pill files">2 файла</span><span class="card-person">МК</span></div>
                     </article>
                   </div>
                 </section>
@@ -2559,6 +2964,144 @@
       `
     };
 
+    const subtaskEditorTemplate = `
+      <section class="subtask-editor">
+        <div class="subtask-editor-head">
+          <strong>Подзадачи</strong>
+          <button class="subtask-add" type="button" data-add-subtask>+ Добавить подзадачу</button>
+        </div>
+        <div class="subtask-table">
+          <div class="subtask-row subtask-row-head">
+            <span></span>
+            <span>Подзадача</span>
+            <span>Исполнитель</span>
+            <span>Срок</span>
+            <span></span>
+          </div>
+          <div class="subtask-row">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Работа с организатором">
+            <select class="subtask-select"><option>Алексей Попов</option><option>Дмитрий Попов</option><option>Ирина Ганьба</option></select>
+            <input class="subtask-input" value="18.08">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+          <div class="subtask-row done">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Работа с застройщиком">
+            <select class="subtask-select"><option>Дмитрий Попов</option><option>Алексей Попов</option><option>Ирина Ганьба</option></select>
+            <input class="subtask-input" value="16.08">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+          <div class="subtask-row">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Выставочные образцы">
+            <select class="subtask-select"><option>Ирина Ганьба</option><option>Алексей Попов</option><option>Дмитрий Попов</option></select>
+            <input class="subtask-input" value="20.08">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+          <div class="subtask-row done">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Оформить доверенности">
+            <select class="subtask-select"><option>Мария Иванова</option><option>Ирина Ганьба</option><option>Алексей Попов</option></select>
+            <input class="subtask-input" value="15.08">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+          <div class="subtask-row">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Оповестить логистов о составе груза">
+            <select class="subtask-select"><option>Алексей Попов</option><option>Дмитрий Попов</option><option>Мария Иванова</option></select>
+            <input class="subtask-input" value="18.08">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+        </div>
+      </section>
+    `;
+
+    const attachmentsEditorTemplate = `
+      <section class="attachments-editor">
+        <div class="attachments-head">
+          <strong>Вложения</strong>
+          <span class="attachment-meta">3 файла</span>
+        </div>
+        <div class="attachments-list">
+          <div class="attachment-row">
+            <span class="attachment-icon">PDF</span>
+            <span class="attachment-copy"><strong>brief-kazan-expo.pdf</strong><span>Загружен Ириной Ганьбой · 1.8 МБ</span></span>
+            <span class="attachment-meta">19.08</span>
+            <button class="attachment-download" type="button" data-download-file="brief-kazan-expo.pdf" aria-label="Скачать brief-kazan-expo.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
+          </div>
+          <div class="attachment-row">
+            <span class="attachment-icon">XLS</span>
+            <span class="attachment-copy"><strong>budget-expo.xlsx</strong><span>Загружен Алексеем Поповым · 840 КБ</span></span>
+            <span class="attachment-meta">18.08</span>
+            <button class="attachment-download" type="button" data-download-file="budget-expo.xlsx" aria-label="Скачать budget-expo.xlsx"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
+          </div>
+          <div class="attachment-row">
+            <span class="attachment-icon">ZIP</span>
+            <span class="attachment-copy"><strong>photo-pack.zip</strong><span>Загружен Дмитрием Поповым · 12.4 МБ</span></span>
+            <span class="attachment-meta">17.08</span>
+            <button class="attachment-download" type="button" data-download-file="photo-pack.zip" aria-label="Скачать photo-pack.zip"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
+          </div>
+        </div>
+        <div class="attachment-upload">
+          <span>Перетащите файлы сюда или добавьте с компьютера</span>
+          <button type="button" data-add-attachment>+ Прикрепить файл</button>
+        </div>
+      </section>
+    `;
+
+    const taskHistoryTemplate = (isDone = false) => `
+      <section class="history-view">
+        ${isDone ? `
+          <div class="completion-summary">
+            <span class="completion-summary-icon">✓</span>
+            <div><strong>Задача завершена</strong><span>Все обязательные подзадачи выполнены, итоговые материалы сохранены.</span></div>
+            <b>19.08.2026 · 15:40</b>
+          </div>
+        ` : ""}
+        <div class="history-filters" aria-label="Фильтры истории">
+          <button class="history-filter active" type="button" data-history-filter="all">Все</button>
+          <button class="history-filter" type="button" data-history-filter="status">Статусы</button>
+          <button class="history-filter" type="button" data-history-filter="people">Участники</button>
+          <button class="history-filter" type="button" data-history-filter="deadline">Сроки</button>
+          <button class="history-filter" type="button" data-history-filter="files">Файлы</button>
+        </div>
+        <div class="history-timeline">
+          ${isDone ? `
+            <article class="history-event" data-event-type="status">
+              <time class="history-time">Сегодня<br>15:40</time><span class="history-marker"></span>
+              <div class="history-copy"><strong>Ирина Ганьба завершила задачу</strong><span>Статус изменён: <span class="history-value">На согласовании → Готово</span></span></div>
+            </article>
+          ` : `
+            <article class="history-event" data-event-type="status">
+              <time class="history-time">Сегодня<br>14:32</time><span class="history-marker"></span>
+              <div class="history-copy"><strong>Алексей Попов изменил статус</strong><span><span class="history-value">Новые → В работе</span></span></div>
+            </article>
+          `}
+          <article class="history-event" data-event-type="deadline">
+            <time class="history-time">Сегодня<br>12:10</time><span class="history-marker"></span>
+            <div class="history-copy"><strong>Ирина Ганьба изменила срок</strong><span><span class="history-value">20.08.2026 → 25.08.2026</span></span></div>
+          </article>
+          <article class="history-event" data-event-type="people">
+            <time class="history-time">Вчера<br>17:45</time><span class="history-marker"></span>
+            <div class="history-copy"><strong>Добавлен исполнитель</strong><span>К задаче присоединился <span class="history-value">Дмитрий Попов</span></span></div>
+          </article>
+          <article class="history-event" data-event-type="status">
+            <time class="history-time">Вчера<br>15:20</time><span class="history-marker"></span>
+            <div class="history-copy"><strong>Завершена подзадача</strong><span><span class="history-value">Работа с застройщиком</span></span></div>
+          </article>
+          <article class="history-event" data-event-type="files">
+            <time class="history-time">18 августа<br>11:05</time><span class="history-marker"></span>
+            <div class="history-copy"><strong>Загружен файл</strong><span><span class="history-value">budget-expo.xlsx</span> · 840 КБ</span></div>
+          </article>
+          <article class="history-event" data-event-type="people">
+            <time class="history-time">18 августа<br>09:30</time><span class="history-marker"></span>
+            <div class="history-copy"><strong>Ирина Ганьба создала задачу</strong><span>Ответственный и наблюдатели получили доступ.</span></div>
+          </article>
+        </div>
+      </section>
+    `;
+
     function showToast(message) {
       toast.textContent = message;
       toast.classList.add("show");
@@ -2570,6 +3113,7 @@
       modalTitle.textContent = title;
       modalBody.innerHTML = body;
       modalActions.querySelector("[data-save-modal]").textContent = saveText;
+      modal.querySelector(".modal").classList.toggle("task-detail-modal", body.includes('class="task-detail"'));
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
     }
@@ -2596,6 +3140,82 @@
       if (event.target === modal) closeModal();
     });
 
+    modalBody.addEventListener("click", (event) => {
+      const taskTab = event.target.closest("[data-task-tab]");
+      if (taskTab) {
+        const detail = taskTab.closest(".task-detail");
+        const panelName = taskTab.dataset.taskTab;
+        detail.querySelectorAll("[data-task-tab]").forEach((button) => {
+          const isActive = button === taskTab;
+          button.classList.toggle("active", isActive);
+          button.setAttribute("aria-selected", String(isActive));
+        });
+        detail.querySelectorAll("[data-task-panel]").forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.taskPanel === panelName);
+        });
+        return;
+      }
+
+      const historyFilter = event.target.closest("[data-history-filter]");
+      if (historyFilter) {
+        const history = historyFilter.closest(".history-view");
+        const filterName = historyFilter.dataset.historyFilter;
+        history.querySelectorAll("[data-history-filter]").forEach((button) => button.classList.toggle("active", button === historyFilter));
+        history.querySelectorAll("[data-event-type]").forEach((item) => {
+          item.hidden = filterName !== "all" && item.dataset.eventType !== filterName;
+        });
+        return;
+      }
+
+      const addButton = event.target.closest("[data-add-subtask]");
+      if (addButton) {
+        const table = addButton.closest(".subtask-editor")?.querySelector(".subtask-table");
+        if (!table) return;
+        table.insertAdjacentHTML("beforeend", `
+          <div class="subtask-row">
+            <span class="subtask-check">✓</span>
+            <input class="subtask-input" value="Новая подзадача">
+            <select class="subtask-select"><option>Выберите исполнителя</option><option>Алексей Попов</option><option>Дмитрий Попов</option><option>Ирина Ганьба</option><option>Мария Иванова</option></select>
+            <input class="subtask-input" value="дд.мм">
+            <button class="subtask-menu" type="button" aria-label="Действия">⋮</button>
+          </div>
+        `);
+        showToast("Добавлена строка подзадачи");
+        return;
+      }
+
+      const uploadButton = event.target.closest("[data-add-attachment]");
+      if (uploadButton) {
+        const list = uploadButton.closest(".attachments-editor")?.querySelector(".attachments-list");
+        if (!list) return;
+        list.insertAdjacentHTML("beforeend", `
+          <div class="attachment-row">
+            <span class="attachment-icon">DOC</span>
+            <span class="attachment-copy"><strong>new-task-file.docx</strong><span>Добавлен только что · 245 КБ</span></span>
+            <span class="attachment-meta">сейчас</span>
+            <button class="attachment-download" type="button" data-download-file="new-task-file.docx" aria-label="Скачать new-task-file.docx"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
+          </div>
+        `);
+        showToast("Файл прикреплен к задаче");
+        return;
+      }
+
+      const downloadButton = event.target.closest("[data-download-file]");
+      if (downloadButton) {
+        const fileName = downloadButton.dataset.downloadFile;
+        const file = new Blob([`Демо-файл прототипа: ${fileName}`], { type: "text/plain" });
+        const url = URL.createObjectURL(file);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        showToast(`Скачивание: ${fileName}`);
+      }
+    });
+
     document.querySelectorAll(".task-card, .scope-row, .compact-row, .my-task-row").forEach((card) => {
       card.tabIndex = 0;
       card.setAttribute("role", "button");
@@ -2603,22 +3223,31 @@
         const title = card.querySelector("strong")?.textContent.trim() || "Задача";
         const isOverdue = card.classList.contains("overdue") || card.textContent.includes("просрочено");
         const isBoardless = card.closest(".task-column")?.classList.contains("unassigned") || card.textContent.includes("Без доски");
+        const isDone = card.textContent.includes("Готово") || card.closest(".task-column")?.querySelector(".task-column-title strong")?.textContent.trim() === "Готово";
         openModal(title, `
-          <div class="form-grid">
-            <label class="field"><span>Статус</span><select><option>Новые</option><option selected>В работе</option><option>На согласовании</option><option>Готово</option></select></label>
-            <label class="field"><span>Доска</span><select><option${isBoardless ? " selected" : ""}>Не назначена</option><option${isBoardless ? "" : " selected"}>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
-            <label class="field"><span>Приоритет</span><select><option>Высокий</option><option selected>Средний</option><option>Низкий</option></select></label>
-            <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Мария Иванова</option><option>Алексей Волков</option></select></label>
-            <label class="field"><span>Исполнители</span><input value="Дмитрий Попов, Алексей Попов"></label>
-            <label class="field"><span>Срок</span><input value="${isOverdue ? "просрочено" : "25.08.2026"}"></label>
-            <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта, отдел маркетинга"></label>
-            <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
-            <label class="field full"><span>Описание</span><textarea>Краткое описание задачи, подзадачи, вложения и комментарии открываются внутри карточки.</textarea></label>
-            <label class="field full"><span>Этапы и подзадачи</span><textarea>1. Собрать материалы - Алексей Попов - 22.08
-2. Проверить текст - Дмитрий Попов - 24.08
-3. Передать на согласование - Ирина Ганьба - 25.08</textarea></label>
-            <label class="field"><span>Вложения</span><input value="brief.pdf, photo-pack.zip"></label>
-            <label class="field"><span>История</span><input value="19.08: срок изменен, 18.08: добавлен исполнитель"></label>
+          <div class="task-detail">
+            <nav class="task-detail-tabs" role="tablist" aria-label="Разделы задачи">
+              <button class="task-detail-tab active" type="button" role="tab" aria-selected="true" data-task-tab="overview">Описание</button>
+              <button class="task-detail-tab" type="button" role="tab" aria-selected="false" data-task-tab="subtasks">Подзадачи</button>
+              <button class="task-detail-tab" type="button" role="tab" aria-selected="false" data-task-tab="files">Файлы</button>
+              <button class="task-detail-tab" type="button" role="tab" aria-selected="false" data-task-tab="history">История</button>
+            </nav>
+            <section class="task-detail-panel active" data-task-panel="overview">
+              <div class="form-grid">
+                <label class="field"><span>Статус</span><select><option>Новые</option><option${isDone ? "" : " selected"}>В работе</option><option>На согласовании</option><option${isDone ? " selected" : ""}>Готово</option></select></label>
+                <label class="field"><span>Доска</span><select><option${isBoardless ? " selected" : ""}>Не назначена</option><option${isBoardless ? "" : " selected"}>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+                <label class="field"><span>Приоритет</span><select><option>Высокий</option><option selected>Средний</option><option>Низкий</option></select></label>
+                <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Мария Иванова</option><option>Алексей Волков</option></select></label>
+                <label class="field"><span>Исполнители</span><input value="Дмитрий Попов, Алексей Попов"></label>
+                <label class="field"><span>Срок</span><input value="${isOverdue ? "просрочено" : "25.08.2026"}"></label>
+                <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта, отдел маркетинга"></label>
+                <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
+                <label class="field full"><span>Описание</span><textarea>Краткое описание задачи, ожидаемый результат и важные условия выполнения.</textarea></label>
+              </div>
+            </section>
+            <section class="task-detail-panel" data-task-panel="subtasks">${subtaskEditorTemplate}</section>
+            <section class="task-detail-panel" data-task-panel="files">${attachmentsEditorTemplate}</section>
+            <section class="task-detail-panel" data-task-panel="history">${taskHistoryTemplate(isDone)}</section>
           </div>
         `);
       });
@@ -2763,8 +3392,8 @@
             <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта"></label>
             <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
             <label class="field full"><span>Описание</span><textarea>Что нужно сделать, какие материалы приложить и какой результат ожидается.</textarea></label>
-            <label class="field full"><span>Этапы и подзадачи</span><textarea>Добавьте этапы, ответственных и сроки выполнения.</textarea></label>
-            <label class="field"><span>Вложения</span><input value="Прикрепить файлы"></label>
+            ${subtaskEditorTemplate}
+            ${attachmentsEditorTemplate}
           </div>
         `);
       });
