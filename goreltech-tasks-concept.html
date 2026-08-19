@@ -1175,6 +1175,11 @@
       background: rgba(255,255,255,.1);
     }
 
+    .rail-link.active {
+      background: rgba(255,255,255,.18);
+      color: #fff;
+    }
+
     .project-link.active {
       background: rgba(255,255,255,.34);
       color: #fff;
@@ -1201,12 +1206,21 @@
 
     .tasks-main {
       min-width: 0;
-      display: grid;
-      grid-template-rows: auto auto 1fr;
+      display: block;
       background:
         linear-gradient(rgba(238,241,244,.18), rgba(238,241,244,.18)),
         radial-gradient(circle at 20% 75%, rgba(242,205,0,.2), transparent 26%),
         linear-gradient(160deg, #e8eef0 0%, #c8d1d4 37%, #eff3ef 58%, #d7ddd5 100%);
+    }
+
+    .task-view {
+      min-height: calc(100vh - 64px);
+      display: none;
+    }
+
+    .task-view.active {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
     }
 
     .project-topbar {
@@ -1299,6 +1313,22 @@
       font-size: 22px;
     }
 
+    .project-tab.counter {
+      min-width: 122px;
+    }
+
+    .project-tab .count {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(242, 207, 0, .95);
+      color: #151515;
+      font-size: 12px;
+      font-weight: 780;
+    }
+
     .board-surface {
       min-width: 0;
       min-height: 720px;
@@ -1345,7 +1375,7 @@
 
     .board-grid {
       display: grid;
-      grid-template-columns: repeat(4, 320px) 230px;
+      grid-template-columns: repeat(5, 320px) 230px;
       gap: 10px;
       align-items: start;
       min-width: max-content;
@@ -1393,11 +1423,31 @@
       gap: 10px;
     }
 
+    .task-column.unassigned {
+      background: rgba(255, 251, 232, .98);
+      color: var(--ink);
+      border: 1px solid rgba(242, 207, 0, .7);
+    }
+
+    .task-column.unassigned .task-column-head {
+      border-bottom: 1px solid rgba(121, 100, 0, .12);
+    }
+
+    .task-column.unassigned .add-task {
+      color: #8b7200;
+    }
+
     .task-card.board-card {
       background: rgba(59, 68, 82, .96);
       color: rgba(255,255,255,.88);
       border: 1px solid rgba(255,255,255,.08);
       box-shadow: none;
+    }
+
+    .task-column.unassigned .task-card.board-card {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid rgba(242, 207, 0, .55);
     }
 
     .task-card.board-card.overdue {
@@ -1409,6 +1459,10 @@
       color: #fff;
       font-size: 14px;
       font-weight: 700;
+    }
+
+    .task-column.unassigned .board-card .task-title strong {
+      color: var(--ink);
     }
 
     .task-card.dimmed {
@@ -1425,6 +1479,10 @@
       font-weight: 700;
     }
 
+    .task-column.unassigned .card-meta {
+      color: var(--muted);
+    }
+
     .meta-pill {
       min-height: 24px;
       padding: 4px 7px;
@@ -1433,6 +1491,10 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+    }
+
+    .task-column.unassigned .meta-pill {
+      background: #f1f3f6;
     }
 
     .meta-pill.high {
@@ -1453,6 +1515,20 @@
       font-weight: 850;
     }
 
+    .boardless-action {
+      width: 100%;
+      min-height: 32px;
+      margin-top: 8px;
+      border: 1px solid rgba(242, 207, 0, .75);
+      border-radius: var(--radius);
+      background: rgba(242, 207, 0, .14);
+      color: #6b5800;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
     .side-actions {
       display: grid;
       gap: 7px;
@@ -1471,6 +1547,230 @@
       font-size: 13px;
       font-weight: 760;
       cursor: pointer;
+    }
+
+    .my-tasks-view {
+      background: #eef1f4;
+    }
+
+    .my-tasks-head {
+      padding: 26px 30px 20px;
+      background: #f7f8fa;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+    }
+
+    .my-tasks-title {
+      display: grid;
+      gap: 8px;
+    }
+
+    .my-tasks-title h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .my-tasks-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .my-task-stats {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .my-task-stat {
+      min-width: 122px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      display: grid;
+      gap: 4px;
+    }
+
+    .my-task-stat strong {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .my-task-stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 720;
+    }
+
+    .my-tasks-toolbar {
+      min-height: 58px;
+      padding: 10px 30px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .my-tasks-search {
+      width: 360px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .my-tasks-chip {
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: #59616d;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    .my-tasks-chip.active {
+      background: var(--yellow);
+      border-color: #d9ba00;
+      color: #151515;
+    }
+
+    .my-tasks-list {
+      padding: 22px 30px 34px;
+      overflow: auto;
+      display: grid;
+      align-content: start;
+      gap: 18px;
+    }
+
+    .task-group {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .task-group-head {
+      min-height: 48px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .task-group-head strong {
+      font-size: 15px;
+    }
+
+    .task-group-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .my-task-row {
+      min-height: 78px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(280px, 1.4fr) 150px 140px 130px 118px 126px;
+      gap: 14px;
+      align-items: center;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .my-task-row:last-child {
+      border-bottom: 0;
+    }
+
+    .my-task-row:hover {
+      background: #fafbfc;
+    }
+
+    .my-task-main {
+      display: grid;
+      gap: 6px;
+    }
+
+    .my-task-main strong {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .my-task-main span,
+    .my-task-cell span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 690;
+    }
+
+    .my-task-cell {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .my-task-cell b {
+      font-size: 13px;
+      font-weight: 760;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .my-task-badge {
+      width: fit-content;
+      min-height: 26px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #f1f3f6;
+      color: #59616d;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .my-task-badge.overdue {
+      background: #ffeceb;
+      color: var(--red);
+    }
+
+    .my-task-badge.today {
+      background: var(--yellow-soft);
+      color: #6b5800;
+    }
+
+    .my-task-badge.boardless {
+      background: #fff4c8;
+      color: #7b6400;
+    }
+
+    .my-task-badge.private {
+      background: #eee9ff;
+      color: var(--violet);
     }
 
     @media (max-width: 1400px) {
@@ -1654,20 +1954,10 @@
         <div class="tasks-workspace">
           <aside class="tasks-rail" aria-label="Проекты и рабочие области">
             <div class="rail-block">
-              <div class="rail-link">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
-                <span>Мой профиль</span>
-                <span></span>
-              </div>
-              <div class="rail-link">
+              <div class="rail-link" data-open-my-tasks>
                 <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8 11 2 2 5-6"/></svg>
                 <span>Мои задачи</span>
                 <span class="rail-count">38</span>
-              </div>
-              <div class="rail-link">
-                <svg viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M8 8V5h8v3"/></svg>
-                <span>Моя компания</span>
-                <span></span>
               </div>
             </div>
 
@@ -1685,27 +1975,10 @@
               <div class="project-link"><span></span><span>Новый сайт+app</span></div>
               <div class="project-link"><span></span><span>Управление продуктами</span></div>
             </div>
-
-            <div class="rail-footer">
-              <div class="rail-link">
-                <svg viewBox="0 0 24 24"><path d="M5 6h14v10H7l-2 3z"/></svg>
-                <span>Мессенджер</span>
-                <span></span>
-              </div>
-              <div class="rail-link">
-                <svg viewBox="0 0 24 24"><path d="M8 11h8M8 15h5"/><path d="M5 5h14v14H5z"/></svg>
-                <span>Лента событий</span>
-                <span></span>
-              </div>
-              <div class="rail-link">
-                <svg viewBox="0 0 24 24"><path d="M4 19h16M7 16V8M12 16V5M17 16v-6"/></svg>
-                <span>Отчеты</span>
-                <span></span>
-              </div>
-            </div>
           </aside>
 
           <section class="tasks-main">
+            <div class="task-view board-view active">
             <div class="project-topbar">
               <div class="project-title">
                 <span>Проект “Маркетинг”</span>
@@ -1728,11 +2001,10 @@
 
             <div class="project-tabs">
               <span class="project-tab">Общие задачи</span>
+              <span class="project-tab counter">Вне досок <span class="count">4</span></span>
               <span class="project-tab active">Выставки</span>
               <span class="project-tab">Семинары</span>
               <span class="project-tab">ФОТО/ВИДЕО</span>
-              <span class="project-tab">Архив</span>
-              <span class="project-tab">Архив (2)</span>
               <span class="project-tab add">+</span>
             </div>
 
@@ -1740,15 +2012,7 @@
               <div class="view-toolbar">
                 <span class="view-chip active">
                   <svg viewBox="0 0 24 24"><path d="M5 5h5v14H5zM14 5h5v14h-5z"/></svg>
-                  Доска
-                </span>
-                <span class="view-chip">
-                  <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h12M4 17h8"/></svg>
-                  Гант
-                </span>
-                <span class="view-chip">
-                  <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
-                  Календарь
+                  Kanban
                 </span>
                 <span class="filter-chip">
                   <svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
@@ -1766,13 +2030,38 @@
                   <svg viewBox="0 0 24 24"><path d="M12 3 4 7l8 4 8-4z"/><path d="M4 12l8 4 8-4"/></svg>
                   Проект
                 </span>
+                <span class="filter-chip">Без доски</span>
                 <span class="filter-chip">+</span>
               </div>
 
               <div class="board-grid">
+                <section class="task-column unassigned">
+                  <div class="task-column-head">
+                    <div class="task-column-title"><strong>Вне досок</strong><span>4</span></div>
+                    <div class="add-task">+ Создать без доски</div>
+                  </div>
+                  <div class="task-column-body">
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>Согласовать список сувениров</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">Без доски</span><span class="meta-pill">22 Авг</span><span class="card-person">ИГ</span></div>
+                      <button class="boardless-action" type="button">Назначить доску</button>
+                    </article>
+                    <article class="task-card board-card overdue">
+                      <div class="task-title"><strong>Подготовить фото для новости</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">Без доски</span><span class="meta-pill high">просрочено</span><span class="card-person">ДС</span></div>
+                      <button class="boardless-action" type="button">Назначить доску</button>
+                    </article>
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>Проверить доступы редакторов</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">Приватная</span><span class="meta-pill">25 Авг</span><span class="card-person">АП</span></div>
+                      <button class="boardless-action" type="button">Назначить доску</button>
+                    </article>
+                  </div>
+                </section>
+
                 <section class="task-column">
                   <div class="task-column-head">
-                    <div class="task-column-title"><strong>Единый список задач</strong><span>⋮</span></div>
+                    <div class="task-column-title"><strong>Новые</strong><span>⋮</span></div>
                     <div class="add-task">+ Добавить задачу</div>
                   </div>
                   <div class="task-column-body">
@@ -1788,21 +2077,29 @@
                       <div class="task-title"><strong>11. Energy Expo Минск</strong><span>⋮</span></div>
                       <div class="card-meta"><span class="meta-pill">0/16</span><span class="meta-pill">27 Окт</span><span class="card-person">МК</span></div>
                     </article>
-                    <div class="add-task" style="justify-self:center; color:rgba(255,255,255,.56)">Архив задач (8)</div>
                   </div>
                 </section>
 
                 <section class="task-column">
                   <div class="task-column-head">
-                    <div class="task-column-title"><strong>Сегодня</strong><span>⋮</span></div>
+                    <div class="task-column-title"><strong>В работе</strong><span>⋮</span></div>
                     <div class="add-task">+ Добавить задачу</div>
                   </div>
-                  <div class="task-column-body"></div>
+                  <div class="task-column-body">
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>Подготовить материалы для семинара</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">5/9</span><span class="meta-pill">22 Авг</span><span class="card-person">АП</span></div>
+                    </article>
+                    <article class="task-card board-card">
+                      <div class="task-title"><strong>Обновить список участников выставки</strong><span>⋮</span></div>
+                      <div class="card-meta"><span class="meta-pill">2 файла</span><span class="card-person">ИГ</span></div>
+                    </article>
+                  </div>
                 </section>
 
                 <section class="task-column">
                   <div class="task-column-head">
-                    <div class="task-column-title"><strong>Готово</strong><span>⋮</span></div>
+                    <div class="task-column-title"><strong>На согласовании</strong><span>⋮</span></div>
                     <div class="add-task">+ Добавить задачу</div>
                   </div>
                   <div class="task-column-body">
@@ -1831,17 +2128,131 @@
 
                 <section class="task-column">
                   <div class="task-column-head">
-                    <div class="task-column-title"><strong>Отложено</strong><span>⋮</span></div>
+                    <div class="task-column-title"><strong>Готово</strong><span>⋮</span></div>
                     <div class="add-task">+ Добавить задачу</div>
                   </div>
                   <div class="task-column-body"></div>
                 </section>
 
                 <aside class="side-actions">
-                  <button class="side-action">+ Создать колонку</button>
-                  <button class="side-action">Создать сводку</button>
-                  <button class="side-action">Создать зеркало</button>
+                  <button class="side-action">Создать проект</button>
+                  <button class="side-action">Создать доску</button>
+                  <button class="side-action">Загрузка сотрудников</button>
+                  <button class="side-action">Настроить доступ</button>
                 </aside>
+              </div>
+            </div>
+            </div>
+
+            <div class="task-view my-tasks-view">
+              <div class="my-tasks-head">
+                <div class="my-tasks-title">
+                  <h1>Мои задачи</h1>
+                  <p>Задачи сотрудника из всех проектов, досок и задач без доски.</p>
+                </div>
+                <div class="my-task-stats">
+                  <div class="my-task-stat"><strong>38</strong><span>всего</span></div>
+                  <div class="my-task-stat"><strong>3</strong><span>просрочены</span></div>
+                  <div class="my-task-stat"><strong>8</strong><span>на сегодня</span></div>
+                </div>
+              </div>
+
+              <div class="my-tasks-toolbar">
+                <div class="my-tasks-search">
+                  <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                  Поиск по моим задачам
+                </div>
+                <span class="my-tasks-chip active">Все</span>
+                <span class="my-tasks-chip">Я исполнитель</span>
+                <span class="my-tasks-chip">Я ответственный</span>
+                <span class="my-tasks-chip">Без доски</span>
+                <span class="my-tasks-chip">Приватные</span>
+              </div>
+
+              <div class="my-tasks-list">
+                <section class="task-group">
+                  <div class="task-group-head"><strong>Просрочено</strong><span>3 задачи</span></div>
+                  <article class="my-task-row overdue">
+                    <div class="my-task-main"><strong>Подготовить фото для новости</strong><span>Контент для новости о корпоративе</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Маркетинг</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Без доски</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>Новые</b></div>
+                    <div class="my-task-badge overdue">просрочено</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Исполнитель</b></div>
+                  </article>
+                  <article class="my-task-row overdue">
+                    <div class="my-task-main"><strong>Опросный лист: дизайн и Яндекс опрос</strong><span>Нужно закрыть комментарии по макету</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Маркетинг</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Выставки</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>Готово</b></div>
+                    <div class="my-task-badge overdue">27 фев</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Ответственный</b></div>
+                  </article>
+                </section>
+
+                <section class="task-group">
+                  <div class="task-group-head"><strong>Сегодня</strong><span>8 задач</span></div>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>Карточка сотрудника</strong><span>Проверить состав полей и быстрые действия</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Портал</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Сотрудники</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>В работе</b></div>
+                    <div class="my-task-badge today">сегодня</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Исполнитель</b></div>
+                  </article>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>Согласовать быстрый доступ</strong><span>Выбрать финальный набор виджетов главной</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Портал</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Главная</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>На согласовании</b></div>
+                    <div class="my-task-badge today">сегодня</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Ответственный</b></div>
+                  </article>
+                </section>
+
+                <section class="task-group">
+                  <div class="task-group-head"><strong>На этой неделе</strong><span>14 задач</span></div>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>Проверить документы</strong><span>Разделы, избранное и последние обновления</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Портал</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Документы</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>В работе</b></div>
+                    <div class="my-task-badge">22 авг</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Исполнитель</b></div>
+                  </article>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>Проверить доступы редакторов</strong><span>Ограниченная задача для настройки прав</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Маркетинг</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Без доски</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>Новые</b></div>
+                    <div class="my-task-badge boardless">без доски</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Ответственный</b></div>
+                  </article>
+                </section>
+
+                <section class="task-group">
+                  <div class="task-group-head"><strong>Позже</strong><span>10 задач</span></div>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>11. Energy Expo Минск</strong><span>Подготовить план материалов и сроки</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Маркетинг</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Выставки</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>Новые</b></div>
+                    <div class="my-task-badge">27 окт</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Исполнитель</b></div>
+                  </article>
+                </section>
+
+                <section class="task-group">
+                  <div class="task-group-head"><strong>Без срока</strong><span>3 задачи</span></div>
+                  <article class="my-task-row">
+                    <div class="my-task-main"><strong>Собрать вопросы по семинару</strong><span>Задача пока без дедлайна и доски</span></div>
+                    <div class="my-task-cell"><span>Проект</span><b>Маркетинг</b></div>
+                    <div class="my-task-cell"><span>Доска</span><b>Без доски</b></div>
+                    <div class="my-task-cell"><span>Статус</span><b>Новые</b></div>
+                    <div class="my-task-badge boardless">без срока</div>
+                    <div class="my-task-cell"><span>Роль</span><b>Наблюдатель</b></div>
+                  </article>
+                </section>
               </div>
             </div>
           </section>
@@ -1886,17 +2297,17 @@
         </div>
       `,
       board: `
-        <p>Доска создается внутри выбранного проекта. В ней можно вести спринт, бэклог или отдельное направление работ.</p>
+        <p>Доска создается внутри выбранного проекта и используется для группировки задач команды.</p>
         <div class="form-grid">
           <label class="field full"><span>Название доски</span><input value="Новая доска"></label>
-          <label class="field"><span>Тип</span><select><option>Спринт</option><option>Бэклог</option><option>Канбан</option></select></label>
+          <label class="field"><span>Формат</span><select><option>Kanban</option><option>Закрытое пространство</option><option>Командная доска</option></select></label>
           <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
         </div>
       `,
       rename: `
         <p>Переименование меняет только название текущей доски, задачи и статусы сохраняются.</p>
         <div class="form-grid">
-          <label class="field full"><span>Новое название</span><input value="Спринт 12"></label>
+          <label class="field full"><span>Новое название</span><input value="Выставки"></label>
         </div>
       `,
       access: `
@@ -1907,23 +2318,26 @@
           <label class="field full"><span>Сотрудники с доступом</span><textarea>Ирина Ганьба, Алексей Попов, Дмитрий Попов</textarea></label>
         </div>
       `,
-      gantt: `
-        <p>Режим Ганта можно оставить как дополнительное представление для руководителей: сроки, зависимости и просрочки по проекту.</p>
-        <div class="form-grid">
-          <label class="field"><span>Период</span><select><option>Текущий спринт</option><option>Месяц</option><option>Весь проект</option></select></label>
-          <label class="field"><span>Группировка</span><select><option>По доскам</option><option>По ответственным</option><option>По статусам</option></select></label>
-        </div>
-      `,
-      backlog: `
-        <p>Бэклог нужен как очередь идей и задач, которые еще не взяли в текущий спринт.</p>
+      boardless: `
+        <p>Сюда попадают задачи проекта, которые еще не привязаны к рабочей доске. Их можно открыть, уточнить детали и назначить доску.</p>
         <div class="compact-list">
-          <div class="scope-row"><span><strong>Фильтр по подразделениям</strong><span>Для следующего спринта</span></span><span class="badge middle">средний</span></div>
-          <div class="scope-row"><span><strong>Экспорт задач в Excel</strong><span>Запрос от руководителей</span></span><span class="badge low">низкий</span></div>
-          <div class="scope-row"><span><strong>Шаблоны повторяющихся задач</strong><span>После запуска MVP</span></span><span class="badge private">идея</span></div>
+          <div class="compact-row"><strong>Согласовать список сувениров</strong><span>Маркетинг · срок 22.08 · средний</span></div>
+          <div class="compact-row"><strong>Подготовить фото для новости</strong><span>Контент · просрочено · высокий</span></div>
+          <div class="compact-row"><strong>Проверить доступы редакторов</strong><span>Приватная · срок 25.08 · Ирина Ганьба</span></div>
+          <div class="compact-row"><strong>Собрать вопросы по семинару</strong><span>Без исполнителя · низкий</span></div>
+        </div>
+        <div class="form-grid" style="margin-top:14px">
+          <label class="field"><span>Доска назначения</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+          <label class="field"><span>Статус на доске</span><select><option>Новые</option><option>В работе</option><option>На согласовании</option></select></label>
         </div>
       `,
-      archive: `
-        <p>Архивирование скрывает доску из активной работы, но сохраняет историю задач, комментарии и вложения.</p>
+      assignBoard: `
+        <p>После назначения задача появится на выбранной доске и дальше будет двигаться по колонкам как обычная карточка.</p>
+        <div class="form-grid">
+          <label class="field full"><span>Задача</span><input value="Согласовать список сувениров"></label>
+          <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
+          <label class="field"><span>Колонка</span><select><option>Новые</option><option>В работе</option><option>На согласовании</option><option>Готово</option></select></label>
+        </div>
       `
     };
 
@@ -1947,6 +2361,13 @@
       modal.setAttribute("aria-hidden", "true");
     }
 
+    function showTaskView(viewName) {
+      document.querySelectorAll(".task-view").forEach((view) => view.classList.remove("active"));
+      document.querySelector(viewName === "my" ? ".my-tasks-view" : ".board-view")?.classList.add("active");
+      document.querySelectorAll(".rail-link").forEach((link) => link.classList.remove("active"));
+      if (viewName === "my") document.querySelector("[data-open-my-tasks]")?.classList.add("active");
+    }
+
     document.querySelector(".modal-close").addEventListener("click", closeModal);
     document.querySelector("[data-close-modal]").addEventListener("click", closeModal);
     document.querySelector("[data-save-modal]").addEventListener("click", () => {
@@ -1957,87 +2378,29 @@
       if (event.target === modal) closeModal();
     });
 
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.setAttribute("role", "button");
-      tab.tabIndex = 0;
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((item) => item.classList.remove("active"));
-        tab.classList.add("active");
-        if (tab.textContent.trim() === "Спринты") {
-          openModal("Спринты", formTemplates.backlog, "Готово");
-        } else if (tab.textContent.trim() === "Канбан") {
-          showToast("Открыта канбан-доска текущего спринта");
-        } else if (tab.textContent.trim() === "Мои задачи") {
-          openModal("Мои задачи", `
-            <div class="compact-list">
-              <div class="compact-row"><strong>Карточка сотрудника</strong><span>Сегодня · просрочено</span></div>
-              <div class="compact-row"><strong>Согласовать быстрый доступ</strong><span>20.08 · на согласовании</span></div>
-              <div class="compact-row"><strong>Проверить документы</strong><span>22.08 · в работе</span></div>
-            </div>
-          `, "Закрыть");
-        } else if (tab.textContent.trim() === "Архив") {
-          openModal("Архив задач", formTemplates.archive, "Закрыть");
-        }
-      });
-    });
-
-    document.querySelectorAll(".sprint-card, .sprint-metric").forEach((card) => {
-      card.tabIndex = 0;
-      card.setAttribute("role", "button");
-      card.addEventListener("click", () => openModal("Текущий спринт", `
-        <p>Спринт показывает только работу, которую команда реально взяла в ближайшие две недели.</p>
-        <div class="form-grid">
-          <label class="field"><span>Период</span><input value="18.08-01.09"></label>
-          <label class="field"><span>Прогресс</span><input value="64%"></label>
-          <label class="field full"><span>Фокус</span><textarea>Сотрудники, документы, новости и базовые права доступа.</textarea></label>
-        </div>
-      `, "Закрыть"));
-    });
-
-    document.querySelectorAll(".project-card").forEach((card) => {
-      card.tabIndex = 0;
-      card.setAttribute("role", "button");
-      card.addEventListener("click", () => {
-        document.querySelectorAll(".project-card").forEach((item) => item.classList.remove("active"));
-        card.classList.add("active");
-        const title = card.querySelector("h3").textContent.trim();
-        openModal(title, `
-          <p>${card.querySelector("p").textContent.trim()}</p>
-          <div class="form-grid">
-            <label class="field"><span>Ответственный</span><input value="Ганьба Ирина"></label>
-            <label class="field"><span>Приоритет</span><input value="${card.querySelector(".badge").textContent.trim()}"></label>
-            <label class="field"><span>Активные задачи</span><input value="${card.querySelector(".metric strong").textContent.trim()}"></label>
-            <label class="field"><span>Дата окончания</span><input value="${card.querySelector(".project-bottom span").textContent.trim()}"></label>
-          </div>
-        `, "Открыть проект");
-      });
-    });
-
-    document.querySelectorAll(".board-pill").forEach((pill) => {
-      pill.tabIndex = 0;
-      pill.setAttribute("role", "button");
-      pill.addEventListener("click", () => {
-        document.querySelectorAll(".board-pill").forEach((item) => item.classList.remove("active"));
-        pill.classList.add("active");
-        showToast(`Открыта доска: ${pill.textContent.trim()}`);
-      });
-    });
-
-    document.querySelectorAll(".task-card, .scope-row, .compact-row").forEach((card) => {
+    document.querySelectorAll(".task-card, .scope-row, .compact-row, .my-task-row").forEach((card) => {
       card.tabIndex = 0;
       card.setAttribute("role", "button");
       card.addEventListener("click", () => {
         const title = card.querySelector("strong")?.textContent.trim() || "Задача";
         const isOverdue = card.classList.contains("overdue") || card.textContent.includes("просрочено");
+        const isBoardless = card.closest(".task-column")?.classList.contains("unassigned") || card.textContent.includes("Без доски");
         openModal(title, `
           <div class="form-grid">
             <label class="field"><span>Статус</span><select><option>Новые</option><option selected>В работе</option><option>На согласовании</option><option>Готово</option></select></label>
+            <label class="field"><span>Доска</span><select><option${isBoardless ? " selected" : ""}>Не назначена</option><option${isBoardless ? "" : " selected"}>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option></select></label>
             <label class="field"><span>Приоритет</span><select><option>Высокий</option><option selected>Средний</option><option>Низкий</option></select></label>
             <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Мария Иванова</option><option>Алексей Волков</option></select></label>
-            <label class="field"><span>Исполнитель</span><select><option>Дмитрий Попов</option><option>Алексей Попов</option><option>Елена Петрова</option></select></label>
+            <label class="field"><span>Исполнители</span><input value="Дмитрий Попов, Алексей Попов"></label>
             <label class="field"><span>Срок</span><input value="${isOverdue ? "просрочено" : "25.08.2026"}"></label>
+            <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта, отдел маркетинга"></label>
             <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
             <label class="field full"><span>Описание</span><textarea>Краткое описание задачи, подзадачи, вложения и комментарии открываются внутри карточки.</textarea></label>
+            <label class="field full"><span>Этапы и подзадачи</span><textarea>1. Собрать материалы - Алексей Попов - 22.08
+2. Проверить текст - Дмитрий Попов - 24.08
+3. Передать на согласование - Ирина Ганьба - 25.08</textarea></label>
+            <label class="field"><span>Вложения</span><input value="brief.pdf, photo-pack.zip"></label>
+            <label class="field"><span>История</span><input value="19.08: срок изменен, 18.08: добавлен исполнитель"></label>
           </div>
         `);
       });
@@ -2068,16 +2431,6 @@
         if (text === "Создать доску") openModal("Создать доску", formTemplates.board);
         if (text === "Переименовать") openModal("Переименовать доску", formTemplates.rename);
         if (text === "Доступ") openModal("Настроить доступ", formTemplates.access);
-        if (text === "Архивировать") openModal("Архивировать доску", formTemplates.archive, "Архивировать");
-        if (text === "Гант") openModal("Диаграмма Ганта", formTemplates.gantt, "Открыть режим");
-        if (text === "Бэклог") openModal("Бэклог проекта", formTemplates.backlog, "Закрыть");
-        if (text === "Все проекты") openModal("Все проекты", `
-          <div class="compact-list">
-            <div class="compact-row"><strong>Запуск обновленного портала</strong><span>24 активные · 3 просрочены</span></div>
-            <div class="compact-row"><strong>Каталог продукции 2.0</strong><span>18 активных · 1 просрочена</span></div>
-            <div class="compact-row"><strong>Сертификаты и документы</strong><span>11 активных · без просрочек</span></div>
-          </div>
-        `, "Закрыть");
       });
     });
 
@@ -2087,6 +2440,12 @@
       tab.addEventListener("click", () => {
         if (tab.classList.contains("add")) {
           openModal("Создать доску", formTemplates.board);
+          return;
+        }
+        if (tab.textContent.includes("Вне досок")) {
+          document.querySelectorAll(".project-tab").forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+          openModal("Задачи вне досок", formTemplates.boardless, "Назначить доску");
           return;
         }
         document.querySelectorAll(".project-tab").forEach((item) => item.classList.remove("active"));
@@ -2102,15 +2461,7 @@
         document.querySelectorAll(".view-chip").forEach((item) => item.classList.remove("active"));
         chip.classList.add("active");
         const text = chip.textContent.trim();
-        if (text === "Гант") openModal("Диаграмма Ганта", formTemplates.gantt, "Открыть режим");
-        if (text === "Календарь") openModal("Календарь задач", `
-          <p>Календарный режим показывает сроки задач, дедлайны выставок и контрольные даты проекта.</p>
-          <div class="form-grid">
-            <label class="field"><span>Период</span><select><option>Август 2026</option><option>Сентябрь 2026</option></select></label>
-            <label class="field"><span>Отображать</span><select><option>Все задачи проекта</option><option>Только мои задачи</option></select></label>
-          </div>
-        `, "Закрыть");
-        if (text === "Доска") showToast("Открыта доска задач");
+        if (text === "Kanban") showToast("Открыт Kanban");
       });
     });
 
@@ -2119,6 +2470,10 @@
       chip.setAttribute("role", "button");
       chip.addEventListener("click", () => {
         const label = chip.textContent.trim();
+        if (label === "Без доски") {
+          openModal("Задачи вне досок", formTemplates.boardless, "Назначить доску");
+          return;
+        }
         openModal(label === "+" ? "Добавить фильтр" : `Фильтр: ${label}`, `
           <p>Фильтр применяется к текущей доске проекта “Маркетинг”.</p>
           <div class="form-grid">
@@ -2129,13 +2484,42 @@
       });
     });
 
+    document.querySelectorAll(".boardless-action").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        openModal("Назначить доску", formTemplates.assignBoard, "Назначить");
+      });
+    });
+
     document.querySelectorAll(".project-link").forEach((link) => {
       link.tabIndex = 0;
       link.setAttribute("role", "button");
       link.addEventListener("click", () => {
+        showTaskView("board");
         document.querySelectorAll(".project-link").forEach((item) => item.classList.remove("active"));
         link.classList.add("active");
         showToast(`Открыт проект: ${link.textContent.trim()}`);
+      });
+    });
+
+    document.querySelector("[data-open-my-tasks]")?.addEventListener("click", () => {
+      showTaskView("my");
+      document.querySelectorAll(".project-link").forEach((item) => item.classList.remove("active"));
+      showToast("Открыт список моих задач");
+    });
+
+    document.querySelectorAll(".rail-link").forEach((link) => {
+      link.tabIndex = 0;
+      link.setAttribute("role", "button");
+    });
+
+    document.querySelectorAll(".my-tasks-chip").forEach((chip) => {
+      chip.tabIndex = 0;
+      chip.setAttribute("role", "button");
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".my-tasks-chip").forEach((item) => item.classList.remove("active"));
+        chip.classList.add("active");
+        showToast(`Фильтр: ${chip.textContent.trim()}`);
       });
     });
 
@@ -2145,10 +2529,14 @@
           <div class="form-grid">
             <label class="field full"><span>Название</span><input value="Новая задача"></label>
             <label class="field"><span>Ответственный</span><select><option>Ирина Ганьба</option><option>Алексей Попов</option><option>Мария Иванова</option></select></label>
-            <label class="field"><span>Исполнитель</span><select><option>Алексей Попов</option><option>Дмитрий Попов</option><option>Елена Петрова</option></select></label>
+            <label class="field"><span>Исполнители</span><input value="Алексей Попов, Дмитрий Попов"></label>
+            <label class="field"><span>Доска</span><select><option>Выставки</option><option>Семинары</option><option>ФОТО/ВИДЕО</option><option>Общие задачи</option><option>Не назначать</option></select></label>
             <label class="field"><span>Срок</span><input value="25.08.2026"></label>
+            <label class="field"><span>Наблюдатели</span><input value="Руководитель проекта"></label>
             <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option><option>Приватная</option></select></label>
             <label class="field full"><span>Описание</span><textarea>Что нужно сделать, какие материалы приложить и какой результат ожидается.</textarea></label>
+            <label class="field full"><span>Этапы и подзадачи</span><textarea>Добавьте этапы, ответственных и сроки выполнения.</textarea></label>
+            <label class="field"><span>Вложения</span><input value="Прикрепить файлы"></label>
           </div>
         `);
       });
@@ -2157,32 +2545,36 @@
     document.querySelectorAll(".side-action").forEach((button) => {
       button.addEventListener("click", () => {
         const text = button.textContent.trim();
-        if (text.includes("колонку")) openModal("Создать колонку", `
-          <div class="form-grid">
-            <label class="field full"><span>Название колонки</span><input value="Новая колонка"></label>
-            <label class="field"><span>Позиция</span><select><option>После “Отложено”</option><option>В начало доски</option></select></label>
-            <label class="field"><span>Доступ</span><select><option>Общая</option><option>Ограниченная</option></select></label>
-          </div>
-        `);
-        if (text.includes("сводку")) openModal("Создать сводку", `
-          <p>Сводка собирает задачи из нескольких досок проекта в одну колонку для руководителя.</p>
-          <div class="form-grid">
-            <label class="field"><span>Источник</span><select><option>Все доски проекта</option><option>Только выставки</option></select></label>
-            <label class="field"><span>Показывать</span><select><option>Просрочки и высокие приоритеты</option><option>Все активные задачи</option></select></label>
-          </div>
-        `);
-        if (text.includes("зеркало")) openModal("Создать зеркало", `
-          <p>Зеркало показывает одну и ту же задачу на нескольких досках без дублирования.</p>
-          <div class="form-grid">
-            <label class="field full"><span>Доска назначения</span><select><option>Общие задачи</option><option>ФОТО/ВИДЕО</option><option>Семинары</option></select></label>
-          </div>
-        `);
+        if (text === "Создать проект") {
+          openModal("Создать проект", formTemplates.project);
+          return;
+        }
+        if (text === "Создать доску") {
+          openModal("Создать доску", formTemplates.board);
+          return;
+        }
+        if (text === "Настроить доступ") {
+          openModal("Настроить доступ", formTemplates.access);
+          return;
+        }
+        if (text === "Загрузка сотрудников") {
+          openModal("Загрузка сотрудников", `
+            <p>Сводка помогает увидеть, кому можно назначить задачу без перегруза.</p>
+            <div class="compact-list">
+              <div class="compact-row"><strong>Ирина Ганьба</strong><span>12 активных задач · 2 просрочены</span></div>
+              <div class="compact-row"><strong>Алексей Попов</strong><span>8 активных задач · без просрочек</span></div>
+              <div class="compact-row"><strong>Дмитрий Попов</strong><span>15 активных задач · высокая загрузка</span></div>
+              <div class="compact-row"><strong>Елена Петрова</strong><span>5 активных задач · можно назначать</span></div>
+            </div>
+          `, "Закрыть");
+          return;
+        }
       });
     });
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeModal();
-      if ((event.key === "Enter" || event.key === " ") && document.activeElement?.matches(".tab, .sprint-card, .sprint-metric, .project-card, .board-pill, .task-card, .access-row, .setting-row, .scope-row, .compact-row, .project-tab, .view-chip, .filter-chip, .project-link")) {
+      if ((event.key === "Enter" || event.key === " ") && document.activeElement?.matches(".task-card, .access-row, .setting-row, .scope-row, .compact-row, .project-tab, .view-chip, .filter-chip, .project-link, .my-task-row, .my-tasks-chip, .rail-link")) {
         event.preventDefault();
         document.activeElement.click();
       }
